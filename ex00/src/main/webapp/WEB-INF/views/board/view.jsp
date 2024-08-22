@@ -29,16 +29,23 @@
 
 <script type="text/javascript">
 	$(function() {
+		// 글 수정 버튼 처리
 		$(".updateBtn").click(function() {
 			let no = $(this).data("no");
 // 			alert(no);
 			location = "updateForm.do?no=" + no + "&inc=0";
 		});
 		
-		// 글삭제 버튼
+		// 글 삭제 버튼
 		$("#deleteBtn").click(function() {
 			$("#pw").val("");
-		})
+		});
+		
+		// 리스트 버튼에 대한 처리
+		$("#listBtn").click(function() {
+			location = "list.do?page=${param.page}&perPageNum=${param.perPageNum}"
+					+ "&key=${param.key}&word=${param.word}";
+		});
 	});
 </script>
 
@@ -52,7 +59,7 @@
 		</button>
 	</form> 
 	<button class="btn btn-secondary float-right updateBtn" data-no="${vo.no }">글 수정</button>
-	<a href="list.do" class="btn btn-dark float-right">리스트</a>
+	<button type="button" class="btn btn-dark float-right" id="listBtn">리스트</button>
 	<h4>일반 게시판 글 보기</h4>
 	<hr>
 	<div class="">

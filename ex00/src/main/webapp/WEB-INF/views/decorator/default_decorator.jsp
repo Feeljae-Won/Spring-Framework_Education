@@ -97,16 +97,16 @@ article {
 			><span class="navbar-toggler-icon"></span></button>
 			<div class="collapse navbar-collapse" id="collapsibleNavbar">
 				<ul class="navbar-nav">
-					<li class="nav-item ${( module == '/air')?'active' : ''}">
+					<li class="nav-item ${( model == '/air')?'active' : ''}">
 						<a class="nav-link" href="/air/search.do">Air</a>
 					</li>
-					<li class="nav-item ${( module == '/hotel')?'active' : ''}">
+					<li class="nav-item ${( model == '/hotel')?'active' : ''}">
 						<a class="nav-link" href="/hotel/search.do">Hotel</a>
 					</li>
-					<li class="nav-item ${( module == '/board')?'active' : ''}">
+					<li class="nav-item ${( model == '/board')?'active' : ''}">
 						<a class="nav-link" href="/board/list.do">Board</a>
 					</li>
-					<li class="nav-item ${( module == '/notice')?'active' : ''}">
+					<li class="nav-item ${( model == '/notice')?'active' : ''}">
 						<a class="nav-link" href="/notice/list.do">Notice</a>
 					</li>
 				</ul>

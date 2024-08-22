@@ -11,6 +11,8 @@
 				select rownum rnum, no, title, writer, writeDate, hit
 				from ( select no, title, content, writer, writeDate, hit 
 					from board
+					<!-- 검색을 달아야 한다. -->
+					<include refid="search"></include>
 					order by no desc
 			)
 		) where rnum between #{startRow} and #{endRow}
@@ -19,7 +21,32 @@
 	<!-- 일반 게시판 리스트 페이지 처리를 위한 전체 데이터 개수 가져오기 -->
 	<select id="getTotalRow" resultType="Long">
 		select count(*) from board
+		<!-- 검색을 달아야 한다. -->
+		<include refid="search"></include>
 	</select>
+	
+	<!-- 일반 게시판 리스트의 검색 처리 -->
+	<sql id="search">
+		<!-- word가 있을 때만 검색한다. myBatis 형식 -->
+		<if test="word != null and word != ''.toString()">
+			where
+			<!-- 앞에 있는 or 는 지우자 -->
+			<trim prefixOverrides="or">
+				<!-- t를 포함하고 있으면 -->
+				<!-- 'test' : 문자열(String), 't' : 문자(char) -> 문자열 - toString() 사용 -->
+				<if test="key.indexOf('t') >= 0 ">
+					or title like '%' || #{word} || '%'
+				</if>
+				<if test="key.indexOf('c') >= 0 ">
+					or content like '%' || #{word} || '%'
+				</if>
+				<if test="key.indexOf('w') >= 0 ">
+					or writer like '%' || #{word} || '%'
+				</if>
+				
+			</trim>
+		</if>
+	</sql>
 	
 	<!-- 조회수 증가 -->
 	<!--  #{ obj } 1. 변수 이름, 2. vo의 getter ㅇ리ㅡㅁ, 3. Map의 key -->
