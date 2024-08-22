@@ -160,8 +160,21 @@ $(function() {
 	// 댓글 페이지네이션 이벤트 처리
 	$(".pagination").on("click", "a", function() {
 		
+		// alert("페이지 클릭");
+		let page = $(this).parent().data("page");
+		
+//		if (page == replyPage)
+//			alert("이동페이지(이동 안함) : " + page);
+//		else alert("이동페이지(이동함) : " + page);
+		
+		if (page != replyPage) {
+//			alert("이동페이지(이동함) : " + page);
+			replyPage = page;
+			showList(replyPage);
+		}
+		
 		return false;
-	})
+	});
 	
 	
 });

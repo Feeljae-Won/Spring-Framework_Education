@@ -13,7 +13,7 @@
 function replyPagination(pageObject) {
 	let str = "";
 	
-	str +="'<li class=\"page-item";
+	str +="<li class=\"page-item";
 			
 	// 이전 페이지 처리 : disabled 추가 여부 - 이전 페이지가 없으면 'disabled' 붙힌다.
 	if(pageObject.startPage == 1) str += " disabled ";
