@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.board.mapper.BoardMapper">
+
+	<!-- id 는 메소드 이름과 같아야 한다. -->
+	<select id="list" resultType="org.zerock.board.vo.BoardVO">
+		select no, title, writer, writeDate, hit
+			from (
+				select rownum rnum, no, title, writer, writeDate, hit
+				from ( select no, title, content, writer, writeDate, hit 
+					from board
+					order by no desc
+			)
+		) where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<!-- 일반 게시판 리스트 페이지 처리를 위한 전체 데이터 개수 가져오기 -->
+	<select id="getTotalRow" resultType="Long">
+		select count(*) from board
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<!--  #{ obj } 1. 변수 이름, 2. vo의 getter ㅇ리ㅡㅁ, 3. Map의 key -->
+	<update id="increase">
+		update board set hit = hit + 1 where no = #{no}
+	</update>
+	
+	<!-- 상세보기 -->
+	<select id="view" resultType="org.zerock.board.vo.BoardVO">
+		select no, title, content, writer, writeDate, hit
+		from board where no = #{no}
+	</select>
+	
+	<!-- id 는 메소드 이름과 같아야 한다. -->
+<!-- 	<insert id="write"> -->
+<!-- 		insert into board(no, title, content, writer, pw) -->
+<!-- 		values(board_seq.nextval, #{title}, #{content}, #{writer}, #{pw}) -->
+<!-- 	</insert> -->
+
+	<!-- 사진이 여러장일 경우 시퀀스에서 No를 받아와서 여러 이미지 처리 -->
+	<insert id="write">
+		<!-- BoardVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. -->
+		<selectKey keyProperty="no" resultType="Long" order="BEFORE">
+			select board_seq.nextval from dual
+		</selectKey>
+		insert into board(no, title, content, writer, pw)
+		values(#{no}, #{title}, #{content}, #{writer}, #{pw})
+	</insert>
+	
+	<!-- 글 수정 -->
+	<update id="update">
+	<![CDATA[
+		update board set title = #{title}, content = #{content}, writer = #{writer}
+		where no = #{no} and pw = #{pw}
+	]]>
+	</update>
+	
+	<!-- 글 삭제 -->
+	<delete id="delete">
+		delete from board where no = #{no} and pw = #{pw}	
+	</delete>
+
+</mapper>

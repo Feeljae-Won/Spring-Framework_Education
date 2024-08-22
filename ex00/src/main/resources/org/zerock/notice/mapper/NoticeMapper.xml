@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.notice.mapper.NoticeMapper">
+
+	<!-- id 는 메소드 이름과 같아야 한다. -->
+	<select id="list" resultType="org.zerock.notice.vo.NoticeVO">
+		select no, title, content, startDate, endDate, writeDate, updateDate 
+			from (
+				select rownum rnum, no, title, content, startDate, endDate, writeDate, updateDate 
+				from ( select no, title, content, startDate, endDate, writeDate, updateDate 
+					from notice
+					order by updateDate desc
+			)
+		) where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<!-- 일반 게시판 리스트 페이지 처리를 위한 전체 데이터 개수 가져오기 -->
+	<select id="getTotalRow" resultType="Long">
+		select count(*) from notice
+	</select>
+	
+	<!-- 상세보기 -->
+	<select id="view" resultType="org.zerock.notice.vo.NoticeVO">
+		select no, title, content, startDate, endDate, writeDate, updateDate 
+		from notice where no = #{no}
+	</select>
+	
+	<!-- 사진이 여러장일 경우 시퀀스에서 No를 받아와서 여러 이미지 처리 -->
+	<insert id="write">
+		<!-- NoardVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. -->
+		<selectKey keyProperty="no" resultType="Long" order="BEFORE">
+			select notice_seq.nextval from dual
+		</selectKey>
+		insert into notice(no, title, content, startDate, endDate, updateDate)
+		values(#{no}, #{title}, #{content}, #{startDate}, #{endDate}, sysdate)
+	</insert>
+	
+	<!-- 글 수정 -->
+	<update id="update">
+	<![CDATA[
+		update notice set title = #{title}, content = #{content}, startDate = #{startDate}, endDate = #{endDate}, updateDate = sysdate
+		where no = #{no}
+	]]>
+	</update>
+	
+	<!-- 글 삭제 -->
+	<delete id="delete">
+		delete from notice where no = #{no}	
+	</delete>
+
+</mapper>
