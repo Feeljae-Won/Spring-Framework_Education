@@ -3,6 +3,8 @@ package org.zerock.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.domain.SampleDTO;
 import org.zerock.domain.TodoDTO;
+
+import com.webjjang.util.file.FileUtil;
 
 import lombok.extern.log4j.Log4j;
 
@@ -153,5 +157,36 @@ public class SampleController {
 		
 	}
 	
+	
+	// 교재 방식의 파일 업로드
+	@GetMapping("/exUpload2")
+	public void exUpload2() {
+		log.info("/exUpload2() -----------------");
+		
+	}
+	
+	@PostMapping("/exUploadPost2")
+	public void exUploadPost2(@RequestParam ArrayList<MultipartFile> files, HttpServletRequest request) throws Exception {
+		
+		log.info("/exUploadPost2()");
+		
+		// 저장 위치
+		String path = "/upload/image";
+		
+		// 향상된 forEach
+		for(MultipartFile file : files) {
+			log.info("---------------------------------------");
+			log.info("name : " + file.getOriginalFilename());
+			log.info("size : " + file.getSize());
+			
+			// 파일 업로드 :  저장 객체 (코드 짜야 함.)
+			FileUtil.upload(path, file, request);
+			
+			// 실제 저장 위치
+			// D:\\Feeljae\workspace\\spring\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\ex00\\upload\\image
+			
+			
+		}; // end of for
+	}
 	
 }

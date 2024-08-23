@@ -27,18 +27,22 @@
 	</beans:bean>
 	
 	<!-- 파일 업로드 객체와 설정 -->
-	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+<!-- 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> -->
 		<!-- 데이터 인코딩 방식 : UTF-8 -->
-		<beans:property name="defaultEncoding" value="utf-8"/>
+<!-- 		<beans:property name="defaultEncoding" value="utf-8"/> -->
 		<!-- 전체 업로드 용량 제한 -->
 		<!-- 1024 * 1024 * 10 bytes 10MB -->
-		<beans:property name="maxUploadSize" value="104857560"/>
+<!-- 		<beans:property name="maxUploadSize" value="104857560"/> -->
 		<!-- 파일 한개 당 업로드 용량 제한 -->
 		<!-- 1024 * 1024 * 2 bytes 2MB -->
-		<beans:property name="maxUploadSizePerFile" value="2097152"/>
+<!-- 		<beans:property name="maxUploadSizePerFile" value="2097152"/> -->
 		<!-- 큰 용량의 파일이 들어오면 파일로 저장하는 임시 폴더 지정 -->
-		<beans:property name="uploadTempDir" value="file:/c:/upload/tmp"/>
-		<beans:property name="maxInMemorySize" value="10485756"/>
+<!-- 		<beans:property name="uploadTempDir" value="file:/c:/upload/tmp"/> -->
+<!-- 		<beans:property name="maxInMemorySize" value="10485756"/> -->
+<!-- 	</beans:bean> -->
+	
+	<!--  교재에 나와 있는 방법의 파일 업로드 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
 	</beans:bean>
 	
 	<context:component-scan base-package="org.zerock" />
