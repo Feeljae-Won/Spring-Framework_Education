@@ -109,7 +109,9 @@
 						글번호 : ${vo.no }
 					</div>
 					<div class="card-body">
-						<pre class="truncate"><b>${vo.title }</b></pre>
+					 	<span class="badge badge-danger float-right">${vo.replyCnt }</span>
+						<pre class="truncate"><b>${vo.title }</b>
+						</pre>
 					</div>
 					<div class="card-footer">
 						<span class="float-right">

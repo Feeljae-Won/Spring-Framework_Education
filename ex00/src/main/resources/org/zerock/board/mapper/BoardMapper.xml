@@ -6,11 +6,12 @@
 
 	<!-- id 는 메소드 이름과 같아야 한다. -->
 	<select id="list" resultType="org.zerock.board.vo.BoardVO">
-		select no, title, writer, writeDate, hit
+		select no, title, writer, writeDate, hit, replyCnt
 			from (
-				select rownum rnum, no, title, writer, writeDate, hit
-				from ( select no, title, content, writer, writeDate, hit 
-					from board
+				select rownum rnum, no, title, writer, writeDate, hit, replyCnt
+				from ( select no, title, content, writer, writeDate, hit,
+						(select count(*) from reply r where r.no = b.no) replyCnt
+					from board b
 					<!-- 검색을 달아야 한다. -->
 					<include refid="search"></include>
 					order by no desc
