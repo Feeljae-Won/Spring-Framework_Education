@@ -234,10 +234,10 @@ article {
                   class="nav-link" href="/notice/list.do"><img
                      src="/uploads/free-icon-double-bed.png"
                      style="width: 20px; height: 20px;"> 호텔</a></li>
-               <li class="nav-item ${( module == '/music')?'active':'' }"><a
-                  class="nav-link" href="/music/newList.do"><i
+               <li class="nav-item ${( module == '/air')?'active':'' }"><a
+                  class="nav-link" href="/air/main.do"><i
                      class="fa fa-plane" style="width: 24px; height: 24px;"></i>항공권</a></li>
-               <li class="nav-item ${( module == '/music')?'active':'' }"><a
+               <li class="nav-item ${( module == '/air')?'active':'' }"><a
                   class="nav-link" href="/music/topList.do"><img
                      src="/uploads/free-icon-ferris-wheel.png"
                      style="width: 20px; height: 20px;"> 즐길거리</a></li>

@@ -20,6 +20,7 @@ public class AirVO {
 	private Long airlineNo; // 항공사 고유번호
 	private String airlineKor;
 	private String airlineEng;
+	private String photo;
 	
 	// 항공기
 	private String airplaneId; // 비행기 모델명
