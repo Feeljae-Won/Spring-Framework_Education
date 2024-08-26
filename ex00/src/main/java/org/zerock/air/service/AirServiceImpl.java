@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 // Type이 같으면 식별할 수 있는 문자열 지정 - id를 지정
 @Qualifier("BoardServiceImpl")
-public class BoardServiceImpl implements BoardService{
+public class AirServiceImpl implements AirService{
 
 	// 자동 DI 적용 - @Setter, @Autowired, @Inject
 	@Inject
