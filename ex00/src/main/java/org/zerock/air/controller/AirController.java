@@ -20,7 +20,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/air")
 @Log4j
 public class AirController {
 	
