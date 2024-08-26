@@ -155,4 +155,17 @@ public class MemberController {
 		return "redirect:/main/main.do";
 	} // end of view()
 	
+	// 6-3. 회원 관리 - 로그아웃 처리
+	@GetMapping("/logout.do")
+	public String logout(LoginVO vo, HttpSession session, RedirectAttributes rttr) {
+		log.info("MemberController.logout() --------------------------");
+		
+		
+		// 로그아웃 처리 - 세션을 지운다.
+		session.removeAttribute("login");
+		rttr.addFlashAttribute("msg", "로그아웃 되었습니다.<br>이용해 주셔서 감사합니다.");
+		
+		return "redirect:/main/main.do";
+	} // end of view()
+	
 }
