@@ -19,6 +19,7 @@
 	<resources mapping="/js/**" location="/js/" />
 	<resources mapping="/css/**" location="/css/" />
 	<resources mapping="/upload/**" location="/upload/" />
+	<resources mapping="/uploads/**" location="/uploads/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -50,6 +51,13 @@
 	<context:annotation-config></context:annotation-config>
 	
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<beans:bean class="org.zerock.util.interceptor.AuthorityInterceptor" />
+		</interceptor>
+	</interceptors>
 	
 	
 	

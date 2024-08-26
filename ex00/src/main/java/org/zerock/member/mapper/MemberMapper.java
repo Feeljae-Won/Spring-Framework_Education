@@ -24,8 +24,6 @@ public interface MemberMapper {
 	
 	// 회원 관리 - 회원 등록
 	public Integer write(MemberVO vo);
-	// 글 등록 트랜젝션
-//	public Integer writeTx(MemberVO vo);
 	
 	// 회원 관리 - 회원 정보 수정
 	public Integer update(MemberVO vo);
