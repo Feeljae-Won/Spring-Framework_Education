@@ -9,6 +9,10 @@ public class AirVO {
 	
 	// 국가 코드
 	private String country;
+	private String countryCode;
+	private String countryKor;
+	private String countryEng;
+	private String pan;
 	
 	// 공항 코드
 	private String airportCode;

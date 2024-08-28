@@ -12,6 +12,7 @@
 		<pattern>/member/*</pattern>
 		<pattern>/image/*</pattern>
 		<pattern>/air/*</pattern>
+		<pattern>/category/*</pattern>
 
 	</decorator>
 	

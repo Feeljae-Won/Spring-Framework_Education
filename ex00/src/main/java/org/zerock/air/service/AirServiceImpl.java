@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.zerock.air.mapper.AirMapper;
 import org.zerock.air.vo.AirVO;
 
-import com.webjjang.util.page.PageObject;
 
 import lombok.extern.log4j.Log4j;
 
@@ -26,12 +25,12 @@ public class AirServiceImpl implements AirService{
 	@Inject
 	private AirMapper mapper;
 	
-	// 일반 게시판 리스트
+	// 공항 검색 리스트
 	@Override
-	public List<AirVO> list(PageObject pageObject, String searchAirport) {
+	public List<AirVO> searchList(String searchAirport) {
 		log.info("list() 실행");
 		// 전체 데이터 개수 구하기
-		return mapper.list(pageObject);
+		return mapper.searchList(searchAirport);
 	}
 	
 
