@@ -33,5 +33,11 @@ public class AirServiceImpl implements AirService{
 		return mapper.searchList(searchAirport);
 	}
 	
+	//항공권 검색 리스트
+	public List<AirVO> searchResult(AirVO vo) {
+		
+		return mapper.searchResult(vo);
+	}
+	
 
 }

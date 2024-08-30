@@ -1,5 +1,8 @@
 package org.zerock.air.controller;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -64,5 +69,16 @@ public class AirController {
 	    // DB에서 초성 및 전체 공항명을 함께 검색
 		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
     }
+	
+	// 3. 항공권 검색 결과
+	@PostMapping("/searchResult.do")
+	public String searchResult(AirVO vo, Model model) {
+		
+		service.searchResult(vo);
+		
+		model.addAttribute("list", vo);
+		
+		return "air/searchResult";
+	}
 
 }

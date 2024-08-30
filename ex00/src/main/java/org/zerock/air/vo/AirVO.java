@@ -1,6 +1,12 @@
 package org.zerock.air.vo;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
@@ -54,9 +60,11 @@ public class AirVO {
 	
 	// 운항 스케줄
 	private Long scheduleId; // 스케줄 고유 번호
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date departureTime; // 출발 날짜
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date arrivalTime; // 도착 날짜
-	private Date duration; // 소요 시간
+	private Time duration; // 소요 시간
 	private String status; // 현재 운항 상태 - '운항' , '미운항'
 	
 

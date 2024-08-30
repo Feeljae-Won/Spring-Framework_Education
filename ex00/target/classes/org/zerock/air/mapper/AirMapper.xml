@@ -22,4 +22,39 @@
 	        )
 	</select>
 	
+	<!-- 항공권 검색 결과 -->
+	<select id="searchResult" resultType="org.zerock.air.vo.AirVO">
+		SELECT 
+		    m.photo, 
+		    al.airlineKor, 
+		    ar.departure, 
+		    dep_airport.airportKor AS departureKor, 
+		    ar.arrival, 
+		    arr_airport.airportKor AS arrivalKor, 
+		    ash.duration, 
+		    ash.ScheduleId, 
+		    ash.status, 
+		    TO_CHAR(ash.departureTime, 'yyyy-mm-dd') AS departureTime, 
+		    TO_CHAR(ash.arrivalTime, 'yyyy-mm-dd') AS arrivalTime, 
+		    (SELECT SUM(basePrice + tax + fuelSurCharge + bookingFee) 
+		     FROM airPrice 
+		     WHERE routeId = 1) AS totalPrice 
+		FROM 
+		    member m 
+		JOIN 
+		    airline al ON m.id = al.id 
+		JOIN 
+		    airSchedule ash ON al.airlineNo = ash.airlineNo 
+		JOIN 
+		    airRoute ar ON ar.routeId = ash.routeID 
+		JOIN 
+		    airport dep_airport ON dep_airport.airportCode = ar.departure 
+		JOIN 
+		    airport arr_airport ON arr_airport.airportCode = ar.arrival 
+		WHERE 
+		    ar.departure = #{departure} 
+		    AND ar.arrival = #{arrival}
+		    AND TRUNC(ash.departureTime, 'yyyy-mm-dd') = TRUNC(${departureTime}, 'yyyy-mm-dd'); 
+	</select>
+	
 </mapper>

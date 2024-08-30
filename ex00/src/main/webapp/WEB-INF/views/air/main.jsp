@@ -5,10 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Air Main</title>
-<!-- Bootstrap and Datepicker JavaScript -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+ <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+ <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <style type="text/css">
 body, html {
 	margin: 0;
@@ -18,6 +16,7 @@ body, html {
 }
 
 .background-image {
+	left:15px;
 	position: relative;
 	width: 100%;
 	height: 600px;
@@ -35,7 +34,7 @@ body, html {
 	background-color: rgba(255, 255, 255, 0.8);
 	/* White background with transparency */
 	border-radius: 20px;
-	width: 62%;
+	width: 70%;
 	text-align: left;
 	box-shadow: 10px 10px 12px rgba(0, 0, 0, 0.5);
 	/* Optional shadow for better visibility */
@@ -81,7 +80,7 @@ body, html {
 }
 .material-icons:hover {
 	cursor: pointer;
-	color: #e25600!important;
+	color: #e25600 !important;
 }
 #airportList {
 	display: none;
@@ -125,20 +124,38 @@ body, html {
 	width:260px; 
 	padding:10px;
 }
-#inputPerson {
+#passenger {
 	border-top:1px solid rgba(255, 255, 255, 0); 
 	border-left:1px solid rgba(255, 255, 255, 0); 
 	border-right:1px solid rgba(255, 255, 255, 0); 
 	border-bottom:1px solid #444; 
-	width:150px; 
+	width:200px; 
 	padding:10px;
+}
+#passenger:hover {
+	cursor:pointer;
+	border:1px solid #E37027 !important;
+	border-radius: 10px;
+}
+#passengerSelect {
+	display: none;
+	background-color: white;
+	border: 1px solid #ccc;
+	border-radius: 15px;
+	padding: 20px;
+	width: 500px;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 10;
+	text-align: left;
 }
 #inputSeat {
 	border-top:1px solid rgba(255, 255, 255, 0); 
 	border-left:1px solid rgba(255, 255, 255, 0); 
 	border-right:1px solid rgba(255, 255, 255, 0); 
 	border-bottom:1px solid #444; 
-	width:150px; 
+	width:180px; 
 	padding:10px;
 }
 
@@ -147,11 +164,7 @@ body, html {
 	border:1px solid #E37027 !important;
 	border-radius: 10px;
 }
-#inputPerson:hover {
-	cursor:pointer;
-	border:1px solid #E37027 !important;
-	border-radius: 10px;
-}
+
 #inputSeat:hover {
 	cursor:pointer;
 	border:1px solid #E37027 !important;
@@ -162,7 +175,7 @@ body, html {
 	background-color: #e25600 !important;
 }
 .active {
-	color:#E37027; 
+	color:#E37027 ; 
 	border-bottom: 3px solid #E37027; 
 	font-weight:bold;
 }
@@ -183,6 +196,146 @@ body, html {
 	left: 0;
 	z-index: 10;
 	text-align: left;
+}
+
+.ui-datepicker-inline {
+	width:90%;
+	height:400px;
+	margin: 0 auto;
+	border-radius:10px;
+	border:2px solid rgba(255, 255, 255, 0) !important;
+	background-color: rgba(255, 255, 255, 0) !important;
+}
+.ui-datepicker-title {
+	margin: 0 auto;
+	height: 50px;
+	
+}
+.ui-datepicker-header {
+	background-color:#FFE3CD;
+	border-radius:10px;
+	padding:3px;
+	height:60px;
+	margin-bottom:5px;
+}
+
+.ui-icon-circle-triangle-e {
+	color: #e0e0e0;
+}
+.ui-datepicker-month {
+	height: 80%;
+	text-align:center;
+	font-weight:bold;
+	border-radius:10px;
+}
+.ui-datepicker-year {
+	height: 80%;
+	text-align:center;
+	font-weight:bold;
+	border-radius:10px;
+}
+th {
+	background-color:#FF9C2A;
+	margin-left:2px;
+	margin-right:2px;
+	color:#ffffff;
+	width:30px;
+	font-weight:bold;
+
+}
+table {
+	border-radius: 10px;
+}
+th.ui-datepicker-week-end {
+	background-color:#FF7145;
+}
+td.ui-datepicker-week-end {
+	background-color:#FFF7DF;
+}
+td {
+	height:57px;
+	font-weight:bold;
+}
+.ui-state-default {
+	height:90%;
+	width:90%;
+	border-radius:5px;
+	border:2px solid rgba(255, 255, 255, 0) !important;
+	background-color: rgba(255, 255, 255, 0) !important;
+}
+.ui-state-hover {
+	background-color: #FFC720 !important;
+}
+.ui-state-active {
+	background-color: #FF9C2A !important;
+	color: #444;
+}
+.ui-state-default, 
+.ui-widget-content .ui-state-default, 
+.ui-widget-header .ui-state-default, 
+.ui-button, 
+html .ui-button.ui-state-disabled:hover, 
+html .ui-button.ui-state-disabled:active {
+	text-align: center;
+	font-weight:bold;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;  /* 수직 정렬 */
+  justify-content: space-between;  /* 수평으로 공간 분배 */
+  width: 100%;
+}
+
+.inputPassenger {
+  width: 60px;
+  text-align: center;
+}
+
+.cntControl {
+  font-size: 24px;
+}
+
+/* 아이콘 크기 맞추기 */
+.fa-question-circle {
+  font-size: 24px;
+  color: #E37027;
+}
+
+.cntControl {
+	width: 35px;
+	height: 40px;
+	font-size:20px;
+}
+
+.alert-danger {
+	display: none;
+}
+
+.inputPassenger {
+	text-align: center;
+}
+
+.seat-info {
+	display: none;
+	background-color: white;
+	border: 1px solid #ccc;
+	border-radius: 15px;
+	padding: 20px;
+	width: 370px;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 10;
+	text-align: left;
+}
+#inputSeat {
+    cursor: pointer;
+    position: relative; /* 부모를 기준으로 자식이 위치할 수 있도록 설정 */
+}
+.btn-group .btn {
+	border:1px solid #444;
+	border-radius:10px;
 }
 
 </style>
@@ -279,9 +432,11 @@ $(function() {
         if ($('#searchAirport').data('target') === 'departure') {
             $('#departure').text(selectedCode);
             $('#departureKor').text(selectedName);
+            $('#dCode').val(selectedCode);
         } else if ($('#searchAirport').data('target') === 'arrival') {
             $('#arrival').text(selectedCode);
             $('#arrivalKor').text(selectedName);
+            $('#aCode').val(selectedCode);
         }
 
         // 검색 결과 닫기
@@ -314,15 +469,35 @@ $(function() {
 		// 출발과 도착 정보를 서로 교환
 		$('#departure').text(arrivalCode);
 		$('#departureKor').text(arrivalKor);
+		$("#dCode").val(arrivalCode);
 		$('#arrival').text(departureCode);
 		$('#arrivalKor').text(departureKor);
+		$("#aCode").val(departureCode);
 	});
 	
 	// 편도 - 왕복 - 다구간 변경
 	$(".type").click(function() {
 		$(".type").removeClass("active");
-		$(this).addClass("active");
+		
 		let type = $(this).text();
+		if(type == "편도") {
+			$("#dateRange").text("가는 날");
+			$(".dateModal").removeClass("modal-xl");
+			$(".dateModal").addClass("modal-md");
+			$(".backType").hide();
+			$("#typeGo").addClass("active");
+			$("#modalTypeGo").addClass("active");
+			$("#tripType").val("편도");
+		}
+		if(type == "왕복") {
+			$("#dateRange").text("가는 날 ~ 오는 날");
+			$(".dateModal").removeClass("modal-md");
+			$(".dateModal").addClass("modal-xl");
+			$(".backType").show();
+			$("#typeGoBack").addClass("active");
+			$("#modalTypeGoBack").addClass("active");
+			$("#tripType").val("왕복");
+		}
 		console.log(type);
 	});
 	
@@ -331,56 +506,184 @@ $(function() {
 		
 		// 새로 오픈 될 때 검색 데이터 지우기
 		$("#inputSchedule").val("");
-
-		// 검색 리스트 초기화 및 열기
-		$(this).append($('#inputSchedule'));
-		$('#inputSchedule').css({
-			top: $(this).outerHeight() + 'px',  // 공항 아이콘 아래에 위치
-			left: 0  // 공항 아이콘의 왼쪽에 정렬
-		}).show();
+		$('#dateRange').text("가는 날" + " ~ " + "오는 날");
+        $("#dDate").val("");
+        $("#aDate").val("");
+        $("#selectedDepartDate").val("");
+        $("#selectedArriveDate").val("");
 
 	});
 	
+	// 날짜 입력 설정 - datepicker
+	let now = new Date();
+	
 	// Datepicker를 초기화
     $('#departureCalendar').datepicker({
-        format: 'yyyy-mm-dd',    // 날짜 형식
-        todayHighlight: true,    // 오늘 날짜 강조
-        autoclose: false,        // 자동으로 닫히지 않게 함
-        clearBtn: true           // 초기화 버튼 추가
+    	// 입력란의 데이터 포맷 
+		dateFormat: "yy-mm-dd",
+		// 월 선택 입력 추가
+		changeMonth: true,
+		// 년 선택 입력 추가
+		changeYear: true,
+		// 월 선택할 때의 이름 - 원래는 영어가 기본
+		monthNamesShort: [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" ],
+		// 달력의 요일 표시
+		dayNamesMin: [ "일", "월", "화", "수", "목", "금", "토" ],
+		// 오늘까지만의 날짜를 선택 가능
+		minDate : now,
+		onSelect: function(dateText) {
+// 			let dateAddTime = dateText + " 00:00:00" 
+//             $("#selectedDepartDate").val(dateAddTime);
+            $("#selectedDepartDate").val(dateText);
+		}
     });
 	
+	//초기값을 오늘 날짜로 설정해줘야 합니다.
+    $('#departureCalendar').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+	
     $('#arrivalCalendar').datepicker({
-        format: 'yyyy-mm-dd',    // 날짜 형식
-        todayHighlight: true,    // 오늘 날짜 강조
-        autoclose: false,        // 자동으로 닫히지 않게 함
-        clearBtn: true           // 초기화 버튼 추가
+    	// 입력란의 데이터 포맷 
+		dateFormat: "yy-mm-dd",
+		// 월 선택 입력 추가
+		changeMonth: true,
+		// 년 선택 입력 추가
+		changeYear: true,
+		// 월 선택할 때의 이름 - 원래는 영어가 기본
+		monthNamesShort: [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" ],
+		// 달력의 요일 표시
+		dayNamesMin: [ "일", "월", "화", "수", "목", "금", "토" ],
+		// 오늘까지만의 날짜를 선택 가능
+		minDate : now,
+		onSelect: function(dateText) {
+//             let dateAddTime = dateText + " 00:00:00" 
+//             $("#selectedArriveDate").val(dateAddTime);
+            $("#selectedArriveDate").val(dateText);
+		}
     });
-
-    // 선택된 날짜를 저장할 변수
-    let selectedDepartDate = "";
-    let selectedArriveDate = "";
-
-    // 달력에서 날짜를 선택했을 때 처리
-    $('#departureCalendar').on('changeDate', function(e) {
-    	selectedDepartDate = e.format('yyyy-mm-dd');
-        $("#selectedDepartDate").val(selectedDepartDate);
-    });
-    $('#arrivalCalendar').on('changeDate', function(e) {
-    	selectedArriveDate = e.format('yyyy-mm-dd');
-        $("#selectedArriveDate").val(selectedArriveDate);
-    });
+    
+ 	 //초기값을 오늘 날짜로 설정해줘야 합니다.
+    $('#arrivalCalendar').datepicker('setDate', '+1M'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 
     // "일정 선택 완료" 버튼 클릭 시 선택된 날짜를 표시
     $('#confirmDateBtn').click(function() {
-        if (selectedArriveDate != null) {
-            $('#dateRange').text(selectedDepartDate + " ~ " + selectedArriveDate);
+        if ($("#selectedArriveDate").val() != null) {
+            $('#dateRange').text($("#selectedDepartDate").val() + " ~ " + $("#selectedArriveDate").val());
+            $("#dDate").val($("#selectedDepartDate").val());
+            $("#aDate").val($("#selectedArriveDate").val());
         } else {
-        	$('#dateRange').text(selectedDepartDate);
+        	$('#dateRange').text($("#selectedDepartDate").val());
+        	$("#dDate").val($("#selectedDepartDate").val());
         }
         // 모달 창 닫기
-        console.log(selectedDepartDate  + " ~ " + selectedArriveDate);
+        console.log($("#selectedDepartDate").val()  + " ~ " + $("#selectedArriveDate").val());
         $('#datePickerModal').modal('hide');
+        $('.modal-backdrop').remove();
     });
+    
+	// 탑승객 버튼을 클릭했을 때 동작
+	// tooltip
+	$(document).ready(function(){
+	  $('[data-toggle="tooltip"]').tooltip();   
+	});
+	
+	// 출발지 선택 시
+	$('#passenger').click(function() {
+		$('#passengerSelect').css({
+			top: $('#passenger').outerHeight() + 'px',  // 공항 아이콘 아래에 위치
+			left: 0  // 공항 아이콘의 왼쪽에 정렬
+		}).show();
+	});
+	
+	// 인원 선택 버튼
+	$(".cntControl").click(function(){
+// 		alert($(this).val());
+// 		alert(cnt);
+		// 값을 가져온다.
+		let inputField = $(this).parent("span").find("input");
+		let cntValue = parseInt($(this).parent("span").find("input").val());
+		let increment = parseInt($(this).val());
+		
+		// 계산 값
+		let newCnt = cntValue + increment;
+		if (newCnt >= 0) {
+			inputField.val(newCnt);
+		}
+		
+		if ($("#adultCnt") == 0) {
+			$(".alert-danger").show();
+		}
+	});
+	
+	// 인원 정보를 버튼으로 전송
+	$("#comfirmPassengerBtn").click(function() {
+		let adultCnt = parseInt($("#adultCnt").val());
+		let childCnt = parseInt($("#childCnt").val());
+		let infantCnt = parseInt($("#infantCnt").val());
+		let totalCnt = adultCnt + childCnt + infantCnt;
+// 		alert("성인 : " + adultCnt + ", 소아 : " + childCnt + ", 유아 : " + infantCnt);
+		
+		$("#aPassenger").val(adultCnt);
+		$("#cPassenger").val(childCnt);
+		$("#iPassenger").val(infantCnt);
+		$('#totalPassenger').text("성인 : " + adultCnt + ", 소아 : " + childCnt + ", 유아 : " + infantCnt + " - 총 " + totalCnt + "명");
+		$('#passengerModal').modal('hide');
+	});
+	
+	
+	// 좌석 등급 선택
+	// span 클릭 시 아래에 div 창을 오버레이 밖에 표시
+    $('#inputSeat').click(function() {
+        // 현재 클릭한 span 태그의 위치 계산
+        let offset = $(this).offset();
+        
+        // div의 위치를 클릭한 span 바로 아래로 설정
+        $('#seatInfo').css({
+            top: 40 + $(this).outerHeight(),
+            left: 20
+        }).toggle();  // 클릭 시 div가 나타나거나 사라짐
+    });
+	
+	$(".seatBtn").click(function() {
+		let seatGrade = $(this).data("seatgrade");
+// 		alert(seatGrade);
+		$("#selectedSeat").text(seatGrade);
+		$("#seatGrade").val(seatGrade);
+		$(".seatBtn").removeClass("active");
+		$(this).addClass("active");
+		$("#seatInfo").hide();
+	});
+	
+	// 항공권 검색 버튼 눌렀을 때 데이터 유효성 검사
+	$("#searchBtn").click(function() {
+		let departure = $("#dCode").val();
+		let arrival = $("#aCode").val();
+		let departureTime = $("#dDate").val();
+		let arrivalTime = $("#aDate").val();
+		let adult = parseInt($("#aPassenger").val());
+		let child = parseInt($("#cPassenger").val());
+		let infant = parseInt($("#iPassenger").val());
+		let type = $("#tripType").val();
+		
+		let totalCnt = adult + child + infant;
+		
+// 		alert("1.departure : " + departure + ", 2. arrival :" + arrival + ", 3. departureTime :" + departureTime
+// 				+ ", 4.arrivalTime : " + arrivalTime + ", 5. adult : " + adult + ", 6. child : " + child 
+// 				+ ", 7. infant : " + infant + ", 8. type : " + type);
+		if (departure === null || departure === "" || arrival === null || arrival === "") {
+			alert("출발지와 도착지는 필수 입니다. 출발지와 도착지를 선택해 주세요.");
+			return false;
+		}
+		if (type === "왕복" && (arrivalTime === null || arrivalTime === "")) {
+			alert("왕복 항공권 검색은 돌아오는 날 일정을 선택해야 합니다.");
+			return false;
+		}
+		if (totalCnt == 0) {
+			alert("최소 1인 이상 선택되어야 합니다.");
+			return false;
+		}
+		
+	});
+	
 });
 </script>
 </head>
@@ -404,10 +707,10 @@ $(function() {
 			</ul>
 			<!-- 공항 및 항공권 예약 관련 내용 -->
 			<div class="searchAir">
-				<div id="selectType" class="float-right">
-					<span class="type active"><strong>왕복</strong></span>
-					<span class="type"><strong>편도</strong></span>
-					<span class="type"><strong>다구간</strong></span>
+				<div class="selectType float-right">
+					<span class="type active" id="typeGoBack"><strong>왕복</strong></span>
+					<span class="type" id="typeGo"><strong>편도</strong></span>
+					<span class="type" id="typeGoMany"><strong>다구간</strong></span>
 				</div>
 				<h5><b>항공권 예약</b></h5>
 				 <div class="row justify-content-center align-items-center m-0">
@@ -420,11 +723,11 @@ $(function() {
 							</span>
 							<br>
 							<span id="departure">
-								 ICN
+								 FROM
 							</span>
 							<br>
 							<span id="departureKor">
-								인천 국제 공항
+								출발지
 							</span>
 						</button>
 						
@@ -440,11 +743,11 @@ $(function() {
 							</span>
 							<br>
 							<span id="arrival">
-								NRT
+								TO
 							</span>
 							<br>
 							<span id="arrivalKor">
-								도쿄 나리타 공항
+								도착지
 							</span>
 						</button>
 					</div>
@@ -455,16 +758,18 @@ $(function() {
 						<span class="d-flex align-items-center" id="inputDate" data-toggle="modal" 
 							data-target="#datePickerModal">
 							<i class="material-icons mr-3" style="font-size:22px">date_range</i> 
-							<span id="dateRange" name="dateRange"><b>가는 날 ~ 오는 날</b></span>
+							<b><span id="dateRange">가는 날 ~ 오는 날</span></b>
+							
 						</span>
 					</div>
 					<div class="col-sm ml-3 mr-3 mt-3">
 						<p style="font-size:13px; font-weight:bold; margin-bottom:20px;">
 							탑승객
 						</p>
-						<span class="d-flex align-items-center" id="inputPerson">
+						<span class="d-flex align-items-center" id="passenger" data-toggle="modal" 
+							data-target="#passengerModal">
 							<i class="fa fa-user mr-3" style="font-size:24px"></i> 
-							<b>성인 1명</b>
+							<b><span id="totalPassenger">성인 1명</span></b>
 						</span>
 					</div>
 					<div class="col-sm ml-3 mr-3 mt-3">
@@ -473,15 +778,37 @@ $(function() {
 						</p>
 						<span class="d-flex align-items-center" id="inputSeat" >
 							<i class="material-icons mr-3" style="font-size:24px">airline_seat_recline_extra</i>
-							<b>일반석</b>
+							<b><span id="selectedSeat">일반석</span></b>
 						</span>
+						<div id="seatInfo" class="seat-info">
+					        <h5>좌석 등급 선택</h5>
+					        <hr>
+					        <div class="btn-group btn-group-lg">
+						        <button class="btn btn-light seatBtn active" id="ecoSeat" data-seatgrade="일반석">일반석</button>
+						        <button class="btn btn-light seatBtn" id="bisSeat" data-seatgrade="비즈니스석">비즈니스석</button>
+						        <button class="btn btn-light seatBtn" id="fstSeat" data-seatgrade="일등석">일등석</button>
+						    </div>
+					    </div>
 					</div>
 				</div>
-				<div style="background-color:#E37027; padding:10px; border-radius:5px; color:white; font-weight:bold; 
-					width: 100%; text-align:center; margin-top:15px; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);" 
-					id="searchBtn">
-					항공권 검색
-				</div>
+				<form action="/air/searchResult.do" method="post">
+					<input type="hidden" id="tripType" value="왕복">
+					<input type="hidden" id="dCode" name="departure">
+					<input type="hidden" id="aCode" name="arrival">
+					<input type="hidden" id="dDate" name="departureTime">
+					<input type="hidden" id="aDate" name="arrivalTime">
+					<input type="hidden" id="aPassenger">
+					<input type="hidden" id="cPassenger">
+					<input type="hidden" id="iPassenger">
+					<input type="hidden" id="seatGrade" value="일반석">
+					
+					<button style="background-color:#E37027; padding:10px; border-radius:5px; color:white; font-weight:bold; 
+						width: 100%; text-align:center; margin-top:15px; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+						border:1px solid rgba(255, 255, 255, 0);"
+						id="searchBtn">
+						항공권 검색
+					</button>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -504,35 +831,132 @@ $(function() {
 
 <!-- 모달 창 -->
 <div class="modal" id="datePickerModal">
-    <div class="modal-dialog modal-xl modal-dialog-centered" role="document" >
+    <div class="modal-dialog modal-xl modal-dialog-centered dateModal" role="document" >
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="datePickerModalLabel">여정 일자 선택</h5>
+            	
+                <h5 class="modal-title" id="datePickerModalLabel"><strong>여정 일자 선택</strong></h5> 
+                
+                <div id="modalType" class="selectType justify-content-center">
+					<span class="type active" id="modalTypeGoBack"><strong>왕복</strong></span>
+					<span class="type" id="modalTypeGo"><strong>편도</strong></span>
+					<span class="type" id="modalTypeGoMany"><strong>다구간</strong></span>
+				</div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <!-- 달력이 표시될 곳 -->
-                <div class="row">
-                	<div class="col">
+                <div class="row ">
+                	<div class="col goType">
+	                	<div style="text-align:center;" class="mb-2">
+	                		<i class="material-icons mb-0 mr-2" style="font-size:18px;color:#E37027">flight_takeoff</i>
+	          				<b> 가는 날 선택</b>
+	          			</div>
 	                	<div id="departureCalendar" class="mb-3"></div>
 		            </div>
-		            <div class="col">
-		                <div id="arrivalCalendar" class="mb-3"></div>
+		            <div class="col backType">
+		            	<div style="text-align:center;" class="mb-2">
+	                		<i class="material-icons mb-0 mr-2" style="font-size:18px;color:#E37027">flight_land</i>
+	          				<b> 오는 날 선택</b>
+	          			</div>
+	          			<div id="arrivalCalendar" class="mb-3"></div>
 	                </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer align-items-bottom">
             	<div class="form-inline">
-	          		<label for="selectedDepartDate" class="mr-3"><b>출발 날짜</b></label>
-			        <input class="form-control mr-3" id="selectedDepartDate" placeholder="출발일">
-			        <span class="mr-3"> ~ </span>
-			        <label for="selectedArriveDate" class="mr-3"><b>돌아오는 날짜</b></label>
-	                <input class="form-control mr-3" id="selectedArriveDate" placeholder="돌아오는 날짜">
+            		<span class="goType">
+		          		<label for="selectedDepartDate" class="float-left" >
+		          			<i class="material-icons mb-0 mr-2" style="font-size:18px;color:#E37027">flight_takeoff</i>
+		          			<b> 가는 날</b>
+		          		</label>
+		          		<br>
+				        <input class="form-control mr-3 mb-3" id="selectedDepartDate" placeholder="가는 날" readonly>
+			        </span>
+			        <span class="mr-3 backType"> ~ </span>
+			        <span class="backType">
+				        <label for="selectedArriveDate" class="float-left" >
+				        	<i class="material-icons mb-0 mr-2" style="font-size:18px;color:#E37027">flight_land</i>
+				        	<b>오는 날</b>
+				        </label>
+		          		<br>
+		                <input class="form-control mr-3 mb-3" id="selectedArriveDate" placeholder="오는 날" readonly>
+	                </span>
 		        </div>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                 <button type="button" id="confirmDateBtn" class="btn btn-primary">일정 선택 완료</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 인원 선택 -->
+<div class="modal" id="passengerModal">
+    <div class="modal-dialog modal-md modal-dialog-centered passengerModal" role="document" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passengerModalLabel"><strong>탑승객 선택</strong></h5> 
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+            	<div class="alert alert-danger">
+					<strong>탑승객은 성인 1명을 포함해야 합니다.</strong> 
+				</div>
+            	<ul>
+            		<li class="mb-5 flex-container">
+				      	<div class="d-flex align-items-center">
+					      	<i class="material-icons" style="font-size:36px">person_pin_circle</i>
+					        <b style="font-size:20px;">성인(Adult)</b>
+					        <a href="#" data-toggle="tooltip" data-placement="top" title="출발일 기준 만 12세 이상">
+					          	<i class="fa fa-question-circle ml-2"></i>
+					        </a>
+				     	 </div>
+				      
+				      <span class="d-flex justify-content-center align-items-center mr-5">
+					        <button class="btn btn-light btn-sm cntControl -sub" value="-1"><i class="fa fa-minus"></i></button>
+					        <input class="inputPassenger form-control" id="adultCnt" type="number" value="1" min="0">
+					        <button class="btn btn-light btn-sm cntControl +add" value="+1"><i class="fa fa-plus"></i></button>
+				      </span>
+				    </li>
+            		<li class="mb-5 flex-container">
+				      	<div class="d-flex align-items-center">
+					      	<i class="material-icons" style="font-size:36px">person_pin_circle</i>
+	            			<b style="font-size:20px;">소아(Child)</b> 
+	            			<a href="#" data-toggle="tooltip" data-placement="top" title="출발일 기준 만 12세 미만">
+	            				<i class="fa fa-question-circle" style="font-size:24px; color:#E37027;"></i>
+	            			</a>
+            			</div>
+            			<span class="d-flex justify-content-center align-items-center mr-5">
+					        <button class="btn btn-light btn-sm cntControl -sub" value="-1"><i class="fa fa-minus"></i></button>
+					        <input class="inputPassenger form-control" id="childCnt" type="number" value="0" min="0">
+					        <button class="btn btn-light btn-sm cntControl +add" value="+1"><i class="fa fa-plus"></i></button>
+				      	</span>
+            		</li>
+            		<li class="mb-5 flex-container">
+	            		<div class="d-flex align-items-center">
+					      	<i class="material-icons" style="font-size:36px">person_pin_circle</i>
+	            			<b style="font-size:20px;">유아(Infant)</b> 
+	            			<a href="#" data-toggle="tooltip" data-placement="top" title="출발일 기준 만 2세 미만">
+	            				<i class="fa fa-question-circle" style="font-size:24px; color:#E37027;"></i>
+	            			</a>
+	            		</div>
+	            		<span class="d-flex justify-content-center align-items-center mr-5">
+					        <button class="btn btn-light btn-sm cntControl -sub" value="-1"><i class="fa fa-minus"></i></button>
+					        <input class="inputPassenger form-control" id="infantCnt" type="number" value="0" min="0">
+					        <button class="btn btn-light btn-sm cntControl +add" value="+1"><i class="fa fa-plus"></i></button>
+				      	</span>
+            		</li>
+            	</ul>
+            </div>
+            
+            <div class="modal-footer align-items-bottom">
+                <button type="button" id="comfirmPassengerBtn" class="btn btn-primary">탑승객 선택 완료</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>

@@ -2,9 +2,7 @@ package org.zerock.category.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -51,23 +49,25 @@ public class CategoryController {
 		model.addAttribute("bigList", bigList);
 		model.addAttribute("midList", midList);
 		
+		// 중분류 추가에 cate_code1이 필요
+		model.addAttribute("cate_code1", cate_code1);
+		
 		return "category/list";
 	}
 	
-	//--- 카테고리 글등록 폼 ------------------------------------
+	//--- 카테고리 등록 처리 : 대분류와 중분류를 같이 사용 ------------------------------------
 	// 등록 항목이 분류명밖에 없다. 리스트에 포함 시키자.
 	
 	//--- 카테고리 글등록 처리 ------------------------------------
 	@PostMapping("/write.do")
 	public String write(CategoryVO vo, RedirectAttributes rttr) {
-		log.info("write.do");
-		log.info(vo);
+		
 		service.write(vo);
 		
 		// 처리 결과에 대한 메시지 처리
 		rttr.addFlashAttribute("msg", "카테고리 글등록이 되었습니다.");
 		
-		return "redirect:list.do";
+		return "redirect:list.do?cate_code1=" + vo.getCate_code1();
 	}
 	
 	//--- 카테고리 글수정 폼 ------------------------------------
@@ -78,15 +78,15 @@ public class CategoryController {
 	public String update(CategoryVO vo, RedirectAttributes rttr) {
 		log.info("update.do");
 		log.info(vo);
-		if(service.update(vo) == 1)
+		if(service.update(vo) >= 1)
 			// 처리 결과에 대한 메시지 처리
-			rttr.addFlashAttribute("msg", "카테고리 글수정이 되었습니다.");
+			rttr.addFlashAttribute("msg", "카테고리 수정이 되었습니다.");
 		else
 			rttr.addFlashAttribute("msg",
-					"카테고리 글수정이 되지 않았습니다. "
-					+ "글번호나 비밀번호가 맞지 않습니다. 다시 확인하고 시도해 주세요.");
+					"카테고리 수정이 되지 않았습니다. "
+					+ "카테고리 번호가 맞지 않습니다. 다시 확인하고 시도해 주세요.");
 		
-		return "redirect:list.do?no=0";
+		return "redirect:list.do?cate_code1=" + vo.getCate_code1();
 	}
 	
 	
@@ -97,15 +97,13 @@ public class CategoryController {
 		log.info(vo);
 		// 처리 결과에 대한 메시지 처리
 		if(service.delete(vo) == 1) {
-			rttr.addFlashAttribute("msg", "카테고리 글삭제가 되었습니다.");
-			return "redirect:list.do";
+			rttr.addFlashAttribute("msg", "카테고리 삭제가 되었습니다.");
 		}
 		else {
 			rttr.addFlashAttribute("msg",
-					"카테고리 글삭제가 되지 않았습니다. "
-							+ "글번호나 비밀번호가 맞지 않습니다. 다시 확인하고 시도해 주세요.");
-			return "redirect:list.do?no=0";
+					"카테고리 삭제가 되지 않았습니다. 다시 확인하고 시도해 주세요.");
 		}
+		return "redirect:list.do" + ((vo.getCate_code2()>0) ? ("?cate_code1=" + vo.getCate_code2()) : "");
 	}
 	
 }

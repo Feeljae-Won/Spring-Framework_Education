@@ -9,8 +9,11 @@ import org.zerock.air.vo.AirVO;
 @Repository
 public interface AirMapper {
 	
-	// 일반 게시판 리스트
+	// 공항 검색 리스트
 	public List<AirVO> searchList(String searchAirport);
+	
+	// 항공권 검색 리스트
+	public List<AirVO> searchResult(AirVO vo);
 	
 
 }
