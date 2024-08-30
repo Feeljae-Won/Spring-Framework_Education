@@ -1,13 +1,5 @@
 package org.zerock.air.vo;
 
-import java.sql.Time;
-import java.time.LocalDateTime;
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Data;
 
 @Data
@@ -47,7 +39,9 @@ public class AirVO {
 	// 운항 노선
 	private Long routeId; // 노선 고유 번호
 	private String departure; // 출발지
+	private String departureKor;
 	private String arrival; // 도착지
+	private String arrivalKor;
 	private String type; // 국내 D, 국외 I
 	private double distance; // 운항 거리
 	
@@ -57,14 +51,13 @@ public class AirVO {
 	private Long tax; // 세금
 	private Long fuelSurCharge; // 유류할증료
 	private Long bookingFee; // 발권 수수료
+	private Long totalPrice;
 	
 	// 운항 스케줄
 	private Long scheduleId; // 스케줄 고유 번호
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	private Date departureTime; // 출발 날짜
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	private Date arrivalTime; // 도착 날짜
-	private Time duration; // 소요 시간
+	private String departureTime; // 출발 날짜
+	private String arrivalTime; // 도착 날짜
+	private String duration; // 소요 시간
 	private String status; // 현재 운항 상태 - '운항' , '미운항'
 	
 

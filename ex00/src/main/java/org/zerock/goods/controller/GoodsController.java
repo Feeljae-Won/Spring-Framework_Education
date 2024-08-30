@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.goods.service.GoodsService;
 import org.zerock.goods.vo.GoodsVO;
@@ -21,128 +22,115 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/goods")
 @Log4j
 public class GoodsController {
-	
+
 	// 자동 DI
-//	@Setter(onMethod_ = @Autowired)
+	// @Setter(onMethod_ = @Autowired)
 	// Type이 같으면 식별할 수 있는 문자열 지정 - id를 지정
 	@Autowired
-	@Qualifier("GoodsServiceImpl")
+	@Qualifier("goodsServiceImpl")
 	private GoodsService service;
 	
-//	// 1. 상품관리 리스트
+	//--- 상품 리스트 ------------------------------------
 	@GetMapping("/list.do")
-	public String list(Model model, HttpServletRequest request) throws Exception {
-		log.info("GoodsController.list() --------------------------");
+	// 검색을 위한 데이터를 따로 받아야 한다.
+	// public ModelAndView list(Model model) {
+	public String list(Model model, HttpServletRequest request)
+			throws Exception {
+	//	public String list(HttpServletRequest request) {
+		log.info("list.do");
+		// request.setAttribute("list", service.list());
 		
-		// 서비스 실행
-//		request.setAttribute("list", service.list());
-		
-		// 페이지 처리를 위한 객체 생성
+		// 페이지 처리를 위한 객체 생겅
 		PageObject pageObject = PageObject.getInstance(request);
 		
-		// model에 담으면 request에 자동으로 담기게 된다. - 처리된 데이터를 Model로 저장
+		// 한 페이지 당 보여주는 데이터의 개수가 없으면 기본은 8로 정한다.
+		String strPerPageNum = request.getParameter("perPageNum");
+		if(strPerPageNum == null || strPerPageNum.equals(""))
+			pageObject.setPerPageNum(8);
+		
+		// model에 담으로 request에 자동을 담기게 된다. - 처리된 데이터를 Model에 저장
 		model.addAttribute("list", service.list(pageObject));
+		// pageObject에 데이터 가져 오기 전에는 시작 페이지, 끝 페이지, 전체 페이지가 정해지지 않는다.
 		log.info(pageObject);
 		model.addAttribute("pageObject", pageObject);
+		// 검색에 대한 정보도 넘겨야 한다.
 		
 		return "goods/list";
-	} // end of list()
+	}
 	
-	// model을 이용한 데이터 전달
-	// 1. 상품관리 리스트
-//	@GetMapping("/list.do")
-//	public ModelAndView list(Model model) {
-//	public String list(Model model) {
-//		log.info("GoodsController.list() --------------------------");
-		
-		// model에 담으면 request에 자동으로 담기게 된다. - 처리된 데이터를 Model로 저장
-//		model.addAttribute("list", service.list());
-//		return "goods/list";
-		
-		// ModelAndView
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject("list", service.list());
-//		mav.setViewName("goods/list");
-//		
-//		return mav;
-//	} // end of list()
-	
-	// 2. 상품관리 글 보기
+	//--- 상품관리 글보기 ------------------------------------
 	@GetMapping("/view.do")
-	public String view(Long no, Long inc, Model model) {
-		log.info("GoodsController.view() --------------------------");
+	public String view(Model model, Long no, int inc) {
+		log.info("view.do");
 		
-		model.addAttribute("vo", (GoodsVO) service.view(no, inc));
+		model.addAttribute("vo", service.view(no, inc));
 		
 		return "goods/view";
-	} // end of view()
+	}
 	
-	// 3-1. 상품관리 글 등록 폼
+	//--- 상품관리 글등록 폼 ------------------------------------
 	@GetMapping("/writeForm.do")
 	public String writeForm() {
-		log.info("GoodsController.writeForm() --------------------------");
-		
+		log.info("writeForm.do");
 		return "goods/writeForm";
-	} // end of writeForm()
+	}
 	
-	// 3-2. 상품관리 글 등록 처리
+	//--- 상품관리 글등록 처리 ------------------------------------
 	@PostMapping("/write.do")
 	public String write(GoodsVO vo, RedirectAttributes rttr) {
-		log.info("GoodsController.write() --------------------------");
+		log.info("write.do");
 		log.info(vo);
 		service.write(vo);
 		
-		// 처리 결과에 대한 메세지 처리
-		rttr.addFlashAttribute("msg", "상품관리 글 등록이 되었습니다.");
+		// 처리 결과에 대한 메시지 처리
+		rttr.addFlashAttribute("msg", "상품관리 글등록이 되었습니다.");
 		
 		return "redirect:list.do";
-	} // end of write()
+	}
 	
-	// 4-1. 상품관리 글 수정 폼
+	//--- 상품관리 글수정 폼 ------------------------------------
 	@GetMapping("/updateForm.do")
-	public String updateForm(Long no, Long inc, Model model) {
-		log.info("GoodsController.updateForm() --------------------------");
+	public String updateForm(Long no, Model model) {
+		log.info("updateForm.do");
 		
-		model.addAttribute("vo", (GoodsVO) service.view(no, inc));
+		model.addAttribute("vo", service.view(no, 0));
 		
 		return "goods/updateForm";
-	} // end of updateForm()
+	}
 	
-	// 4-2. 상품관리 글 수정 처리
+	//--- 상품관리 글수정 처리 ------------------------------------
 	@PostMapping("/update.do")
 	public String update(GoodsVO vo, RedirectAttributes rttr) {
-		System.out.println("GoodsController.update() --------------------------");
-		
-		
-		if (service.update(vo) == 1)
-			// 처리 결과에 대한 메세지 처리
-			rttr.addFlashAttribute("msg", "상품관리 글 수정 되었습니다.");
+		log.info("update.do");
+		log.info(vo);
+		if(service.update(vo) == 1)
+			// 처리 결과에 대한 메시지 처리
+			rttr.addFlashAttribute("msg", "상품관리 글수정이 되었습니다.");
 		else
-			rttr.addFlashAttribute("msg", "상품관리 글 수정이 되지 않았습니다. <br> 글 번호나 비밀번호가 일치하지 않습니다."
-					+ "<br> 다시 확인하고 시도해 주세요.");
-			
+			rttr.addFlashAttribute("msg",
+					"상품관리 글수정이 되지 않았습니다. "
+					+ "글번호나 비밀번호가 맞지 않습니다. 다시 확인하고 시도해 주세요.");
 		
 		return "redirect:view.do?no=&inc=0";
-	} // end of updateForm()
+	}
 	
-	// 5. 글 삭제 처리
+	
+	//--- 상품관리 글삭제 처리 ------------------------------------
 	@PostMapping("/delete.do")
 	public String delete(GoodsVO vo, RedirectAttributes rttr) {
-		System.out.println("GoodsController.delete() --------------------------");
-		
-		
-		if (service.delete(vo) == 1) {
-			// 처리 결과에 대한 메세지 처리
-			rttr.addFlashAttribute("msg", "상품관리 글 수정 되었습니다.");
-			
+		log.info("delete.do");
+		log.info(vo);
+		// 처리 결과에 대한 메시지 처리
+		if(service.delete(vo) == 1) {
+			rttr.addFlashAttribute("msg", "상품관리 글삭제가 되었습니다.");
 			return "redirect:list.do";
 		}
 		else {
-			rttr.addFlashAttribute("msg", "상품관리 글 삭제되지 않았습니다. <br> 글 번호나 비밀번호가 일치하지 않습니다."
-					+ "<br> 다시 확인하고 시도해 주세요.");
-		
+			rttr.addFlashAttribute("msg",
+					"상품관리 글삭제가 되지 않았습니다. "
+							+ "글번호나 비밀번호가 맞지 않습니다. 다시 확인하고 시도해 주세요.");
 			return "redirect:view.do?no=&inc=0";
 		}
-	} // end of delete()
+	}
 	
 }

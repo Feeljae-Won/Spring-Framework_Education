@@ -13,6 +13,7 @@
 		<pattern>/image/*</pattern>
 		<pattern>/air/*</pattern>
 		<pattern>/category/*</pattern>
+		<pattern>/goods/*</pattern>
 
 	</decorator>
 	

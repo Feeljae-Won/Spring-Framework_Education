@@ -556,7 +556,7 @@ $(function() {
 		minDate : now,
 		onSelect: function(dateText) {
 //             let dateAddTime = dateText + " 00:00:00" 
-//             $("#selectedArriveDate").val(dateAddTime);
+//             $("#selectedArriveDate").val(formattedDate);
             $("#selectedArriveDate").val(dateText);
 		}
     });

@@ -34,8 +34,8 @@
 		    ash.duration, 
 		    ash.ScheduleId, 
 		    ash.status, 
-		    TO_CHAR(ash.departureTime, 'yyyy-mm-dd') AS departureTime, 
-		    TO_CHAR(ash.arrivalTime, 'yyyy-mm-dd') AS arrivalTime, 
+		    TO_CHAR(ash.departureTime, 'hh24:mm') AS departureTime, 
+		    TO_CHAR(ash.arrivalTime, 'hh24:mm') AS arrivalTime, 
 		    (SELECT SUM(basePrice + tax + fuelSurCharge + bookingFee) 
 		     FROM airPrice 
 		     WHERE routeId = 1) AS totalPrice 
@@ -52,9 +52,19 @@
 		JOIN 
 		    airport arr_airport ON arr_airport.airportCode = ar.arrival 
 		WHERE 
+			(
 		    ar.departure = #{departure} 
 		    AND ar.arrival = #{arrival}
-		    AND TRUNC(ash.departureTime, 'yyyy-mm-dd') = TRUNC(${departureTime}, 'yyyy-mm-dd'); 
+		    AND TRUNC(ash.departureTime) = #{departureTime}
+		    )
+		    <if test="#{arrivalTime} != null">
+		    or
+		    (
+		    ar.departure = #{arrival} 
+		    AND ar.arrival = #{departure}
+		    AND TRUNC(ash.departureTime) = #{arrivalTime}
+		    )
+		    </if>
 	</select>
 	
 </mapper>

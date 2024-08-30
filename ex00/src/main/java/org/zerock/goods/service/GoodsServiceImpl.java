@@ -20,14 +20,14 @@ import lombok.extern.log4j.Log4j;
 @Service
 @Log4j
 // Type이 같으면 식별할 수 있는 문자열 지정 - id를 지정
-@Qualifier("GoodsServiceImpl")
+@Qualifier("goodsServiceImpl")
 public class GoodsServiceImpl implements GoodsService{
 
 	// 자동 DI 적용 - @Setter, @Autowired, @Inject
 	@Inject
 	private GoodsMapper mapper;
 	
-	// 상품관리 리스트
+	// 상품 리스트
 	@Override
 	public List<GoodsVO> list(PageObject pageObject) {
 		log.info("list() 실행");
@@ -36,40 +36,42 @@ public class GoodsServiceImpl implements GoodsService{
 		return mapper.list(pageObject);
 	}
 	
-	// 상품관리 글보기
+	// 상품 글보기
 	@Override
-	public GoodsVO view(Long no, Long inc) {
+	@Transactional
+	public GoodsVO view(Long no, int inc) {
 		log.info("view() 실행");
 		if(inc == 1) mapper.increase(no);
 		return mapper.view(no);
 	}
 	
-	// 상품관리 글등록
-	// @Transactional - insert 2번이 성공해야 Commit 한다. 하나라도 오류가 나면 rollback이 된다.
-	@Transactional 
+	// 상품 글등록
 	@Override
+	// @Transactional - insert 2번이 성공을 해야 commit 한다. 한개라도 오류가 나면 rollback.
+	// 상품, 가격, 이미지, 사이즈컬러, 옵션 -> 등록하다가 하나라고 오류가 나면 다 rollback 시킨다.
+	@Transactional
 	public Integer write(GoodsVO vo) {
-		
-		Integer result = mapper.write(vo); // 글번호를 시퀀스에서 새로운 번호를 사용
-		
-//		log.info(vo);
-//		mapper.writeTx(vo); // 위에서 사용한 No를 그대로 가져와서 사용 - PK 예외 발생
-		
+		Integer result = mapper.write(vo); // 글번호를 시퀀스에서 새로운 번호 사용
+		// log.info(vo);
+		// vo.setNo(10000L);
+		// mapper.writeTx(vo); // 위에서 사용한 글번호 재사용 - PK 예외 발생
 		return result;
 	}
 	
-	// 상품관리 글수정
+	// 상품 글수정
 	@Override
 	public Integer update(GoodsVO vo) {
-//		log.info(vo);
+		log.info(vo);
 		return mapper.update(vo);
 	}
 	
-	// 상품관리 글 삭제
+	// 상품 글삭제
 	@Override
 	public Integer delete(GoodsVO vo) {
-//		log.info(vo);
+		log.info(vo);
 		return mapper.delete(vo);
 	}
+	
+	// 삭제할 제품에 대한 이미지를 전부 가져오기 : 상품 이미지 가져오기 -> DB 상품 삭제 -> 이미지 삭제 
 	
 }
