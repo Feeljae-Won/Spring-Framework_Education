@@ -31,7 +31,10 @@
 		    dep_airport.airportKor AS departureKor, 
 		    ar.arrival, 
 		    arr_airport.airportKor AS arrivalKor, 
-		    ash.duration, 
+		    aopt.flightName,
+		    EXTRACT(DAY FROM ash.duration) || '일 ' || 
+		    EXTRACT(HOUR FROM ash.duration) || '시간 ' || 
+		    EXTRACT(MINUTE FROM ash.duration) || '분 ' AS duration,
 		    ash.ScheduleId, 
 		    ash.status, 
 		    TO_CHAR(ash.departureTime, 'hh24:mm') AS departureTime, 
@@ -39,32 +42,19 @@
 		    (SELECT SUM(basePrice + tax + fuelSurCharge + bookingFee) 
 		     FROM airPrice 
 		     WHERE routeId = 1) AS totalPrice 
-		FROM 
-		    member m 
-		JOIN 
-		    airline al ON m.id = al.id 
-		JOIN 
-		    airSchedule ash ON al.airlineNo = ash.airlineNo 
-		JOIN 
-		    airRoute ar ON ar.routeId = ash.routeID 
-		JOIN 
-		    airport dep_airport ON dep_airport.airportCode = ar.departure 
-		JOIN 
-		    airport arr_airport ON arr_airport.airportCode = ar.arrival 
+		FROM member m
+		    JOIN airline al ON m.id = al.id
+		    JOIN airplaneOpt aopt ON al.airlineNo = aopt.airLineNo
+		    JOIN airSchedule ash ON (aopt.flightName = ash.flightName AND al.airlineNo = ash.airlineNo)
+		    JOIN airRoute ar ON ar.routeId = ash.routeID
+		    JOIN airport dep_airport ON dep_airport.airportCode = ar.departure
+		    JOIN airport arr_airport ON arr_airport.airportCode = ar.arrival
 		WHERE 
 			(
 		    ar.departure = #{departure} 
 		    AND ar.arrival = #{arrival}
 		    AND TRUNC(ash.departureTime) = #{departureTime}
 		    )
-		    <if test="#{arrivalTime} != null">
-		    or
-		    (
-		    ar.departure = #{arrival} 
-		    AND ar.arrival = #{departure}
-		    AND TRUNC(ash.departureTime) = #{arrivalTime}
-		    )
-		    </if>
 	</select>
 	
 </mapper>

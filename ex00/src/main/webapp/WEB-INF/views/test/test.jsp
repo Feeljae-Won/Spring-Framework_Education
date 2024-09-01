@@ -4,10 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>항공권 검색 내역</title>
+<title>Insert title here</title>
 </head>
 <body>
-${list }
 
 </body>
 </html>

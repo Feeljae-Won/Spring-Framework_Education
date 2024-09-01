@@ -1,11 +1,9 @@
 package org.zerock.air.controller;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -71,14 +69,72 @@ public class AirController {
     }
 	
 	// 3. 항공권 검색 결과
-	@PostMapping("/searchResult.do")
-	public String searchResult(AirVO vo, Model model) {
+	@PostMapping("/selectFlight-D.do")
+	public String searchResult(AirVO vo, Model model, 
+			@RequestParam("departure") String departure,
+			@RequestParam("arrival") String arrival,
+			@RequestParam("departureTime") String departureTime,
+			@RequestParam("arrivalTime") String arrivalTime,
+			@RequestParam("aPassenger") Integer aPassenger,
+			@RequestParam("cPassenger") Integer cPassenger,
+			@RequestParam("iPassenger") Integer iPassenger,
+			@RequestParam("seatGrade") String seatGrade,
+			@RequestParam("type") String type
+			) {
 		
-		service.searchResult(vo);
+		model.addAttribute("list", service.searchResult(vo));
+		model.addAttribute("departure", departure);
+		model.addAttribute("arrival", arrival);
+		model.addAttribute("departureTime", departureTime);
+		model.addAttribute("arrivalTime", arrivalTime);
+		model.addAttribute("aPassenger", aPassenger);
+		model.addAttribute("cPassenger", cPassenger);
+		model.addAttribute("iPassenger", iPassenger);
+		model.addAttribute("seatGrade", seatGrade);
+		model.addAttribute("type", type);
 		
-		model.addAttribute("list", vo);
+		return "air/selectFlight-D";
+	}
+	
+	// 3-1. 항공권 검색 결과 : 왕복인 경우 검색, 편도인 경우 주문 예약으로 데이터 전송
+	@PostMapping("/selectFlight-A.do")
+	public String searchReturnResult(AirVO vo, Model model, 
+			@RequestParam("departure") String departure,
+			@RequestParam("arrival") String arrival,
+			@RequestParam("departureTime") String departureTime,
+			@RequestParam("arrivalTime") String arrivalTime,
+			@RequestParam("paramDepartureTime") String paramDepartureTime,
+			@RequestParam("paramArrivalTime") String paramArrivalTime,
+			@RequestParam("airlineKor") String airlineKor,
+			@RequestParam("flightName") String flightName,
+			@RequestParam("aPassenger") Integer aPassenger,
+			@RequestParam("cPassenger") Integer cPassenger,
+			@RequestParam("iPassenger") Integer iPassenger,
+			@RequestParam("seatGrade") String seatGrade,
+			@RequestParam("type") String type,
+			@RequestParam("departPrice") Long totalPrice
+			) {
 		
-		return "air/searchResult";
+			model.addAttribute("list", service.searchResult(vo));
+			model.addAttribute("departure", departure);
+			model.addAttribute("arrival", arrival);
+			model.addAttribute("departureTime", departureTime);
+			model.addAttribute("arrivalTime", departureTime);
+			model.addAttribute("paramDepartureTime", paramDepartureTime);
+			model.addAttribute("paramArrivalTime", paramArrivalTime);
+			model.addAttribute("airlineKor", airlineKor);
+			model.addAttribute("flightName", flightName);
+			model.addAttribute("aPassenger", aPassenger);
+			model.addAttribute("cPassenger", cPassenger);
+			model.addAttribute("iPassenger", iPassenger);
+			model.addAttribute("seatGrade", seatGrade);
+			model.addAttribute("type", type);
+			model.addAttribute("departPrice", totalPrice);
+			log.info(type);
+			if (type.equals("왕복")) {
+				return "air/selectFlight-A";
+			} else return "air/main";
+		
 	}
 
 }

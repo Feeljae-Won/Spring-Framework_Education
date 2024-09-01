@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+    <%@ taglib prefix="pagNav" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Air Main</title>
+<title>돌아오는 항공 선택</title>
  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <style type="text/css">
@@ -19,7 +22,7 @@ body, html {
 	left:15px;
 	position: relative;
 	width: 100%;
-	height: 600px;
+	height: 180px;
 	background-image: url('/uploads/airMain.jpg');
 	background-size: cover;
 	background-position: center;
@@ -34,8 +37,9 @@ body, html {
 	background-color: rgba(255, 255, 255, 0.8);
 	/* White background with transparency */
 	border-radius: 20px;
-	width: 70%;
-	text-align: left;
+	width: 80%;
+	height:40%;
+	text-align: center;
 	box-shadow: 10px 10px 12px rgba(0, 0, 0, 0.5);
 	/* Optional shadow for better visibility */
 }
@@ -44,20 +48,11 @@ body, html {
 	color: #444;
 }
 
-.searchAir {
-	padding: 30px 40px;
-	
-}
 .type {
 	margin: 0 20px;
 	font-border: 3px;
 }
 
-.airport {
-	margin: 20px;
-	text-align: center;
-	position: relative;
-}
 #departureAirport {
 	border:2px solid rgba(255, 255, 255, 0);
 	background-color: rgba(255, 255, 255, 0);
@@ -82,21 +77,8 @@ body, html {
 	cursor: pointer;
 	color: #e25600 !important;
 }
-#airportList {
-	display: none;
-	background-color: white;
-	border: 1px solid #ccc;
-	border-radius: 15px;
-	padding: 20px;
-	width: 500px;
-	position: absolute;
-	top: 100%;
-	left: 0;
-	z-index: 10;
-	text-align: left;
-}
 #departure {
-	font-size: 37px;
+	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 10px;
 }
@@ -106,7 +88,7 @@ body, html {
 	margin-bottom: 10px;
 }
 #arrival {
-	font-size: 37px;
+	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 10px;
 }
@@ -121,7 +103,7 @@ body, html {
 	border-left:1px solid rgba(255, 255, 255, 0); 
 	border-right:1px solid rgba(255, 255, 255, 0); 
 	border-bottom:1px solid #444; 
-	width:260px; 
+/* 	width:260px;  */
 	padding:10px;
 }
 #passenger {
@@ -129,7 +111,7 @@ body, html {
 	border-left:1px solid rgba(255, 255, 255, 0); 
 	border-right:1px solid rgba(255, 255, 255, 0); 
 	border-bottom:1px solid #444; 
-	width:200px; 
+/* 	width:200px;  */
 	padding:10px;
 }
 #passenger:hover {
@@ -155,7 +137,7 @@ body, html {
 	border-left:1px solid rgba(255, 255, 255, 0); 
 	border-right:1px solid rgba(255, 255, 255, 0); 
 	border-bottom:1px solid #444; 
-	width:180px; 
+/* 	width:180px;  */
 	padding:10px;
 }
 
@@ -170,9 +152,19 @@ body, html {
 	border:1px solid #E37027 !important;
 	border-radius: 10px;
 }
-#searchBtn:hover {
+.searchBtn:hover {
 	cursor:pointer;
 	background-color: #e25600 !important;
+}
+.searchBtn {
+	background-color:#E37027; 
+	padding:10px; 
+	border-radius:5px; 
+	color:white; 
+	font-weight:bold;
+	text-align:center; 
+	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+	border:1px solid rgba(255, 255, 255, 0);
 }
 .active {
 	color:#E37027 ; 
@@ -316,28 +308,31 @@ html .ui-button.ui-state-disabled:active {
 	text-align: center;
 }
 
-.seat-info {
-	display: none;
-	background-color: white;
-	border: 1px solid #ccc;
-	border-radius: 15px;
-	padding: 20px;
-	width: 370px;
-	position: absolute;
-	top: 100%;
-	left: 0;
-	z-index: 10;
-	text-align: left;
-}
-#inputSeat {
-    cursor: pointer;
-    position: relative; /* 부모를 기준으로 자식이 위치할 수 있도록 설정 */
-}
 .btn-group .btn {
 	border:1px solid #444;
 	border-radius:10px;
 }
 
+.fixed-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 1);
+}
+.dataRow:hover {
+	background-color: #FEDB92;
+}
+.selected {
+	background-color: #FEDB92;
+}
+.disabled {
+	background-color : #fff1c0 !important;
+	cursor: default !important;
+}
 </style>
 <script type="text/javascript">
 $(function() {
@@ -358,13 +353,9 @@ $(function() {
 
 		// 현재 열려 있는 리스트가 있으면 닫기
 // 		$('#airportList').hide();
-
-		// 검색 리스트 초기화 및 열기
-		$(this).append($('#airportList'));
-		$('#airportList').css({
-			top: $(this).outerHeight() + 'px',  // 공항 아이콘 아래에 위치
-			left: 0  // 공항 아이콘의 왼쪽에 정렬
-		}).show();
+		
+		// 모달 오픈
+		$("#airportList").modal("show");
 
 		// input 필드에 포커스를 줘서 커서가 잡히도록 함
 		$('#airportList input').focus();
@@ -441,7 +432,7 @@ $(function() {
 
         // 검색 결과 닫기
         $('#airportListResults').empty();
-        $('#airportList').hide();
+        $('#airportList').modal("hide");
     });
 
     // 출발지 선택 시
@@ -636,11 +627,8 @@ $(function() {
         // 현재 클릭한 span 태그의 위치 계산
         let offset = $(this).offset();
         
-        // div의 위치를 클릭한 span 바로 아래로 설정
-        $('#seatInfo').css({
-            top: 40 + $(this).outerHeight(),
-            left: 20
-        }).toggle();  // 클릭 시 div가 나타나거나 사라짐
+        // 모달 오픈
+        $("#seatInfo").modal("show");
     });
 	
 	$(".seatBtn").click(function() {
@@ -650,11 +638,11 @@ $(function() {
 		$("#seatGrade").val(seatGrade);
 		$(".seatBtn").removeClass("active");
 		$(this).addClass("active");
-		$("#seatInfo").hide();
+		$("#seatInfo").modal("hide");
 	});
 	
 	// 항공권 검색 버튼 눌렀을 때 데이터 유효성 검사
-	$("#searchBtn").click(function() {
+	$("#topSearchBtn").click(function() {
 		let departure = $("#dCode").val();
 		let arrival = $("#aCode").val();
 		let departureTime = $("#dDate").val();
@@ -684,149 +672,276 @@ $(function() {
 		
 	});
 	
+	$(".selectedTicket").click(function() {
+		$(".dataRow").removeClass("selected");
+		$(this).closest(".dataRow").addClass("selected");
+		
+		let text = ''
+		
+		let airlineKor = $(this).closest(".dataRow").find("#selectedAirlineKor").text();
+		let flightName = $(this).closest(".dataRow").find("#selectedFlightName").text();
+		let departDate = $(this).data("date");
+		let departureTime = $(this).closest(".dataRow").find("#selectedDepartTime").text();
+		let arrivalTime = $(this).closest(".dataRow").find("#selectedAriivalTime").text();
+		let departure = $(this).closest(".dataRow").find("#selectedDeparture").text();
+		let departureKor = $(this).closest(".dataRow").find("#selecteDepartureKor").text();
+		let arrival = $(this).closest(".dataRow").find("#selectedArrival").text();
+		let arrivalEng = $(this).closest(".dataRow").find("#selectedArrivalKor").text();
+		let seatGrade = $(this).closest(".dataRow").find("#selectedSeatGrade").text();
+		
+		let arrivePrice = parseInt($(this).closest(".dataRow").find("#selectedTotalPrice").text(),10);
+		
+		let adult = parseInt($(this).data("adult"), 10);
+		let child = parseInt($(this).data("child"), 10);
+		let infant = parseInt($(this).data("infant"), 10);
+		
+		// 숫자가 아닌 값 처리 (예를 들어 NaN 발생시 0으로 대체)
+	    adult = isNaN(adult) ? 0 : adult;
+	    child = isNaN(child) ? 0 : child;
+	    infant = isNaN(infant) ? 0 : infant;
+	    
+	    console.log(adult);
+	    
+		let adultPrice = adult * arrivePrice;
+		let childPrice = (child * arrivePrice) * 0.75;
+		let infantPrice = (infant * arrivePrice) * 0.1;
+		let departPrice = parseInt($(this).data("departprice"));
+		
+		let totalPrice = adultPrice + childPrice + infantPrice + departPrice;
+		console.log(totalPrice);
+		
+		text += "오는 편 : ";
+		text += airlineKor + " (" + flightName + ") " + departDate + " (" + departureTime + " ~ " + arrivalTime + ") " + seatGrade;
+		
+		$("#bottomArriveInfo").text(text);
+		$("#totalPrice").text(totalPrice);
+		$("#departPrice").val(totalPrice);
+		$("#nextAirlineKor").val(airlineKor);
+		$("#nextFlightName").val(flightName);
+		$("#nextDepartureTime").val(departureTime);
+		$("#nextArrivalTime").val(arrivalTime);
+		
+		$("#nextForm").attr("action", "/air/main.do");
+		$("#nextForm").attr("method", "get");
+		$(".nextBtn").attr("type","submit");
+		$(".nextBtn").removeClass("disabled");
+		
+	});
+	
 });
 </script>
+
 </head>
 <body>
-
-	<div class="background-image">
-		<div class="overlay">
-			<ul class="nav nav-tabs nav-justified" style="border-radius: 20px 20px 0 0 ;">
-				<li class="nav-item m-0" style="border-radius: 20px;">
-			    	<a class="nav-link" href="/air/main.do" style="border-radius: 20px 20px 0 0 ; 
-			    		background-color:#E37027; color:white !important;">
-			    		항공권 예약
-			    	</a>
-				</li>
-				<li class="nav-item m-0">
-			    	<a class="nav-link" href="/air/searchReservation.do">예약 조회</a>
-				</li>
-				<li class="nav-item m-0">
-			    	<a class="nav-link" href="/air/searchSchedule.do">출/도착 조회</a>
-				</li>
-			</ul>
-			<!-- 공항 및 항공권 예약 관련 내용 -->
-			<div class="searchAir">
-				<div class="selectType float-right">
-					<span class="type active" id="typeGoBack"><strong>왕복</strong></span>
-					<span class="type" id="typeGo"><strong>편도</strong></span>
-					<span class="type" id="typeGoMany"><strong>다구간</strong></span>
-				</div>
-				<h5><b>항공권 예약</b></h5>
-				 <div class="row justify-content-center align-items-center m-0">
-				 
-				 	 <!-- 출발 공항 클릭 시 히든 창 열기 -->
-       				 <div class="col-sm d-flex justify-content-around align-items-center" >
-						<button class="airport p-2" id="departureAirport">
-							<span>
-								<i class="material-icons mb-0" style="font-size:30px">flight_takeoff</i>
-							</span>
-							<br>
-							<span id="departure">
-								 FROM
-							</span>
-							<br>
-							<span id="departureKor">
-								출발지
-							</span>
-						</button>
-						
-						<!-- 공항 변환 아이콘 -->
-						<span class="swap-button mt-4">
-							<i class="material-icons" style="font-size:48px;color:#E37027;">swap_horizontal_circle</i>
+<body>
+<div class="background-image">
+	<div class="overlay">
+		<!-- 공항 및 항공권 예약 관련 내용 -->
+		<div class="searchAir">
+			 <div class="row justify-content-center align-items-center m-0">
+			 	 <!-- 출발 공항 클릭 시 히든 창 열기 -->
+      				 <div class="col-sm d-flex justify-content-around align-items-center" >
+					<button class="airport p-2 mt-3" id="departureAirport" >
+						<span id="departure" >
+							<b>${departure }</b>
 						</span>
-						
-						<!-- 도착 공항 클릭 시 히든 창 열기 -->
-						<button class="airport p-2" id="arrivalAirport">
-							<span>
-								<i class="material-icons mb-0" style="font-size:30px">flight_land</i>
-							</span>
-							<br>
-							<span id="arrival">
-								TO
-							</span>
-							<br>
-							<span id="arrivalKor">
-								도착지
-							</span>
-						</button>
-					</div>
-					<div class="col-sm ml-3 mr-3 mt-3" style="width:300px;">
-						<p style="font-size:13px; font-weight:bold; margin-bottom:20px;">
-							여행 일정
-						</p>
-						<span class="d-flex align-items-center" id="inputDate" data-toggle="modal" 
-							data-target="#datePickerModal">
-							<i class="material-icons mr-3" style="font-size:22px">date_range</i> 
-							<b><span id="dateRange">가는 날 ~ 오는 날</span></b>
-							
-						</span>
-					</div>
-					<div class="col-sm ml-3 mr-3 mt-3">
-						<p style="font-size:13px; font-weight:bold; margin-bottom:20px;">
-							탑승객
-						</p>
-						<span class="d-flex align-items-center" id="passenger" data-toggle="modal" 
-							data-target="#passengerModal">
-							<i class="fa fa-user mr-3" style="font-size:24px"></i> 
-							<b><span id="totalPassenger">성인 1명</span></b>
-						</span>
-					</div>
-					<div class="col-sm ml-3 mr-3 mt-3">
-						<p style="font-size:13px; font-weight:bold; margin-bottom:20px;">
-							좌석 등급
-						</p>
-						<span class="d-flex align-items-center" id="inputSeat" >
-							<i class="material-icons mr-3" style="font-size:24px">airline_seat_recline_extra</i>
-							<b><span id="selectedSeat">일반석</span></b>
-						</span>
-						<div id="seatInfo" class="seat-info">
-					        <h5>좌석 등급 선택</h5>
-					        <hr>
-					        <div class="btn-group btn-group-lg">
-						        <button class="btn btn-light seatBtn active" id="ecoSeat" data-seatgrade="일반석">일반석</button>
-						        <button class="btn btn-light seatBtn" id="bisSeat" data-seatgrade="비즈니스석">비즈니스석</button>
-						        <button class="btn btn-light seatBtn" id="fstSeat" data-seatgrade="일등석">일등석</button>
-						    </div>
-					    </div>
-					</div>
-				</div>
-				<form action="/air/selectFlight-D.do" method="post">
-					<input type="hidden" id="tripType" name="type" value="왕복">
-					<input type="hidden" id="dCode" name="departure">
-					<input type="hidden" id="aCode" name="arrival">
-					<input type="hidden" id="dDate" name="departureTime">
-					<input type="hidden" id="aDate" name="arrivalTime">
-					<input type="hidden" id="aPassenger" name="aPassenger" value="1">
-					<input type="hidden" id="cPassenger" name="cPassenger">
-					<input type="hidden" id="iPassenger" name="iPassenger">
-					<input type="hidden" id="seatGrade" name="seatGrade" value="일반석">
-					
-					<button style="background-color:#E37027; padding:10px; border-radius:5px; color:white; font-weight:bold; 
-						width: 100%; text-align:center; margin-top:15px; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-						border:1px solid rgba(255, 255, 255, 0);"
-						id="searchBtn">
-						항공권 검색
 					</button>
-				</form>
+					
+					<!-- 공항 변환 아이콘 -->
+					<span class="swap-button mt-4">
+						<i class="material-icons" style="font-size:30px;color:#E37027;">swap_horizontal_circle</i>
+					</span>
+					
+					<!-- 도착 공항 클릭 시 히든 창 열기 -->
+					<button class="airport p-2 mt-3" id="arrivalAirport">
+						<span id="arrival">
+							<b>${arrival }</b>
+						</span>
+					</button>
+				</div>
+				<span class="mt-3">|</span>
+				<div class="col-sm-3 ml-3 mr-3 mt-3" style="width:300px;">
+					<span class="d-flex align-items-center" id="inputDate" data-toggle="modal" 
+						data-target="#datePickerModal">
+						<i class="material-icons mr-3" style="font-size:22px">date_range</i> 
+						<b>
+						<span id="dateRange">${departureTime }
+							<c:if test="${!empty arrivalTime }">
+								~ ${arrivalTime }
+							</c:if>
+						</span>
+						</b>
+						
+					</span>
+				</div>
+				<span class="mt-3">|</span>
+				<div class="col-sm ml-3 mr-3 mt-3">
+					<span class="d-flex align-items-center" id="passenger" data-toggle="modal" 
+						data-target="#passengerModal">
+						<i class="fa fa-user mr-3" style="font-size:24px"></i> 
+						<c:if test="${!empty aPassenger }">
+							<b><span id="aPassenger">성인 : ${aPassenger }</span></b>
+						</c:if>
+						<c:if test="${!empty cPassenger }">
+							<b><span id="cPassenger">, 소아 : ${cPassenger }</span></b>
+						</c:if>
+						<c:if test="${!empty iPassenger }">
+							<b><span id="iPassenger">, 유아 : ${iPassenger }</span></b>
+						</c:if>
+					</span>
+				</div>
+				<span class="mt-3">|</span>
+				<div class="col-sm ml-3 mr-3 mt-3">
+					<span class="d-flex align-items-center" id="inputSeat">
+						<i class="material-icons mr-3" style="font-size:24px">airline_seat_recline_extra</i>
+						<b><span id="selectedSeat">${seatGrade }</span></b>
+					</span>
+					
+				</div>
+				<div class="col-sm">
+					<form action="/air/selectFlight-D.do" method="post">
+						<input type="hidden" id="tripType" name="type" value="${type }">
+						<input type="hidden" id="dCode" name="departure" value="${departure }">
+						<input type="hidden" id="aCode" name="arrival" value="${arrival }">
+						<input type="hidden" id="dDate" name="departureTime" value="${departureTime }">
+						<input type="hidden" id="aDate" name="arrivalTime" value="${arrivalTime }">
+						<input type="hidden" id="aPassenger" name="aPassenger" value="${aPassenger }">
+						<input type="hidden" id="cPassenger" name="cPassenger" value="${cPassemger }">
+						<input type="hidden" id="iPassenger" name="iPassenger" value="${iPassenger }">
+						<input type="hidden" id="seatGrade" name="seatGrade"value="${seatGrade }">
+						
+						<button class="searchBtn" id="topSearchBtn" style="width:90%">
+							항공편 검색
+						</button>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
+</div>
+<div class="container">
+<p>
+	<div class="card">
+		<div class="card-header">
+			<h3 id="header">돌아오는 항공편 검색</h3>
+		</div>
+		<div class="card-body bg-light">
+			<c:if test="${!empty list }">
+				<c:forEach items="${list }" var="list">
+					<div class="media border p-4 dataRow">
+						<img src="${list.photo }" class="mr-5 mt-5" style="width:130px;">
+						<div class="media-body row">
+							<div class="col-sm-9">
+								<span id="selectedAirlineKor">${list.airlineKor }</span>
+								<span class="mt-2" id="selectedFlightName">${list.flightName }</span>
+								<p>
+								<h5>
+									<b>
+										<span id="selectedDepartTime">${list.departureTime }</span>
+										 ~ 
+										<span id="selectedAriivalTime">${list.arrivalTime }</span>
+									</b> 
+									<small><i>(소요시간 : ${list.duration })</i></small>
+								</h5>
+								<span id="selectedDeparture">${list.departure }</span> 
+									(<span id="selecteDepartureKor">${list.departureKor }</span>) 
+									- 
+								<span id="selectedArrival">${list.arrival }</span>
+									(<span id="selectedArrivalKor">${list.arrivalKor }</span>)
+							</div>
+							<div class="col-sm-3">
+								<span id="selectedSeatGrade"><b>${seatGrade }</b></span> 기준
+								<br>
+								<span style="font-size: 24px; font-weight:bold;" id="selectedTotalPrice">
+									<b>
+								    <!-- 일반석일 경우 -->
+								    <c:if test="${seatGrade == '일반석'}">
+								        <span>${list.totalPrice} 원</span>
+								    </c:if>
+								    
+								    <!-- 비즈니스석일 경우 -->
+								    <c:if test="${seatGrade == '비즈니스석'}">
+								        <span>${list.totalPrice * 2} 원</span>
+								    </c:if>
+								    
+								    <!-- 퍼스트 클래스일 경우 -->
+								    <c:if test="${seatGrade == '일등석'}">
+								        <span>${list.totalPrice * 4} 원</span>
+								    </c:if>
+									</b>
+								</span>
+								<button class="searchBtn selectedTicket"style="width:90%" 
+									data-date="${departureTime }"
+									data-adult="${aPassenger }"
+									data-child="${cPassenger }"
+									data-infant="${iPassenger }"
+									data-departprice="${departPrice }"
+									>항공편 선택</button>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</c:if>
+			<c:if test="${empty list }">
+				<div class="alert alert-warning">
+					<strong>선택한 날짜에 운항 가능한 항공편이 없습니다.</strong> 다른 날짜를 선택해 주세요.
+				</div>
+			</c:if>
+		</div>
+	</div>
+</div>
+<div class="fixed-bottom-bar">
+	<div class="container">
+		<form id="nextForm">
+			<input type="hidden" id="nextTripType" name="type" value="${type }">
+			<input type="hidden" id="departure" name="arrival" value="${departure }">
+			<input type="hidden" id="arrival" name="departure" value="${arrival }">
+			<input type="hidden" id="newxtAPassenger" name="aPassenger" value="${aPassenger }">
+			<input type="hidden" id="newxtCPassenger" name="cPassenger" value="${cPassenger }">
+			<input type="hidden" id="newxtIPassenger" name="iPassenger" value="${iPassenger }">
+			<input type="hidden" id="nextSeatGrade" name="seatGrade" value="${seatGrade }">
+			<input type="hidden" id="departPrice" name="departPrice" >
+			
+			<div class="float-right">
+					<button type="button" class="searchBtn float-right ml-5 nextBtn disabled" style="width: 150px;">항공편 예약</button>
+				<div class="float-right" style="font-size:24px; font-weight:bold;">
+					총액 : <span id="totalPrice"> ${departPrice }</span> 원
+				</div>
+			</div>
+			<span id="bottomDepartInfo">가는 편 : 
+				${airlineKor } (${flightName }) ${departureTime } (${paramDepartureTime } ~ ${paramArrivalTime }) ${seatGrade }
+			</span>
+			<br>
+			<c:if test="${type == '왕복' }">
+				<span id="bottomArriveInfo">오는 편 : </span>
+			</c:if>
+		</form>
+	</div>
+</div>
 
 <!-- 공항 검색 -->
-<div id="airportList">
-	<h5><strong>출발지 검색</strong></h5>
-	<input class="form-control mt-3" placeholder="공항 또는 도시 검색" id="searchAirport" autocomplete="off">
-	
-	<!-- 검색 결과 출력 -->
-	<div id="airportListResults" class="mt-3">
-	
+<div id="airportList" class="modal">
+	<div class="modal-dialog modal-md modal-dialog-centered passengerModal" role="document" >
+        <div class="modal-content">
+            <div class="modal-header">
+				<h5><strong>출발지 검색</strong></h5>
+			</div>
+			<div class="modal-body">
+				<input class="form-control mt-3" placeholder="공항 또는 도시 검색" id="searchAirport" autocomplete="off">
+				
+				<!-- 검색 결과 출력 -->
+				<div id="airportListResults" class="mt-3">
+				
+				</div>
+			</div>
+			<div class="modal-footer">
+				<p class="mt-5">
+					<i class="material-icons" style="font-size:18px;color:#E37027">place</i>
+					<strong>모든 공항 보기</strong>
+				</p>
+			</div>
+		</div>
 	</div>
-	
-	<p class="mt-5">
-		<i class="material-icons" style="font-size:18px;color:#E37027">place</i>
-		<strong>모든 공항 보기</strong>
-	</p>
 </div>
 
 <!-- 모달 창 -->
@@ -838,8 +953,8 @@ $(function() {
                 <h5 class="modal-title" id="datePickerModalLabel"><strong>여정 일자 선택</strong></h5> 
                 
                 <div id="modalType" class="selectType justify-content-center">
-					<span class="type active" id="modalTypeGoBack"><strong>왕복</strong></span>
-					<span class="type" id="modalTypeGo"><strong>편도</strong></span>
+					<span class="type ${(type == '왕복')?'active' : '' }" id="modalTypeGoBack"><strong>왕복</strong></span>
+					<span class="type ${(type == '편도')?'active' : '' }" id="modalTypeGo"><strong>편도</strong></span>
 					<span class="type" id="modalTypeGoMany"><strong>다구간</strong></span>
 				</div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -873,7 +988,8 @@ $(function() {
 		          			<b> 가는 날</b>
 		          		</label>
 		          		<br>
-				        <input class="form-control mr-3 mb-3" id="selectedDepartDate" placeholder="가는 날" readonly>
+				        <input class="form-control mr-3 mb-3" id="selectedDepartDate" placeholder="${departureTime }" readonly
+				        	value="${departureTime }">
 			        </span>
 			        <span class="mr-3 backType"> ~ </span>
 			        <span class="backType">
@@ -882,7 +998,8 @@ $(function() {
 				        	<b>오는 날</b>
 				        </label>
 		          		<br>
-		                <input class="form-control mr-3 mb-3" id="selectedArriveDate" placeholder="오는 날" readonly>
+		                <input class="form-control mr-3 mb-3" id="selectedArriveDate" placeholder="${arrivalTime }" readonly
+		                	value="${arrivalTime }">
 	                </span>
 		        </div>
                 <button type="button" id="confirmDateBtn" class="btn btn-primary">일정 선택 완료</button>
@@ -961,10 +1078,21 @@ $(function() {
         </div>
     </div>
 </div>
-
-<div class="container">
-
+<div class="modal seat-info" id="seatInfo">
+    <div class="modal-dialog modal-md modal-dialog-centered passengerModal" role="document" >
+        <div class="modal-content">
+            <div class="modal-header">
+				<h5>좌석 등급 선택</h5>
+			</div>
+			<div class="modal-body mx-auto">
+				<div class="btn-group btn-group-lg mx-auto">
+			        <button class="btn btn-light seatBtn active" id="ecoSeat" data-seatgrade="일반석">일반석</button>
+			        <button class="btn btn-light seatBtn" id="bisSeat" data-seatgrade="비즈니스석">비즈니스석</button>
+			        <button class="btn btn-light seatBtn" id="fstSeat" data-seatgrade="일등석">일등석</button>
+			    </div>
+			</div>
+		</div>
+	</div>
 </div>
-
 </body>
 </html>
