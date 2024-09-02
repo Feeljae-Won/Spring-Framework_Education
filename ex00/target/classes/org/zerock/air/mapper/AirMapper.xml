@@ -67,6 +67,32 @@
 		where
 			pan = #{pan}
 	</select>
+	
+	<!-- 카테고리 대분류 등록 -->
+	<insert id="nocWrite">
+	    INSERT INTO country(countryCode, countryKor, countryEng, pan)
+	    VALUES(
+	    	#{countryCode}, #{countryKor}, #{countryEng}, #{pan}
+	    )
+ 	</insert>
+
+	<!-- 카테고리 수정 -->
+	<update id="update">
+	<![CDATA[
+		update country
+		set countryKor = #{countryKor}, countryEng = #{countryEng}, pan = #{pan}
+		where countryCode = #{countryCode}
+	]]>
+	</update>
+
+	<!-- 카테고리 삭제 -->
+	<delete id="delete">
+		delete from category
+		where cate_code1 = ${cate_code1}
+		<if test="cate_code2 != 0">
+			and cate_code2 = #{cate_code2}
+		</if>
+	</delete>
 		
 	
 </mapper>

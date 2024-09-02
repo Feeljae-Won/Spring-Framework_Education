@@ -29,7 +29,7 @@ $(function() {
 // 		alert("중분류 수정 버튼");
 		// 데이터 수집
 		
-		return nocProcess("국가 추가", "", "", "", "", "nocWrite.do", "add")
+		return nocProcess("국가 추가", "ASIA", "", "", "", "nocWrite.do", "add")
 	});
 	
 	$(".updateBtn").click(function() {
@@ -42,6 +42,18 @@ $(function() {
 // 		alert("pan : " + pan + ", kor : " + countryKor + ", eng : " + countryEng + ", code : " + countryCode)
 		
 		return nocProcess("국가 수정", pan, countryKor, countryEng, countryCode, "nocUpdate.do", "update")
+	});
+	
+	$(".deleteBtn").click(function() {
+// 		alert("중분류 수정 버튼");
+		// 데이터 수집
+		let pan = $(this).closest("li").data("pan");
+		let countryKor = $(this).closest("li").data("countrykor");
+		let countryEng = $(this).closest("li").data("countryeng");
+		let countryCode = $(this).closest("li").data("countrycode");
+// 		alert("pan : " + pan + ", kor : " + countryKor + ", eng : " + countryEng + ", code : " + countryCode)
+		
+		return nocProcess("국가 삭제", pan, countryKor, countryEng, countryCode, "nocDelete.do", "delete")
 	});
 	
 	function nocProcess(title, pan, countryKor, countryEng, countryCode, url, btnName) {
@@ -78,37 +90,37 @@ $(function() {
 			<!-- Nav tabs -->
 			<ul class="nav nav-pills">
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="airAdmin.do"> 
 						<Strong>요약</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link active" data-toggle="tab" href="#"> 
+					<a class="nav-link active" href="airAdminNOC.do"> 
 						<Strong>국가 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>공항 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>기종 등록</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>항공사 기종 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>노선 및 운임 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>운항 스케줄 관리</Strong>
 					</a>
 				</li>
@@ -116,7 +128,7 @@ $(function() {
 
 			<!-- Tab panes -->
 			<div class="tab-content">
-				<div id="mid_category" class="container tab-pane active">
+				<div id="nocTab" class="container-fluid p-3 tab-pane active">
 					<br>
 					<h3>
 						국가 등록 및 관리
@@ -224,7 +236,7 @@ $(function() {
 							<option value="AUSTRALIA">오스트레일리아(Australia)</option>
 							<option value="EUROPE">유럽(Europe)</option>
 							<option value="NORTH AMERICA">북미(North America)</option>
-							<option value="SOUTH AEMRICA">남미(Sout America)</option>
+							<option value="SOUTH AMERICA">남미(South America)</option>
 						</select>
 					<label for="countryKor"><b>> 국가명(한글)</b></label>
 					<input class="form-control mb-3" name="countryKor" id="countryKor" placeholder="한글 국가명" required pattern="[가-힣]+">
@@ -241,7 +253,7 @@ $(function() {
 
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary" id="submitBtn">전송</button>
+					<button type="submit" class="btn btn-secondary" id="submitBtn">전송</button>
 					<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
 				</div>
 			</form>

@@ -16,6 +16,7 @@ public class AirVO {
 	private String airportCode;
 	private String airportEng;
 	private String airportKor;
+	private Integer airportCnt;
 	
 	// 항공사
 	private String id; // 항공사 ID

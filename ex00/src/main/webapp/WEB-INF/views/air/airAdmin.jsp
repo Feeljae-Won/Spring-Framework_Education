@@ -36,39 +36,39 @@ $(function() {
 		</div>
 		<div class="card-body">
 			<!-- Nav tabs -->
-			<ul class="nav nav-tabs">
+			<ul class="nav nav-pills">
 				<li class="nav-item">
-					<a class="nav-link active" data-toggle="tab" href="#"> 
+					<a class="nav-link active" href="airAdmin.do"> 
 						<Strong>요약</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="airAdminNOC.do"> 
+					<a class="nav-link" href="airAdminNOC.do"> 
 						<Strong>국가 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>공항 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>기종 등록</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>항공사 기종 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>노선 및 운임 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#"> 
+					<a class="nav-link" href="#"> 
 						<Strong>운항 스케줄 관리</Strong>
 					</a>
 				</li>
@@ -76,7 +76,7 @@ $(function() {
 
 			<!-- Tab panes -->
 			<div class="tab-content">
-				<div id="mid_category" class="container tab-pane active">
+				<div id="mainTab" class="container-fluid p-3 tab-pane active">
 					<br>
 					<h3>
 						카테고리 - 중분류

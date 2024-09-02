@@ -963,7 +963,10 @@ $(function() {
 </div>
 
 <div class="container">
-
+	<button class="searchBtn" onclick="location='airAdmin.do'" 
+		style="background-color:#E37027; padding:10px; border-radius:5px; color:white; font-weight:bold; 
+			width: 20%; text-align:center; margin-top:15px; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+			border:1px solid rgba(255, 255, 255, 0);">관리자 메뉴</button>
 </div>
 
 </body>

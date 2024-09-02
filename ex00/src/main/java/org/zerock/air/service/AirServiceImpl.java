@@ -45,5 +45,23 @@ public class AirServiceImpl implements AirService{
 		return mapper.nocList(pan);
 	}
 	
+	// 국가 등록
+	public Integer nocWrite(AirVO vo) {
+		
+		return mapper.nocWrite(vo);
+	}
+	
+	// 국가 수정
+	public Integer nocUpdate(AirVO vo) {
+		
+		return mapper.nocUpdate(vo);
+	}
+	
+	// 국가 삭제
+	public Integer nocDelete(AirVO vo) {
+		
+		return mapper.nocDelete(vo);
+	}
+	
 
 }

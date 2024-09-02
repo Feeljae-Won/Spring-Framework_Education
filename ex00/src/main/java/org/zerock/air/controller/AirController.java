@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.air.service.AirService;
 import org.zerock.air.vo.AirVO;
 
@@ -117,7 +118,7 @@ public class AirController {
 		return "air/airAdmin";
 	}
 	
-	// 4-1. 관리자 국가 등록
+	// 4-1. 관리자 국가 리스트
 	@GetMapping("/airAdminNOC.do")
 	public String nocList(String pan, Model model){
 		
@@ -138,6 +139,46 @@ public class AirController {
 		model.addAttribute("southAmerica", southAmerica);
 		
 		return "air/airAdminNOC";
+	}
+	
+	// 4-2. 관리자 국가 등록
+	@PostMapping("/nocWrite.do")
+	public String nocWrite(AirVO vo, RedirectAttributes rttr) {
+		
+		service.nocWrite(vo);
+		
+		// 처리 결과에 대한 메시지 처리
+		rttr.addFlashAttribute("msg", "국가 등록이 정상 처리 되었습니다.");
+		
+		return "redirect:airAdminNOC.do";
+	}
+	
+	// 4-3. 관리자 국가 수정
+	@PostMapping("/nocUpdate.do")
+	public String nocUpdate(AirVO vo, RedirectAttributes rttr) {
+		if(service.nocUpdate(vo) >= 1)
+			// 처리 결과에 대한 메시지 처리
+			rttr.addFlashAttribute("msg", "국가 수정이 정상 처리 되었습니다.");
+		else
+			rttr.addFlashAttribute("msg",
+					"국가 수정이 처리 되지 않았습니다."
+					+ "국가 정보를 다시 확인하고 시도해 주세요.");
+		
+		return "redirect:airAdminNOC.do";
+	}
+	
+	// 4-4. 관리자 국가 삭제
+	@PostMapping("/nocDelete.do")
+	public String nocDelete(AirVO vo, RedirectAttributes rttr) {
+		// 처리 결과에 대한 메시지 처리
+		if(service.nocDelete(vo) == 1) {
+			rttr.addFlashAttribute("msg", "국가 삭제가 정상 처리 되었습니다.");
+		}
+		else {
+			rttr.addFlashAttribute("msg",
+					"국가 삭제가 되지 않았습니다. 다시 확인하고 시도해 주세요.");
+		}
+		return "redirect:airAdminNOC.do";
 	}
 
 }
