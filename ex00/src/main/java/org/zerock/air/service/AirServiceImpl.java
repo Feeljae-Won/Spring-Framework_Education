@@ -39,5 +39,11 @@ public class AirServiceImpl implements AirService{
 		return mapper.searchResult(vo);
 	}
 	
+	// 대륙별 국가 리스트
+	public List<AirVO> nocList(String pan) {
+		
+		return mapper.nocList(pan);
+	}
+	
 
 }

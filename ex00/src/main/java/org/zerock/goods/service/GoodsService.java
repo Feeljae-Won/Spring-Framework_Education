@@ -33,4 +33,5 @@ public interface GoodsService {
 	// 상품 현재 가격 변경 + 기간 변경
 	// 상품 예정 가격 추가
 	
+	
 }

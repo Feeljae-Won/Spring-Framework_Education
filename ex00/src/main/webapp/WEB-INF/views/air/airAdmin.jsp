@@ -30,8 +30,69 @@ $(function() {
 </head>
 <body>
 <div class="container-fluid p-3">
-	<h1>My First Bootstrap Page</h1>
-	<p>This is some text.</p>
+	<div class="card">
+		<div class="card-header">
+			<h4>항공 관리</h4>
+		</div>
+		<div class="card-body">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link active" data-toggle="tab" href="#"> 
+						<Strong>요약</Strong>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="airAdminNOC.do"> 
+						<Strong>국가 관리</Strong>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#"> 
+						<Strong>공항 관리</Strong>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#"> 
+						<Strong>기종 등록</Strong>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#"> 
+						<Strong>항공사 기종 관리</Strong>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#"> 
+						<Strong>노선 및 운임 관리</Strong>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#"> 
+						<Strong>운항 스케줄 관리</Strong>
+					</a>
+				</li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div id="mid_category" class="container tab-pane active">
+					<br>
+					<h3>
+						카테고리 - 중분류
+						<button class="btn btn-primary btn-sm">add</button>
+					</h3>
+
+					<ul class="list-group">
+						<li class="list-group-item">
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		<div class="card-footer">Footer</div>
+	</div>
 </div>
 </body>
 </html>

@@ -29,6 +29,9 @@
 <link rel="stylesheet"
    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- JQuery UI - datepicker -->
+ <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+ <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 
 <!-- 개발자가 작성한 title을 가져다가 사용 -->
 <title>BGS<decorator:title /></title>
@@ -239,6 +242,96 @@ body {
 .btn-custom i {
    margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 조정 */
 }
+
+/* datepicker UI */
+.ui-datepicker-inline {
+	width:90%;
+	height:400px;
+	margin: 0 auto;
+	border-radius:10px;
+	border:2px solid rgba(255, 255, 255, 0) !important;
+	background-color: rgba(255, 255, 255, 0) !important;
+}
+.ui-datepicker-title {
+	margin: 0 auto;
+	height: 50px;
+	
+}
+.ui-datepicker-header {
+	background-color:#FFE3CD;
+	border-radius:10px;
+	padding:3px;
+	height:60px;
+	margin-bottom:5px;
+}
+
+.ui-icon-circle-triangle-e {
+	color: #e0e0e0;
+}
+.ui-datepicker-month {
+	height: 80%;
+	text-align:center;
+	font-weight:bold;
+	border-radius:10px;
+}
+.ui-datepicker-year {
+	height: 80%;
+	text-align:center;
+	font-weight:bold;
+	border-radius:10px;
+}
+th {
+	background-color:#FF9C2A;
+	margin-left:2px;
+	margin-right:2px;
+	color:#ffffff;
+	width:30px;
+	font-weight:bold;
+
+}
+table {
+	border-radius: 10px;
+}
+th.ui-datepicker-week-end {
+	background-color:#FF7145;
+}
+td.ui-datepicker-week-end {
+	background-color:#FFF7DF;
+}
+td {
+	height:57px;
+	font-weight:bold;
+}
+.ui-state-default {
+	height:90%;
+	width:90%;
+	border-radius:5px;
+	border:2px solid rgba(255, 255, 255, 0) !important;
+	background-color: rgba(255, 255, 255, 0) !important;
+}
+.ui-state-hover {
+	background-color: #FFC720 !important;
+}
+.ui-state-active {
+	background-color: #FF9C2A !important;
+	color: #444;
+}
+.ui-state-default, 
+.ui-widget-content .ui-state-default, 
+.ui-widget-header .ui-state-default, 
+.ui-button, 
+html .ui-button.ui-state-disabled:hover, 
+html .ui-button.ui-state-disabled:active {
+	text-align: center;
+	font-weight:bold;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;  /* 수직 정렬 */
+  justify-content: space-between;  /* 수평으로 공간 분배 */
+  width: 100%;
+}
 </style>
 
 <script type="text/javascript">
@@ -247,6 +340,22 @@ body {
       $(".cancelBtn").click(function() {
          history.back();
       });
+      // datepicker 설정
+	   // Datepicker를 초기화
+	      $('.datepicker').datepicker({
+	      	// 입력란의 데이터 포맷 
+	  		dateFormat: "yy-mm-dd",
+	  		// 월 선택 입력 추가
+	  		changeMonth: true,
+	  		// 년 선택 입력 추가
+	  		changeYear: true,
+	  		// 월 선택할 때의 이름 - 원래는 영어가 기본
+	  		monthNamesShort: [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" ],
+	  		// 달력의 요일 표시
+	  		dayNamesMin: [ "일", "월", "화", "수", "목", "금", "토" ],
+	  		// 오늘까지만의 날짜를 선택 가능
+      });
+      
    });
 </script>
 

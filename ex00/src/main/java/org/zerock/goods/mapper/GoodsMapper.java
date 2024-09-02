@@ -33,4 +33,5 @@ public interface GoodsMapper {
 	// 삭제
 	public Integer delete(GoodsVO vo);
 	
+	
 }

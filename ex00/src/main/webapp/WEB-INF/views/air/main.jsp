@@ -197,7 +197,7 @@ body, html {
 	z-index: 10;
 	text-align: left;
 }
-
+/* datepicker UI */
 .ui-datepicker-inline {
 	width:90%;
 	height:400px;

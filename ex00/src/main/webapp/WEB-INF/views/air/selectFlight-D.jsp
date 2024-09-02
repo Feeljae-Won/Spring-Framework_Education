@@ -690,6 +690,7 @@ $(function() {
 		let arrival = $(this).closest(".dataRow").find("#selectedArrival").text();
 		let arrivalEng = $(this).closest(".dataRow").find("#selectedArrivalKor").text();
 		let seatGrade = $(this).closest(".dataRow").find("#selectedSeatGrade").text();
+		let scheduleId_d = $(this).data("scheduleid");
 		
 		let departPrice = parseInt($(this).closest(".dataRow").find("#selectedTotalPrice").text(),10);
 		
@@ -721,6 +722,7 @@ $(function() {
 		$("#nextFlightName").val(flightName);
 		$("#nextDepartureTime").val(departureTime);
 		$("#nextArrivalTime").val(arrivalTime);
+		$("#scheduleId_d").val(scheduleId_d);
 		
 		if (arrivalTime != null || arrivalTime != '') {
 			$("#nextForm").attr("action", "/air/selectFlight-A.do");
@@ -885,6 +887,7 @@ $(function() {
 									data-adult="${param.aPassenger }"
 									data-child="${param.cPassenger }"
 									data-infant="${param.iPassenger }"
+									data-scheduleid="${list.scheduleId }"
 									>항공편 선택</button>
 							</div>
 						</div>
@@ -916,6 +919,8 @@ $(function() {
 			<input type="hidden" id="newxtIPassenger" name="iPassenger" value="${param.iPassenger }">
 			<input type="hidden" id="nextSeatGrade" name="seatGrade" value="${param.seatGrade }">
 			<input type="hidden" id="departPrice" name="departPrice" >
+			<input type="hidden" id="scheduleId_d" name="scheduleId_d" >
+			
 			
 			<div class="float-right">
 					<button type="button" class="searchBtn float-right ml-5 nextBtn disabled" style="width: 150px;">

@@ -688,6 +688,7 @@ $(function() {
 		let arrival = $(this).closest(".dataRow").find("#selectedArrival").text();
 		let arrivalEng = $(this).closest(".dataRow").find("#selectedArrivalKor").text();
 		let seatGrade = $(this).closest(".dataRow").find("#selectedSeatGrade").text();
+		let scheduleId_a = $(this).data("scheduleid");
 		
 		let arrivePrice = parseInt($(this).closest(".dataRow").find("#selectedTotalPrice").text(),10);
 		
@@ -715,11 +716,12 @@ $(function() {
 		
 		$("#bottomArriveInfo").text(text);
 		$("#totalPrice").text(totalPrice);
-		$("#departPrice").val(totalPrice);
+		$("#arrivePrice").val(arrivePrice);
 		$("#nextAirlineKor").val(airlineKor);
 		$("#nextFlightName").val(flightName);
 		$("#nextDepartureTime").val(departureTime);
 		$("#nextArrivalTime").val(arrivalTime);
+		$("#scheduleId_a").val(scheduleId_a);
 		
 		$("#nextForm").attr("action", "/air/main.do");
 		$("#nextForm").attr("method", "get");
@@ -876,6 +878,7 @@ $(function() {
 									data-child="${param.cPassenger }"
 									data-infant="${param.iPassenger }"
 									data-departprice="${param.departPrice }"
+									data-scheduleid="${list.scheduleId }"
 									>항공편 선택</button>
 							</div>
 						</div>
@@ -893,14 +896,26 @@ $(function() {
 <div class="fixed-bottom-bar">
 	<div class="container">
 		<form id="nextForm">
-			<input type="hidden" id="nextTripType" name="type" value="${param.type }">
-			<input type="hidden" id="departure" name="arrival" value="${param.departure }">
-			<input type="hidden" id="arrival" name="departure" value="${param.arrival }">
-			<input type="hidden" id="newxtAPassenger" name="aPassenger" value="${param.aPassenger }">
-			<input type="hidden" id="newxtCPassenger" name="cPassenger" value="${param.cPassenger }">
-			<input type="hidden" id="newxtIPassenger" name="iPassenger" value="${param.iPassenger }">
+			<!-- 첫번째 선택 데이터 - 가는 편 -->
+			<input type="hidden" id="firstDeparture" name="firstDeparture" value="${param.arrival }">
+			<input type="hidden" id="firstArrival" name="firstArrival" value="${param.departure }">
+			<input type="hidden" id="departPrice" name="departPrice" value="${param.departPrice }">
+			<input type="hidden" id="scheduleId_d" name="scheduleId_d" value="${param.scheduleId_d }" >
+			
+			<!-- 두번째 선택 데이터 - 돌아오는 편 -->
+			<input type="hidden" id="secondDeparture" name="secondDeparture" value="${param.departure }">
+			<input type="hidden" id="secondArrival" name="secondArrival" value="${param.arrival }">
+			<input type="hidden" id="arrivePrice" name="arrivePrice" >
+			<input type="hidden" id="scheduleId_a" name="scheduleId_a" >
+			
+			<!-- 탑승객 정보 인원수 : aPassenger - 성인 / cPassenger - 소아 / iPassenger - 유아 -->
+			<input type="hidden" id="nextAPassenger" name="aPassenger" value="${param.aPassenger }">
+			<input type="hidden" id="nextCPassenger" name="cPassenger" value="${param.cPassenger }">
+			<input type="hidden" id="nextIPassenger" name="iPassenger" value="${param.iPassenger }">
+			<!-- 좌석 정보 -->
 			<input type="hidden" id="nextSeatGrade" name="seatGrade" value="${param.seatGrade }">
-			<input type="hidden" id="departPrice" name="departPrice" >
+			<!-- 항공권 타입 : 편도/왕복 -->
+			<input type="hidden" id="nextTripType" name="type" value="${param.type }">
 			
 			<div class="float-right">
 					<button type="button" class="searchBtn float-right ml-5 nextBtn disabled" style="width: 150px;">항공편 예약</button>

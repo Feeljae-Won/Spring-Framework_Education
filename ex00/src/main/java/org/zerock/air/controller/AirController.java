@@ -111,10 +111,33 @@ public class AirController {
 	}
 	
 	// 4. 관리자 메인
-	@PostMapping("/airAdmin.do")
+	@GetMapping("/airAdmin.do")
 	public String airAdminMain() {
 		
 		return "air/airAdmin";
+	}
+	
+	// 4-1. 관리자 국가 등록
+	@GetMapping("/airAdminNOC.do")
+	public String nocList(String pan, Model model){
+		
+		// 대륙별 리스트 가져오기
+		List<AirVO> asia = service.nocList("ASIA");
+		List<AirVO> africa = service.nocList("AFRICA");
+		List<AirVO> australia = service.nocList("AUSTRALIA");
+		List<AirVO> europe = service.nocList("EUROPE");
+		List<AirVO> northAmerica = service.nocList("NORTH AMERICA");
+		List<AirVO> southAmerica = service.nocList("SOUTH AMERICA");
+		
+		// model에 담으로 request에 자동을 담기게 된다. - 처리된 데이터를 Model에 저장
+		model.addAttribute("asia", asia);
+		model.addAttribute("africa", africa);
+		model.addAttribute("australia", australia);
+		model.addAttribute("europe", europe);
+		model.addAttribute("northAmerica", northAmerica);
+		model.addAttribute("southAmerica", southAmerica);
+		
+		return "air/airAdminNOC";
 	}
 
 }

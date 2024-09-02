@@ -58,4 +58,15 @@
 		order by departureTime asc
 	</select>
 	
+	<!-- 대륙별 국가 리스트 -->
+	<select id="nocList" resultType="org.zerock.air.vo.AirVO">
+		select 
+			countryCode, CountryEng, CountryKor, Pan 
+		from 
+			country 
+		where
+			pan = #{pan}
+	</select>
+		
+	
 </mapper>

@@ -2,6 +2,8 @@ package org.zerock.goods.vo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -14,6 +16,7 @@ public class GoodsVO {
 	private String detail_image_name; // 보기에 나타날 상세 설명 이미지
 	private String content; // 보기에 나타날 상세 설명 텍스트
 	private String company;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date product_date;
 	private String image_name; // 리스트에 나타날 대표 이미지
 	private Long hit;
@@ -25,5 +28,12 @@ public class GoodsVO {
 	private Date sale_startDate;
 	private Date sale_endDate;
 	
+	// 판매가 getter 만들기-> ${sale_price}
+	public Integer getSale_price() {
+		// 할인가가 있는 경우 처리 : 정가 - 할인가
+		if(discount != 0) return price - discount;
+		// 할인율이 있응 경우 처리 : 정가 - (정가 * 할인율 / 100) - 10원 미만 절삭
+		return (price - (price * discount_rate / 100)) / 10 * 10;
+	}
 	
 }

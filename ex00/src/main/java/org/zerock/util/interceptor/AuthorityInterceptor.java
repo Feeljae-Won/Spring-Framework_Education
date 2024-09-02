@@ -32,15 +32,15 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter{
 		authMap.put("/boardreply/delete.do", 1);
 
 		// 상품 관리 권한 처리 - 페이지 권한
-		authMap.put("/goods/writeForm.do", 9); // 상품 등록 폼
-		authMap.put("/goods/write.do", 9); // 상품 등록 처리
-		authMap.put("/goods/updateForm.do", 9); // 상품 수정 폼
-		authMap.put("/goods/update.do", 9); // 상품 수정 처리
-		authMap.put("/goods/delete.do", 9); // 상품 삭제 처리
-		authMap.put("/goods/changeImage.do", 9);
-		authMap.put("/goods/addSize.do", 9);
-		authMap.put("/goods/addColor.do", 9);
-		authMap.put("/goods/changePrice.do", 9);
+//		authMap.put("/goods/writeForm.do", 9); // 상품 등록 폼
+//		authMap.put("/goods/write.do", 9); // 상품 등록 처리
+//		authMap.put("/goods/updateForm.do", 9); // 상품 수정 폼
+//		authMap.put("/goods/update.do", 9); // 상품 수정 처리
+//		authMap.put("/goods/delete.do", 9); // 상품 삭제 처리
+//		authMap.put("/goods/changeImage.do", 9);
+//		authMap.put("/goods/addSize.do", 9);
+//		authMap.put("/goods/addColor.do", 9);
+//		authMap.put("/goods/changePrice.do", 9);
 		
 	}
 	
