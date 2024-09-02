@@ -55,6 +55,7 @@
 		    AND ar.arrival = #{arrival}
 		    AND TRUNC(ash.departureTime) = #{departureTime}
 		    )
+		order by departureTime asc
 	</select>
 	
 </mapper>

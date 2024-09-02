@@ -753,7 +753,7 @@ $(function() {
       				 <div class="col-sm d-flex justify-content-around align-items-center" >
 					<button class="airport p-2 mt-3" id="departureAirport" >
 						<span id="departure" >
-							<b>${departure }</b>
+							<b>${param.departure }</b>
 						</span>
 					</button>
 					
@@ -765,7 +765,7 @@ $(function() {
 					<!-- 도착 공항 클릭 시 히든 창 열기 -->
 					<button class="airport p-2 mt-3" id="arrivalAirport">
 						<span id="arrival">
-							<b>${arrival }</b>
+							<b>${param.arrival }</b>
 						</span>
 					</button>
 				</div>
@@ -775,9 +775,9 @@ $(function() {
 						data-target="#datePickerModal">
 						<i class="material-icons mr-3" style="font-size:22px">date_range</i> 
 						<b>
-						<span id="dateRange">${departureTime }
-							<c:if test="${!empty arrivalTime }">
-								~ ${arrivalTime }
+						<span id="dateRange">${param.departureTime }
+							<c:if test="${!empty param.arrivalTime }">
+								~ ${param.arrivalTime }
 							</c:if>
 						</span>
 						</b>
@@ -789,14 +789,14 @@ $(function() {
 					<span class="d-flex align-items-center" id="passenger" data-toggle="modal" 
 						data-target="#passengerModal">
 						<i class="fa fa-user mr-3" style="font-size:24px"></i> 
-						<c:if test="${!empty aPassenger }">
-							<b><span id="aPassenger">성인 : ${aPassenger }</span></b>
+						<c:if test="${!empty param.aPassenger }">
+							<b><span id="aPassenger">성인 : ${param.aPassenger }</span></b>
 						</c:if>
 						<c:if test="${!empty cPassenger }">
-							<b><span id="cPassenger">, 소아 : ${cPassenger }</span></b>
+							<b><span id="cPassenger">, 소아 : ${param.cPassenger }</span></b>
 						</c:if>
 						<c:if test="${!empty iPassenger }">
-							<b><span id="iPassenger">, 유아 : ${iPassenger }</span></b>
+							<b><span id="iPassenger">, 유아 : ${param.iPassenger }</span></b>
 						</c:if>
 					</span>
 				</div>
@@ -804,21 +804,21 @@ $(function() {
 				<div class="col-sm ml-3 mr-3 mt-3">
 					<span class="d-flex align-items-center" id="inputSeat">
 						<i class="material-icons mr-3" style="font-size:24px">airline_seat_recline_extra</i>
-						<b><span id="selectedSeat">${seatGrade }</span></b>
+						<b><span id="selectedSeat">${param.seatGrade }</span></b>
 					</span>
 					
 				</div>
 				<div class="col-sm">
 					<form action="/air/selectFlight-D.do" method="post">
-						<input type="hidden" id="tripType" name="type" value="${type }">
-						<input type="hidden" id="dCode" name="departure" value="${departure }">
-						<input type="hidden" id="aCode" name="arrival" value="${arrival }">
-						<input type="hidden" id="dDate" name="departureTime" value="${departureTime }">
-						<input type="hidden" id="aDate" name="arrivalTime" value="${arrivalTime }">
-						<input type="hidden" id="aPassenger" name="aPassenger" value="${aPassenger }">
-						<input type="hidden" id="cPassenger" name="cPassenger" value="${cPassemger }">
-						<input type="hidden" id="iPassenger" name="iPassenger" value="${iPassenger }">
-						<input type="hidden" id="seatGrade" name="seatGrade" value="${seatGrade }">
+						<input type="hidden" id="tripType" name="type" value="${param.type }">
+						<input type="hidden" id="dCode" name="departure" value="${param.departure }">
+						<input type="hidden" id="aCode" name="arrival" value="${param.arrival }">
+						<input type="hidden" id="dDate" name="departureTime" value="${param.departureTime }">
+						<input type="hidden" id="aDate" name="arrivalTime" value="${param.arrivalTime }">
+						<input type="hidden" id="aPassenger" name="aPassenger" value="${param.aPassenger }">
+						<input type="hidden" id="cPassenger" name="cPassenger" value="${param.cPassemger }">
+						<input type="hidden" id="iPassenger" name="iPassenger" value="${param.iPassenger }">
+						<input type="hidden" id="seatGrade" name="seatGrade" value="${param.seatGrade }">
 						
 						<button class="searchBtn" id="topSearchBtn" style="width:90%">
 							항공편 검색
@@ -860,31 +860,31 @@ $(function() {
 									(<span id="selectedArrivalKor">${list.arrivalKor }</span>)
 							</div>
 							<div class="col-sm-3">
-								<span id="selectedSeatGrade"><b>${seatGrade }</b></span> 기준
+								<span id="selectedSeatGrade"><b>${param.seatGrade }</b></span> 기준
 								<br>
 								<span style="font-size: 24px; font-weight:bold;" id="selectedTotalPrice">
 									<b>
 								    <!-- 일반석일 경우 -->
-								    <c:if test="${seatGrade == '일반석'}">
+								    <c:if test="${param.seatGrade == '일반석'}">
 								        <span>${list.totalPrice} 원</span>
 								    </c:if>
 								    
 								    <!-- 비즈니스석일 경우 -->
-								    <c:if test="${seatGrade == '비즈니스석'}">
+								    <c:if test="${param.seatGrade == '비즈니스석'}">
 								        <span>${list.totalPrice * 2} 원</span>
 								    </c:if>
 								    
 								    <!-- 퍼스트 클래스일 경우 -->
-								    <c:if test="${seatGrade == '일등석'}">
+								    <c:if test="${param.seatGrade == '일등석'}">
 								        <span>${list.totalPrice * 4} 원</span>
 								    </c:if>
 									</b>
 								</span>
 								<button class="searchBtn selectedTicket"style="width:90%" 
-									data-date="${departureTime }"
-									data-adult="${aPassenger }"
-									data-child="${cPassenger }"
-									data-infant="${iPassenger }"
+									data-date="${param.departureTime }"
+									data-adult="${param.aPassenger }"
+									data-child="${param.cPassenger }"
+									data-infant="${param.iPassenger }"
 									>항공편 선택</button>
 							</div>
 						</div>
@@ -902,27 +902,27 @@ $(function() {
 <div class="fixed-bottom-bar">
 	<div class="container">
 		<form id="nextForm">
-			<input type="hidden" id="nextTripType" name="type" value="${type }">
-			<input type="hidden" id="departure" name="arrival" value="${departure }">
-			<input type="hidden" id="arrival" name="departure" value="${arrival }">
-			<input type="hidden" id="departDate" name="departureTime" value="${arrivalTime }">
-			<input type="hidden" id="arriveDate" name="arrivalTime" value="${departureTime }">
+			<input type="hidden" id="nextTripType" name="type" value="${param.type }">
+			<input type="hidden" id="departure" name="arrival" value="${param.departure }">
+			<input type="hidden" id="arrival" name="departure" value="${param.arrival }">
+			<input type="hidden" id="departDate" name="departureTime" value="${param.arrivalTime }">
+			<input type="hidden" id="arriveDate" name="arrivalTime" value="${param.departureTime }">
 			<input type="hidden" id="nextDepartureTime" name="paramDepartureTime" >
 			<input type="hidden" id="nextArrivalTime" name="paramArrivalTime" >
 			<input type="hidden" id="nextAirlineKor" name="airlineKor" >
 			<input type="hidden" id="nextFlightName" name="flightName" >
-			<input type="hidden" id="newxtAPassenger" name="aPassenger" value="${aPassenger }">
-			<input type="hidden" id="newxtCPassenger" name="cPassenger" value="${cPassenger }">
-			<input type="hidden" id="newxtIPassenger" name="iPassenger" value="${iPassenger }">
-			<input type="hidden" id="nextSeatGrade" name="seatGrade" value="${seatGrade }">
+			<input type="hidden" id="newxtAPassenger" name="aPassenger" value="${param.aPassenger }">
+			<input type="hidden" id="newxtCPassenger" name="cPassenger" value="${param.cPassenger }">
+			<input type="hidden" id="newxtIPassenger" name="iPassenger" value="${param.iPassenger }">
+			<input type="hidden" id="nextSeatGrade" name="seatGrade" value="${param.seatGrade }">
 			<input type="hidden" id="departPrice" name="departPrice" >
 			
 			<div class="float-right">
 					<button type="button" class="searchBtn float-right ml-5 nextBtn disabled" style="width: 150px;">
-						<c:if test="${!empty arrivalTime }">
+						<c:if test="${!empty param.arrivalTime }">
 							다음 여정
 						</c:if>
-						<c:if test="${empty arrivalTime }">
+						<c:if test="${empty param.arrivalTime }">
 							항공편 예약
 						</c:if>
 					</button>
@@ -932,7 +932,7 @@ $(function() {
 			</div>
 			<span id="bottomDepartInfo">가는 편 : </span>
 			<br>
-			<c:if test="${type == '왕복' }">
+			<c:if test="${param.type == '왕복' }">
 				<span id="bottomArrivInfo">오는 편 : </span>
 			</c:if>
 		</form>
@@ -973,8 +973,8 @@ $(function() {
                 <h5 class="modal-title" id="datePickerModalLabel"><strong>여정 일자 선택</strong></h5> 
                 
                 <div id="modalType" class="selectType justify-content-center">
-					<span class="type ${(type == '왕복')?'active' : '' }" id="modalTypeGoBack"><strong>왕복</strong></span>
-					<span class="type ${(type == '편도')?'active' : '' }" id="modalTypeGo"><strong>편도</strong></span>
+					<span class="type ${(param.type == '왕복')?'active' : '' }" id="modalTypeGoBack"><strong>왕복</strong></span>
+					<span class="type ${(param.type == '편도')?'active' : '' }" id="modalTypeGo"><strong>편도</strong></span>
 					<span class="type" id="modalTypeGoMany"><strong>다구간</strong></span>
 				</div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1008,8 +1008,8 @@ $(function() {
 		          			<b> 가는 날</b>
 		          		</label>
 		          		<br>
-				        <input class="form-control mr-3 mb-3" id="selectedDepartDate" placeholder="${departureTime }" readonly
-				        	value="${departureTime }">
+				        <input class="form-control mr-3 mb-3" id="selectedDepartDate" placeholder="${param.departureTime }" readonly
+				        	value="${param.departureTime }">
 			        </span>
 			        <span class="mr-3 backType"> ~ </span>
 			        <span class="backType">
@@ -1018,8 +1018,8 @@ $(function() {
 				        	<b>오는 날</b>
 				        </label>
 		          		<br>
-		                <input class="form-control mr-3 mb-3" id="selectedArriveDate" placeholder="${arrivalTime }" readonly
-		                	value="${arrivalTime }">
+		                <input class="form-control mr-3 mb-3" id="selectedArriveDate" placeholder="${param.arrivalTime }" readonly
+		                	value="${param.arrivalTime }">
 	                </span>
 		        </div>
                 <button type="button" id="confirmDateBtn" class="btn btn-primary">일정 선택 완료</button>

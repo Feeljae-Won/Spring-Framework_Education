@@ -41,6 +41,22 @@ public class AirController {
 		return "air/main";
 	} // end of list()
 	
+	// 1-1. 예약 조회
+	@GetMapping("/searchReservation.do")
+	public String searchReservation() throws Exception {
+		log.info("AirController.searchReservation() --------------------------");
+		
+		return "air/searchReservation";
+	} // end of searchReservation()
+	
+	// 1-2. 출도착 조회
+	@GetMapping("/searchSchedule.do")
+	public String searchSchedule() throws Exception {
+		log.info("AirController.searchSchedule() --------------------------");
+		
+		return "air/searchSchedule";
+	} // end of searchReservation()
+	
 	
 	// 2. 공항 검색 리스트 - GET
 	// 넘겨주는 데이터는 기본이 XML로 보내고 JS 에서 JSON 으로 변환한다.
@@ -70,71 +86,35 @@ public class AirController {
 	
 	// 3. 항공권 검색 결과
 	@PostMapping("/selectFlight-D.do")
-	public String searchResult(AirVO vo, Model model, 
-			@RequestParam("departure") String departure,
-			@RequestParam("arrival") String arrival,
-			@RequestParam("departureTime") String departureTime,
-			@RequestParam("arrivalTime") String arrivalTime,
-			@RequestParam("aPassenger") Integer aPassenger,
-			@RequestParam("cPassenger") Integer cPassenger,
-			@RequestParam("iPassenger") Integer iPassenger,
-			@RequestParam("seatGrade") String seatGrade,
-			@RequestParam("type") String type
-			) {
+	public String searchResult(AirVO vo, Model model, @RequestParam Map<String, Object> param) {
 		
 		model.addAttribute("list", service.searchResult(vo));
-		model.addAttribute("departure", departure);
-		model.addAttribute("arrival", arrival);
-		model.addAttribute("departureTime", departureTime);
-		model.addAttribute("arrivalTime", arrivalTime);
-		model.addAttribute("aPassenger", aPassenger);
-		model.addAttribute("cPassenger", cPassenger);
-		model.addAttribute("iPassenger", iPassenger);
-		model.addAttribute("seatGrade", seatGrade);
-		model.addAttribute("type", type);
+		model.addAttribute("param", param);
 		
 		return "air/selectFlight-D";
 	}
 	
 	// 3-1. 항공권 검색 결과 : 왕복인 경우 검색, 편도인 경우 주문 예약으로 데이터 전송
 	@PostMapping("/selectFlight-A.do")
-	public String searchReturnResult(AirVO vo, Model model, 
-			@RequestParam("departure") String departure,
-			@RequestParam("arrival") String arrival,
-			@RequestParam("departureTime") String departureTime,
-			@RequestParam("arrivalTime") String arrivalTime,
-			@RequestParam("paramDepartureTime") String paramDepartureTime,
-			@RequestParam("paramArrivalTime") String paramArrivalTime,
-			@RequestParam("airlineKor") String airlineKor,
-			@RequestParam("flightName") String flightName,
-			@RequestParam("aPassenger") Integer aPassenger,
-			@RequestParam("cPassenger") Integer cPassenger,
-			@RequestParam("iPassenger") Integer iPassenger,
-			@RequestParam("seatGrade") String seatGrade,
-			@RequestParam("type") String type,
-			@RequestParam("departPrice") Long totalPrice
-			) {
+	public String searchReturnResult(AirVO vo, Model model, @RequestParam Map<String, Object> param) {
 		
-			model.addAttribute("list", service.searchResult(vo));
-			model.addAttribute("departure", departure);
-			model.addAttribute("arrival", arrival);
-			model.addAttribute("departureTime", departureTime);
-			model.addAttribute("arrivalTime", departureTime);
-			model.addAttribute("paramDepartureTime", paramDepartureTime);
-			model.addAttribute("paramArrivalTime", paramArrivalTime);
-			model.addAttribute("airlineKor", airlineKor);
-			model.addAttribute("flightName", flightName);
-			model.addAttribute("aPassenger", aPassenger);
-			model.addAttribute("cPassenger", cPassenger);
-			model.addAttribute("iPassenger", iPassenger);
-			model.addAttribute("seatGrade", seatGrade);
-			model.addAttribute("type", type);
-			model.addAttribute("departPrice", totalPrice);
-			log.info(type);
-			if (type.equals("왕복")) {
-				return "air/selectFlight-A";
-			} else return "air/main";
+		model.addAttribute("list", service.searchResult(vo));
+		model.addAttribute("param", param);
 		
+		// 왕복 체크
+		if (param.get("type").equals("왕복")) {
+			
+			return "air/selectFlight-A";
+			
+		} else return "air/main";
+		
+	}
+	
+	// 4. 관리자 메인
+	@PostMapping("/airAdmin.do")
+	public String airAdminMain() {
+		
+		return "air/airAdmin";
 	}
 
 }
