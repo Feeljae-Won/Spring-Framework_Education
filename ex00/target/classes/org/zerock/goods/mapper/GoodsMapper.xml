@@ -113,6 +113,21 @@
 	]]>
 	</delete>
 	
+	<!-- 사이즈 가져오기 -->
+	<select id="getSize" resultType="org.zerock.goods.vo.SizeVO">
+		select size_no, cate_code1, cate_code2, size_name
+		from basic_size
+		where cate_code1 = #{cate_code1}
+	</select>
+	
+	<!-- 색상 가져오기 -->
+	<select id="getColor" resultType="org.zerock.goods.vo.ColorVO">
+		select color_no, cate_code1, cate_code2, color_name
+		from basic_color
+		where cate_code1 = #{cate_code1}
+	</select>
+	
+	
 	
 
 </mapper>

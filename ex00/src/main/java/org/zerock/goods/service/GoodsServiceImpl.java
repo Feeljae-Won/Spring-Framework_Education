@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.goods.mapper.GoodsMapper;
+import org.zerock.goods.vo.ColorVO;
 import org.zerock.goods.vo.GoodsVO;
+import org.zerock.goods.vo.SizeVO;
 
 import com.webjjang.util.page.PageObject;
 
@@ -61,15 +63,25 @@ public class GoodsServiceImpl implements GoodsService{
 	// 상품 글수정
 	@Override
 	public Integer update(GoodsVO vo) {
-		log.info(vo);
 		return mapper.update(vo);
 	}
 	
 	// 상품 글삭제
 	@Override
 	public Integer delete(GoodsVO vo) {
-		log.info(vo);
 		return mapper.delete(vo);
+	}
+	
+	// 상품 사이즈 가져오기
+	@Override
+	public List<SizeVO> getSize(Integer cate_code1) {
+		return mapper.getSize(cate_code1);
+	}
+	
+	// 상품 색상 가져오기
+	@Override
+	public List<ColorVO> getColor(Integer cate_code1) {
+		return mapper.getColor(cate_code1);
 	}
 	
 	// 삭제할 제품에 대한 이미지를 전부 가져오기 : 상품 이미지 가져오기 -> DB 상품 삭제 -> 이미지 삭제 

@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.zerock.category.service.CategoryService;
+import org.zerock.goods.service.GoodsService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -21,6 +22,10 @@ public class AjaxController {
 	@Autowired
 	@Qualifier("categoryServiceImpl")
 	private CategoryService categoryService;
+	
+	@Autowired
+	@Qualifier("goodsServiceImpl")
+	private GoodsService goodsService;
 
 	//--- 상품관리 중분류 가져오기 ------------------------------------
 	@GetMapping("/getMidList.do")
@@ -31,5 +36,26 @@ public class AjaxController {
 		// midList.jsp 에 select tag 작성
 		return "goods/midList";
 	}
+	
+	//--- 상품관리 사이즈 가져오기 ------------------------------------
+	@GetMapping("/getSize.do")
+	public String getSize(Model model, Integer cate_code1) {
+		log.info("getSize.do");
+		// 중분류를 가져와서 JSP로 넘기기
+		model.addAttribute("sizeList", goodsService.getSize(cate_code1));
+		// midList.jsp 에 select tag 작성
+		return "goods/sizeList";
+	}
+	
+	//--- 상품관리 색상 가져오기 ------------------------------------
+	@GetMapping("/getColor.do")
+	public String getColor(Model model, Integer cate_code1) {
+		log.info("getColor.do");
+		// 중분류를 가져와서 JSP로 넘기기
+		model.addAttribute("colorList", goodsService.getColor(cate_code1));
+		// midList.jsp 에 select tag 작성
+		return "goods/colorList";
+	}
+	
 	
 }
