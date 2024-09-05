@@ -20,6 +20,7 @@ import org.zerock.category.service.CategoryService;
 import org.zerock.goods.service.GoodsService;
 import org.zerock.goods.vo.GoodsImageVO;
 import org.zerock.goods.vo.GoodsOptionVO;
+import org.zerock.goods.vo.GoodsSearchVO;
 import org.zerock.goods.vo.GoodsSizeColorVO;
 import org.zerock.goods.vo.GoodsVO;
 
@@ -52,7 +53,7 @@ public class GoodsController {
 	@GetMapping("/list.do")
 	// 검색을 위한 데이터를 따로 받아야 한다.
 	// public ModelAndView list(Model model) {
-	public String list(Model model, HttpServletRequest request)
+	public String list(Model model,  GoodsSearchVO searchVO, HttpServletRequest request)
 			throws Exception {
 	//	public String list(HttpServletRequest request) {
 		log.info("list.do");
@@ -67,7 +68,7 @@ public class GoodsController {
 			pageObject.setPerPageNum(8);
 		
 		// model에 담으로 request에 자동을 담기게 된다. - 처리된 데이터를 Model에 저장
-		model.addAttribute("list", service.list(pageObject));
+		model.addAttribute("list", service.list(pageObject, searchVO));
 		// pageObject에 데이터 가져 오기 전에는 시작 페이지, 끝 페이지, 전체 페이지가 정해지지 않는다.
 		log.info(pageObject);
 		model.addAttribute("pageObject", pageObject);
@@ -111,6 +112,7 @@ public class GoodsController {
 			@RequestParam(name = "size_nos", required = false) ArrayList<Long> size_nos, 
 			@RequestParam(name = "color_nos", required = false) ArrayList<Long> color_nos, 
 			@RequestParam(name = "option_names", required = false) ArrayList<String> option_names,
+			Long perPageNum,
 			RedirectAttributes rttr,
 			// multipart로 파일 업로드를 하기 위해 request 필요
 			HttpServletRequest request
@@ -144,29 +146,34 @@ public class GoodsController {
 		if(fileName != null && !fileName.equals(""))
 			vo.setDetail_image_name(FileUtil.upload(path, detailImageFile, request));
 		
-		List<GoodsImageVO> goodsImageList = null;
 		// 첨부 이미지 - GoodsImageVO
+		List<GoodsImageVO> goodsImageList = null;
+		// 첨부 추가 이미지가 있는 경우
 		if(imageFiles != null && imageFiles.size() > 0) {
 			for(MultipartFile file : imageFiles) {
 				if (goodsImageList == null) goodsImageList = new ArrayList<>();
 				
 				fileName = file.getOriginalFilename();
 				
+				// 파일을 선택한 경우 처리
 				if(fileName != null && !fileName.equals("")) {
 					GoodsImageVO imageVO = new GoodsImageVO();
+					// 파일은 서버에 올리고 DB에 저장할 정보를 VO 저장한다.
 					imageVO.setImage_name(FileUtil.upload(path, file, request));
 					goodsImageList.add(imageVO);
 				}
 			}
 		}
+		// 상품 상세 정보 확인
 		log.info(vo);
+		// 첨부 이미지 목록 확인
 		log.info("상세 이미지 첨부 : " + goodsImageList);
 		
 		
 		// 사이즈와 컬러 데이터 처리 - 데이터 개수 : 사이즈 * 컬러 - GoodsSizeColorVO
 		List<GoodsSizeColorVO> goodsSizeColorList = null;
 		
-		// 사이즈 처리
+		// 사이즈가 비어 있지 않은 경우 처리
 		if(size_nos != null && size_nos.size() > 0) {
 			for (Long size_no : size_nos) {
 				if (goodsSizeColorList == null) goodsSizeColorList = new ArrayList<>();
@@ -201,24 +208,29 @@ public class GoodsController {
 		if(option_names != null && option_names.size() > 0) {
 			for(String option : option_names) {
 				if(goodsOptionList == null) goodsOptionList = new ArrayList<>();
-				
-				GoodsOptionVO optionVO = new GoodsOptionVO();
-				optionVO.setOption_name(option);
-				
-				goodsOptionList.add(optionVO);
+				// 비어 있지 않으면 처리한다.
+				if(option_names != null && !option_names.equals("")) {
+					
+					GoodsOptionVO optionVO = new GoodsOptionVO();
+					optionVO.setOption_name(option);
+					
+					goodsOptionList.add(optionVO);
+				}
 			}
 		}
 		
 		log.info("옵션 : " + goodsOptionList);
 		
 		
-//		service.write(vo);
+		// service에 넘길 데이터
+		// - vo, goodsImageList, goodsSizeColorList, goodsOptionList
+		service.write(vo, goodsImageList, goodsSizeColorList, goodsOptionList);
 		
 		// 처리 결과에 대한 메시지 처리
+		log.info("상품 등록이 되었습니다. 상품번호 : " + vo.getGoods_no());
 		rttr.addFlashAttribute("msg", "상품 등록이 되었습니다.");
 		
-		// return "redirect:list.do";
-		return null;
+		return "redirect:list.do?perPageNum=" + perPageNum;
 	}
 	
 	//--- 상품관리 글수정 폼 ------------------------------------

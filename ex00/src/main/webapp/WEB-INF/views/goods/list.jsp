@@ -162,7 +162,7 @@ $(function(){
 	  	<!-- 이미지의 데이터가 있는 만큼 반복해서 표시하는 처리 시작 -->
 	  	<c:forEach items="${list }" var="vo" varStatus="vs">
 	  		<!-- 줄바꿈처리 - 찍는 인덱스 번호가 3의 배수이면 줄바꿈을 한다. -->
-	  		<c:if test="${(vs.index != 0) && (vs.index % 4 == 0) }">
+	  		<c:if test="${(vs.index != 0) && (vs.index % 3 == 0) }">
 	  			${"</div>"}
 	  			${"<div class='row'>"}
 	  		</c:if>

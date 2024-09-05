@@ -11,6 +11,7 @@ import org.zerock.goods.mapper.GoodsMapper;
 import org.zerock.goods.vo.ColorVO;
 import org.zerock.goods.vo.GoodsImageVO;
 import org.zerock.goods.vo.GoodsOptionVO;
+import org.zerock.goods.vo.GoodsSearchVO;
 import org.zerock.goods.vo.GoodsSizeColorVO;
 import org.zerock.goods.vo.GoodsVO;
 import org.zerock.goods.vo.SizeVO;
@@ -34,11 +35,11 @@ public class GoodsServiceImpl implements GoodsService{
 	
 	// 상품 리스트
 	@Override
-	public List<GoodsVO> list(PageObject pageObject) {
+	public List<GoodsVO> list(PageObject pageObject,  GoodsSearchVO searchVO) {
 		log.info("list() 실행");
 		// 전체 데이터 개수 구하기
 		pageObject.setTotalRow(mapper.getTotalRow(pageObject));
-		return mapper.list(pageObject);
+		return mapper.list(pageObject, searchVO);
 	}
 	
 	// 상품 글보기
@@ -58,18 +59,36 @@ public class GoodsServiceImpl implements GoodsService{
 	public Integer write(GoodsVO vo, 
 			List<GoodsImageVO> goodsImageList, List<GoodsSizeColorVO> goodsSizeColorList, List<GoodsOptionVO> goodsOptionList) {
 		
-		Integer result = mapper.write(vo); // 글번호를 시퀀스에서 새로운 번호 사용
+		Integer result = null; // 글번호를 시퀀스에서 새로운 번호 사용
 		
-		// 상품 상세 정보 - vo
-		
+		// 상품 상세 정보 - vo : 필수 - 처리가 끝나면 goods_no 세팅되서 넘어온다.
+		mapper.write(vo);
 		// 상품에 대한 추가 이미지 - goodsImageList - null이 아닌 경우에만 DB 추가
-		
+		if (goodsImageList != null && goodsImageList.size() > 0) {
+			// goods_no 세팅 후 데이터 넘긴다.
+			for(GoodsImageVO imageVO : goodsImageList) 
+				imageVO.setGoods_no(vo.getGoods_no());
+				
+			mapper.writeImage(goodsImageList);
+			
+		}
 		// 상품 사이즈와 색상 - goodsSizeColorList - null이 아닌 경우에만 DB 추가
-		
+		if (goodsSizeColorList != null && goodsSizeColorList.size() > 0) {
+			for(GoodsSizeColorVO sizeColorVO : goodsSizeColorList) 
+				
+				sizeColorVO.setGoods_no(vo.getGoods_no());
+			mapper.writeSizeColor(goodsSizeColorList);
+		}
 		// 상품 옵션 - goodsOptionList - null이 아닌 경우에만 DB 추가
-		
-		// 상품 가격 - vo
-
+		if (goodsOptionList != null && goodsOptionList.size() > 0) {
+			// goods_no 세팅 후 데이터 넘긴다.	
+			for(GoodsOptionVO goodsOptionVO : goodsOptionList) 
+				goodsOptionVO.setGoods_no(vo.getGoods_no());
+			
+			mapper.writeOption(goodsOptionList);
+		}
+		// 상품 가격 - vo : 필수
+		result = mapper.writePrice(vo);
 
 		return result;
 	}

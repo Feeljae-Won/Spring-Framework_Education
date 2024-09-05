@@ -140,6 +140,8 @@ legend {
 	<hr>
 	<!-- 상품 기본 정보 입력 시작 -->
 	<form action="write.do" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="perPageNum" value="${param.perPageNum }">
+	
 	<fieldset class="border p-4 mb-3">
 		<legend class="w-auto px-2"> <b>[ 상품 기본 정보 입력 ]</b></legend>
 			<div class="form-inline">
