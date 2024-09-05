@@ -88,6 +88,12 @@ public class AirServiceImpl implements AirService{
 		pageObject.setTotalRow(mapper.getTotalRow(pageObject, airlineNo));
 		return mapper.flightList(pageObject, airlineNo);
 	}
+	
+	// 항공사 기종 상세보기
+	@Override
+	public AirVO getFlightInfo(String flightName) {
+		return mapper.getFlightInfo(flightName);
+	}
 
 
 }

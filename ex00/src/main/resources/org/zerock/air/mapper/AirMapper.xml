@@ -32,13 +32,28 @@
 		    ar.arrival, 
 		    arr_airport.airportKor AS arrivalKor, 
 		    aopt.flightName,
-		    EXTRACT(DAY FROM ash.duration) || '일 ' || 
-		    EXTRACT(HOUR FROM ash.duration) || '시간 ' || 
-		    EXTRACT(MINUTE FROM ash.duration) || '분 ' AS duration,
+		    <!-- 일 처리 -->
+		    CASE 
+		        WHEN EXTRACT(DAY FROM asch.duration) != 0 
+		        THEN EXTRACT(DAY FROM asch.duration) || '일 ' 
+		        ELSE '' 
+		    END || 
+		    <!-- 시간 처리 -->
+		    CASE 
+		        WHEN EXTRACT(HOUR FROM asch.duration) != 0 
+		        THEN EXTRACT(HOUR FROM asch.duration) || '시간 ' 
+		        ELSE '' 
+		    END || 
+		    <!-- 분 처리 -->
+		    CASE 
+		        WHEN EXTRACT(MINUTE FROM asch.duration) != 0 
+		        THEN EXTRACT(MINUTE FROM asch.duration) || '분 ' 
+		        ELSE '' 
+		    END AS duration,
 		    ash.ScheduleId, 
 		    ash.status, 
-		    TO_CHAR(ash.departureTime, 'hh24:mm') AS departureTime, 
-		    TO_CHAR(ash.arrivalTime, 'hh24:mm') AS arrivalTime, 
+		    TO_CHAR(ash.departureTime, 'hh24:mi') AS departureTime, 
+		    TO_CHAR(ash.arrivalTime, 'hh24:mi') AS arrivalTime, 
 		    (SELECT SUM(basePrice + tax + fuelSurCharge + bookingFee) 
 		     FROM airPrice 
 		     WHERE routeId = 1) AS totalPrice 
@@ -134,6 +149,53 @@
     <!-- 전체 데이터 가져오기 -->
     <select id="getTotalRow" resultType="Long">
 		select count(*) from airplaneOpt where airlineno = #{airlineNo}
+	</select>
+	
+	<!-- 항공편 상세보기 -->
+	<select id="getFlightInfo" resultType="org.zerock.air.vo.AirVO">
+	select
+	    <!-- 항공사 정보 --> 
+	    m.photo, asch.airlineNo, al.airlineKor, al.airlineEng, al.countryCode, c.countryKor, c.countryEng, asch.flightName, aopt.airplaneId, ap.airplanePdt, 
+	    <!-- 항공편 정보 -->
+	    ap.seatcapacity, aopt.ecoCnt, aopt.prEcoCnt, aopt.bisCnt, aopt.fstCnt, ap.seatX, ap.seatY,
+	    <!-- 경로 정보 -->
+	    asch.routeId, route.departure, dport.airportKor departureKor, route.arrival, aport.airportKor arrivalKor, route.type, route.distance, 
+	    <!-- 운항 정보 -->
+	    asch.scheduleId, 
+		TO_CHAR(asch.departureTime, 'hh24:mi') AS departureTime, 
+	    TO_CHAR(asch.arrivalTime, 'hh24:mi') AS arrivalTime, 
+	    <!-- 일 처리 -->
+	    CASE 
+	        WHEN EXTRACT(DAY FROM asch.duration) != 0 
+	        THEN EXTRACT(DAY FROM asch.duration) || '일 ' 
+	        ELSE '' 
+	    END || 
+	    <!-- 시간 처리 -->
+	    CASE 
+	        WHEN EXTRACT(HOUR FROM asch.duration) != 0 
+	        THEN EXTRACT(HOUR FROM asch.duration) || '시간 ' 
+	        ELSE '' 
+	    END || 
+	    <!-- 분 처리 -->
+	    CASE 
+	        WHEN EXTRACT(MINUTE FROM asch.duration) != 0 
+	        THEN EXTRACT(MINUTE FROM asch.duration) || '분 ' 
+	        ELSE '' 
+	    END AS duration,  asch.status
+	from 
+	    member m, airline al, airplane ap, airplaneOpt aopt, airport dport, airport aport, airroute route, airschedule asch, country c
+	where (
+	    asch.airlineNo = al.airlineNo
+	    and al.Id = m.id
+	    and al.countryCode = c.countryCode
+	    and asch.flightName = aopt.flightName
+	    and aopt.airPlaneId = ap.airplaneId
+	    and asch.routeId = route.routeID
+	    and route.departure = dport.airportCode
+	    and route.arrival = aport.airportCode
+	    )
+	    and
+	        asch.flightName = #{flightName}
 	</select>
 		
 	

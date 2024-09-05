@@ -32,7 +32,9 @@ public interface AirService {
 	// 제조사별 비행기 모델 리스트 가져오기
 	public List<AirVO> getAirplane(String airplanePdt);
 	
-	// 항공사 기종 리스트
+	// 관리자 - 항공사 기종 리스트
 	public List<AirVO> flightList(PageObject pageObject, Long airlineNo);
 	
+	// 관리자 기종 상세보기
+	public AirVO getFlightInfo(String flightName);
 }

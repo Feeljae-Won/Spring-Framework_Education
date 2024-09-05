@@ -140,6 +140,9 @@ $(function() {
 		console.log(flightName);
 		
 		$(".collapse").hide();
+		
+		$("#view"+flightName).load("/ajax/getFlightInfo.do?flightName="	+ flightName);
+		
 		$("#view"+flightName).toggle("collapse");
 		
 	})
@@ -265,7 +268,7 @@ $(function() {
 					
 					<small>
 						<span class="ml-3 mt-2">
-							<br><br>* <b>[ 수정 ]</b> : 해당 항공편을 선택하면 <b>기종, 제조사, 좌석, 출발지, 도착지, 운항 스케줄</b>을 변경할 수 있습니다.
+							<br><br>* <b>[ 수정 ]</b> : 해당 항공편을 선택하면 자세한 내용을 확인할 수 있으며, <b>기종, 제조사, 좌석, 출발지, 도착지, 운항 스케줄</b>을 변경할 수 있습니다.
 							<br>* <b>[ 삭제 ]</b> : 해당 항공편과 관련된 <span style="color:red; font-weight:bold;">모든 데이터가 삭제</span> 됩니다. 
 						</span>
 					</small>

@@ -42,5 +42,7 @@ public interface AirMapper {
 	// 전체 데이터 개수 가져오기
 	public Long getTotalRow(@Param("pageObject") PageObject pageObject, @Param("airlineNo") Long airlineNo);
 	
+	// 관리자 - 항공편 상세보기
+	public AirVO getFlightInfo(@Param("flightName") String flightName);
 
 }

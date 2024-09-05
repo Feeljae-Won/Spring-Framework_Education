@@ -207,7 +207,7 @@ public class AirController {
 		return "air/airAdminAirport";
 	}
 	
-	// 6. 관리자 기종 관리
+	// 6. 관리자 기종 관리 리스트
 	@GetMapping("/airAdminAirplane.do")
 	public String airAdminAirplane(Long airlineNo, Model model, HttpServletRequest request) throws Exception{
 		
@@ -221,12 +221,20 @@ public class AirController {
 		return "air/airAdminAirplane";
 	}
 	
-	// 6. 관리자 기종 등록
+	// 6-1. 관리자 기종 상세보기 - ajax 처리
+		
+	// 6-2. 관리자 기종 등록
 	@GetMapping("/airAdminAirplaneWriteForm.do")
 	public String airAdminAirplaneWriteForm(String product, Model model){
 		
 		
 		return "air/airAdminAirplaneWriteForm";
 	}
+	
+	// 6-3. 관리자 기종 수정
+	
+	// 6-4. 관리자 기종 삭제
+	
+
 
 }

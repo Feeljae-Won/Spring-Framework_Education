@@ -35,7 +35,7 @@ public class AjaxController {
 	//--- 공항 가져오기 ------------------------------------
 	@GetMapping("/getAirport.do")
 	public String getAirport(Model model, String countryCode) {
-		log.info("getColor.do");
+		log.info("getAirport.do");
 		// 중분류를 가져와서 JSP로 넘기기
 		model.addAttribute("airportList", airService.getAirport(countryCode));
 		// midList.jsp 에 select tag 작성
@@ -45,11 +45,21 @@ public class AjaxController {
 	//--- 공항 가져오기 ------------------------------------
 	@GetMapping("/getAirplane.do")
 	public String getAirplane(Model model, String airplanePdt) {
-		log.info("getColor.do");
+		log.info("getAirplane.do");
 		// 중분류를 가져와서 JSP로 넘기기
 		model.addAttribute("airplaneList", airService.getAirplane(airplanePdt));
 		// midList.jsp 에 select tag 작성
 		return "air/getAirplane";
+	}
+	
+	//--- 관리자 기종 상세보기 ------------------------------------
+	@GetMapping("/getFlightInfo.do")
+	public String getFlightInfo(Model model, String flightName) {
+		log.info("getFlightInfo.do");
+		// 중분류를 가져와서 JSP로 넘기기
+		model.addAttribute("info", airService.getFlightInfo(flightName));
+		// midList.jsp 에 select tag 작성
+		return "air/getFlightInfo";
 	}
 
 	//--- 상품관리 중분류 가져오기 ------------------------------------
