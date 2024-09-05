@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.zerock.air.service.AirService;
 import org.zerock.category.service.CategoryService;
 import org.zerock.goods.service.GoodsService;
 
@@ -26,6 +27,30 @@ public class AjaxController {
 	@Autowired
 	@Qualifier("goodsServiceImpl")
 	private GoodsService goodsService;
+	
+	@Autowired
+	@Qualifier("airServiceImpl")
+	private AirService airService;
+	
+	//--- 공항 가져오기 ------------------------------------
+	@GetMapping("/getAirport.do")
+	public String getAirport(Model model, String countryCode) {
+		log.info("getColor.do");
+		// 중분류를 가져와서 JSP로 넘기기
+		model.addAttribute("airportList", airService.getAirport(countryCode));
+		// midList.jsp 에 select tag 작성
+		return "air/getAirport";
+	}
+	
+	//--- 공항 가져오기 ------------------------------------
+	@GetMapping("/getAirplane.do")
+	public String getAirplane(Model model, String airplanePdt) {
+		log.info("getColor.do");
+		// 중분류를 가져와서 JSP로 넘기기
+		model.addAttribute("airplaneList", airService.getAirplane(airplanePdt));
+		// midList.jsp 에 select tag 작성
+		return "air/getAirplane";
+	}
 
 	//--- 상품관리 중분류 가져오기 ------------------------------------
 	@GetMapping("/getMidList.do")

@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class AirVO {
 	
+	private Long rnum;
+	
 	// 국가 코드
 	private String country;
 	private String countryCode;
@@ -29,6 +31,8 @@ public class AirVO {
 	private String airplaneId; // 비행기 모델명
 	private String airplanePdt; // 비행기 제조사
 	private Long seatCapacity; // 좌석 총 개수
+	private Long seatX; // 열 좌석수
+	private Long seatY; // 행 좌석수
 	
 	// 항공기 옵션
 	private String flightName; // 편명

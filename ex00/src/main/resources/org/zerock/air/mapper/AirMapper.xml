@@ -93,6 +93,48 @@
 			and cate_code2 = #{cate_code2}
 		</if>
 	</delete>
+	
+	<!-- 국가별 공항 리스트 가져오기 -->
+	<select id="getAirport" resultType="org.zerock.air.vo.AirVO">
+		select a.countryCode, c.countryKor, c.countryEng, a.AirportCode, a.airportKor, a.airportEng
+		from country c, airport a
+		where a.countryCode = #{countryCode}
+		    and a.countryCode = c.countryCode
+    </select>
+    
+    <!-- 국가별 공항 리스트 가져오기 -->
+	<select id="getAirplane" resultType="org.zerock.air.vo.AirVO">
+		select airplaneId, airplanePdt, seatCapacity, seatX, seatY
+		from airplane
+		where airplanePdt = #{airplanePdt}
+    </select>
+    
+    <!-- 항공사 기종 리스트 -->
+    <select id="flightList" resultType="org.zerock.air.vo.AirVO">
+    	select rnum, flightName, airplaneId, airplanepdt, seatCapacity, ecoCnt, precoCnt,
+		        bisCnt, fstCnt, scheduleid, routeId, departure, arrival, airlineno
+		from (
+		    select rownum rnum, flightName, airplaneId, airplanepdt, seatCapacity, ecoCnt, precoCnt,
+		        bisCnt, fstCnt, scheduleid, routeId, departure, arrival, airlineno
+		    from (
+		        select  aopt.flightName, aopt.airplaneId, ap.airplanepdt, ap.seatCapacity, aopt.ecoCnt, aopt.precoCnt, 
+		            aopt.bisCnt, aopt.fstCnt, asch.scheduleid, asch.routeId, ar.departure, ar.arrival, aopt.airlineno
+		        from airplaneOpt aopt, airplane ap, airschedule asch, airroute ar
+		        where aopt.airlineno = #{airlineNo}
+		            and aopt.airlineno = asch.airlineno
+		            and aopt.airplaneId = ap.airplaneId
+		            and asch.flightName = aopt.flightName
+		            and asch.routeId = ar.routeId
+		        order by flightName desc
+		    )
+		)
+		where rnum between #{pageObject.startRow} and #{pageObject.endRow}
+    </select>
+    
+    <!-- 전체 데이터 가져오기 -->
+    <select id="getTotalRow" resultType="Long">
+		select count(*) from airplaneOpt where airlineno = #{airlineNo}
+	</select>
 		
 	
 </mapper>

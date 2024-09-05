@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.zerock.air.vo.AirVO;
 
+import com.webjjang.util.page.PageObject;
+
 public interface AirService {
 
 	// 공항 검색 리스트
@@ -23,5 +25,14 @@ public interface AirService {
 	
 	// 국가 삭제
 	public Integer nocDelete(AirVO vo);
+	
+	// 국가별 공항 리스트 가져오기
+	public List<AirVO> getAirport(String countryCode);
+	
+	// 제조사별 비행기 모델 리스트 가져오기
+	public List<AirVO> getAirplane(String airplanePdt);
+	
+	// 항공사 기종 리스트
+	public List<AirVO> flightList(PageObject pageObject, Long airlineNo);
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.zerock.air.mapper.AirMapper;
 import org.zerock.air.vo.AirVO;
 
+import com.webjjang.util.page.PageObject;
 
 import lombok.extern.log4j.Log4j;
 
@@ -34,34 +35,59 @@ public class AirServiceImpl implements AirService{
 	}
 	
 	//항공권 검색 리스트
+	@Override
 	public List<AirVO> searchResult(AirVO vo) {
 		
 		return mapper.searchResult(vo);
 	}
 	
 	// 대륙별 국가 리스트
+	@Override
 	public List<AirVO> nocList(String pan) {
 		
 		return mapper.nocList(pan);
 	}
 	
 	// 국가 등록
+	@Override
 	public Integer nocWrite(AirVO vo) {
 		
 		return mapper.nocWrite(vo);
 	}
 	
 	// 국가 수정
+	@Override
 	public Integer nocUpdate(AirVO vo) {
 		
 		return mapper.nocUpdate(vo);
 	}
 	
 	// 국가 삭제
+	@Override
 	public Integer nocDelete(AirVO vo) {
 		
 		return mapper.nocDelete(vo);
 	}
 	
+	// 국가별 공항 리스트 가져오기
+	@Override
+	public List<AirVO> getAirport(String countryCode) {
+		return mapper.getAirport(countryCode);
+	}
+	
+	// 제조사별 비행기 리스트 가져오기
+	@Override
+	public List<AirVO> getAirplane(String airplanePdt) {
+		return mapper.getAirplane(airplanePdt);
+	}
+	
+	// 항공사 기종 리스트
+	@Override
+	public List<AirVO> flightList(PageObject pageObject, Long airlineNo) {
+		// 전체 데이터 개수 구하기
+		pageObject.setTotalRow(mapper.getTotalRow(pageObject, airlineNo));
+		return mapper.flightList(pageObject, airlineNo);
+	}
+
 
 }

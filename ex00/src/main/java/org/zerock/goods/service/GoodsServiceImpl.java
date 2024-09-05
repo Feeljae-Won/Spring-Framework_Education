@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.goods.mapper.GoodsMapper;
 import org.zerock.goods.vo.ColorVO;
+import org.zerock.goods.vo.GoodsImageVO;
+import org.zerock.goods.vo.GoodsOptionVO;
+import org.zerock.goods.vo.GoodsSizeColorVO;
 import org.zerock.goods.vo.GoodsVO;
 import org.zerock.goods.vo.SizeVO;
 
@@ -52,11 +55,22 @@ public class GoodsServiceImpl implements GoodsService{
 	// @Transactional - insert 2번이 성공을 해야 commit 한다. 한개라도 오류가 나면 rollback.
 	// 상품, 가격, 이미지, 사이즈컬러, 옵션 -> 등록하다가 하나라고 오류가 나면 다 rollback 시킨다.
 	@Transactional
-	public Integer write(GoodsVO vo) {
+	public Integer write(GoodsVO vo, 
+			List<GoodsImageVO> goodsImageList, List<GoodsSizeColorVO> goodsSizeColorList, List<GoodsOptionVO> goodsOptionList) {
+		
 		Integer result = mapper.write(vo); // 글번호를 시퀀스에서 새로운 번호 사용
-		// log.info(vo);
-		// vo.setNo(10000L);
-		// mapper.writeTx(vo); // 위에서 사용한 글번호 재사용 - PK 예외 발생
+		
+		// 상품 상세 정보 - vo
+		
+		// 상품에 대한 추가 이미지 - goodsImageList - null이 아닌 경우에만 DB 추가
+		
+		// 상품 사이즈와 색상 - goodsSizeColorList - null이 아닌 경우에만 DB 추가
+		
+		// 상품 옵션 - goodsOptionList - null이 아닌 경우에만 DB 추가
+		
+		// 상품 가격 - vo
+
+
 		return result;
 	}
 	

@@ -3,7 +3,7 @@ package org.zerock.goods.vo;
 import lombok.Data;
 
 @Data
-public class GoodsOption {
+public class GoodsOptionVO {
 
 	private Long goods_option_no;
 	private Long goods_no;

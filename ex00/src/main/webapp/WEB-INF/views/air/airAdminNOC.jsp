@@ -76,6 +76,19 @@ $(function() {
 			
 			return false;  // a tag의 페이지 이동 처리를 무시시킨다.
 		}
+	
+	// 각 나라의 airportListBtn 눌렀을 때 공항 리스트 처리
+	$(".airportListBtn").click(function() {
+		let country = $(this).data("countrycode");
+		// console.log(country);
+		
+		$(".collapse").find(".airList").remove();
+		$(".collapse").collapse("hide");
+		
+		// 바로 중분류의 데이터를 세팅한다.
+		$("#airportList" + country).load("/ajax/getAirport.do?countryCode="	+ country);
+		$("#airportList" + country).collapse("show");
+	});
 });
 </script>
 
@@ -96,21 +109,11 @@ $(function() {
 				</li>
 				<li class="nav-item">
 					<a class="nav-link active" href="airAdminNOC.do"> 
-						<Strong>국가 관리</Strong>
+						<Strong>국가 및 공항 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#"> 
-						<Strong>공항 관리</Strong>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#"> 
-						<Strong>기종 등록</Strong>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#"> 
+					<a class="nav-link" href="airAdminAirplane.do"> 
 						<Strong>항공사 기종 관리</Strong>
 					</a>
 				</li>
@@ -131,20 +134,53 @@ $(function() {
 				<div id="nocTab" class="container-fluid p-3 tab-pane active">
 					<br>
 					<h3>
-						국가 등록 및 관리
+						국가 및 공항 관리
 						<button class="btn btn-primary btn-sm" id="addBtn">add</button>
 					</h3>
+					<small>
+						<span class="ml-3 mt-2">
+						
+							국가 옆에
+							<button type ="button" class="btn btn-light btn-sm ">
+								[ 공항 리스트 ]
+							</button>	
+							버튼을 누르면 등록된 공항을 볼 수 있습니다.
+						</span>
+					</small>
 					<hr>
+					
+					<!-- 대륙별 리스트 -->
+					<!-- 아시아  -->
 					<h4><strong><i class="material-icons" style="font-size:20px; color:#E37027;">flag</i> 아시아 (Asia)</strong></h4>
 					<ul class="list-group ml-3">
 						<c:forEach items="${asia }" var="vo">
 							<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
 								data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+								
 								<button class="btn btn-danger btn-sm float-right deleteBtn">삭제</button>
 								<button class="btn btn-secondary btn-sm float-right updateBtn">수정</button>
+								
 								<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+								<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+										id="airportListBtn${vo.countryCode }" >
+									[ 공항 리스트 ]
+								</button>
+								
+								<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+									<div class="airList">
+										<ul>
+											<li>
+												인천 국제 공항
+												<i class="fa fa-pencil airportUpdateBtn btn-light btn-sm" style="color:#E37027;"></i>
+												<i class="fa fa-close airportDeleteBtn btn-light btn-sm" style="color:red;"></i>
+											</li>
+										</ul>
+									</div>
+								</div>
+								
 							</li>
 						</c:forEach>
+						
 					</ul>
 					<hr>
 					<h4><strong><i class="material-icons" style="font-size:20px; color:#E37027;">flag</i> 북미 (North Ameirca)</strong></h4>
@@ -152,9 +188,27 @@ $(function() {
 						<c:forEach items="${northAmerica }" var="vo">
 							<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
 								data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+								
 								<button class="btn btn-danger btn-sm float-right deleteBtn">삭제</button>
 								<button class="btn btn-secondary btn-sm float-right updateBtn">수정</button>
+								
 								<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+								<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+										id="airportListBtn${vo.countryCode }" >
+									[ 공항 리스트 ]
+								</button>
+								
+								<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+									<div class="airList">
+										<ul>
+											<li>
+												인천 국제 공항
+												<i class="fa fa-pencil airportUpdateBtn btn-light btn-sm" style="color:#E37027;"></i>
+												<i class="fa fa-close airportDeleteBtn btn-light btn-sm" style="color:red;"></i>
+											</li>
+										</ul>
+									</div>
+								</div>
 							</li>
 						</c:forEach>
 					</ul>
@@ -166,7 +220,24 @@ $(function() {
 								data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
 								<button class="btn btn-danger btn-sm float-right deleteBtn">삭제</button>
 								<button class="btn btn-secondary btn-sm float-right updateBtn">수정</button>
+								
 								<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+								<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+										id="airportListBtn${vo.countryCode }" >
+									[ 공항 리스트 ]
+								</button>
+								
+								<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+									<div class="airList">
+										<ul>
+											<li>
+												인천 국제 공항
+												<i class="fa fa-pencil airportUpdateBtn btn-light btn-sm" style="color:#E37027;"></i>
+												<i class="fa fa-close airportDeleteBtn btn-light btn-sm" style="color:red;"></i>
+											</li>
+										</ul>
+									</div>
+								</div>
 							</li>
 						</c:forEach>
 					</ul>
@@ -176,9 +247,27 @@ $(function() {
 						<c:forEach items="${europe }" var="vo">
 							<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
 								data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+								
 								<button class="btn btn-danger btn-sm float-right deleteBtn">삭제</button>
 								<button class="btn btn-secondary btn-sm float-right updateBtn">수정</button>
-								<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+								
+								<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b>
+								<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+										id="airportListBtn${vo.countryCode }" >
+									[ 공항 리스트 ]
+								</button>
+								
+								<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+									<div class="airList">
+										<ul>
+											<li>
+												인천 국제 공항
+												<i class="fa fa-pencil airportUpdateBtn btn-light btn-sm" style="color:#E37027;"></i>
+												<i class="fa fa-close airportDeleteBtn btn-light btn-sm" style="color:red;"></i>
+											</li>
+										</ul>
+									</div>
+								</div> 
 							</li>
 						</c:forEach>
 					</ul>
@@ -188,9 +277,27 @@ $(function() {
 						<c:forEach items="${australia }" var="vo">
 							<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
 								data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+								
 								<button class="btn btn-danger btn-sm float-right deleteBtn">삭제</button>
 								<button class="btn btn-secondary btn-sm float-right updateBtn">수정</button>
+								
 								<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+								<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+										id="airportListBtn${vo.countryCode }" >
+									[ 공항 리스트 ]
+								</button>
+								
+								<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+									<div class="airList">
+										<ul>
+											<li>
+												인천 국제 공항
+												<i class="fa fa-pencil airportUpdateBtn btn-light btn-sm" style="color:#E37027;"></i>
+												<i class="fa fa-close airportDeleteBtn btn-light btn-sm" style="color:red;"></i>
+											</li>
+										</ul>
+									</div>
+								</div>
 							</li>
 						</c:forEach>
 					</ul>
@@ -200,9 +307,27 @@ $(function() {
 						<c:forEach items="${africa }" var="vo">
 							<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
 								data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+								
 								<button class="btn btn-danger btn-sm float-right deleteBtn">삭제</button>
 								<button class="btn btn-secondary btn-sm float-right updateBtn">수정</button>
+								
 								<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+								<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+										id="airportListBtn${vo.countryCode }" >
+									[ 공항 리스트 ]
+								</button>
+								
+								<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+									<div class="airList">
+										<ul>
+											<li>
+												인천 국제 공항
+												<i class="fa fa-pencil airportUpdateBtn btn-light btn-sm" style="color:#E37027;"></i>
+												<i class="fa fa-close airportDeleteBtn btn-light btn-sm" style="color:red;"></i>
+											</li>
+										</ul>
+									</div>
+								</div>
 							</li>
 						</c:forEach>
 					</ul>

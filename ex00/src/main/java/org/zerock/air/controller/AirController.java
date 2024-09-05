@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.air.service.AirService;
 import org.zerock.air.vo.AirVO;
+
+import com.webjjang.util.page.PageObject;
 
 import lombok.extern.log4j.Log4j;
 
@@ -179,6 +182,51 @@ public class AirController {
 					"국가 삭제가 되지 않았습니다. 다시 확인하고 시도해 주세요.");
 		}
 		return "redirect:airAdminNOC.do";
+	}
+	
+	// 5-1. 관리자 공항 리스트
+	@GetMapping("/airAdminAirport.do")
+	public String airportList(String pan, Model model){
+		
+		// 대륙별 리스트 가져오기
+		List<AirVO> asia = service.nocList("ASIA");
+		List<AirVO> africa = service.nocList("AFRICA");
+		List<AirVO> australia = service.nocList("AUSTRALIA");
+		List<AirVO> europe = service.nocList("EUROPE");
+		List<AirVO> northAmerica = service.nocList("NORTH AMERICA");
+		List<AirVO> southAmerica = service.nocList("SOUTH AMERICA");
+		
+		// model에 담으로 request에 자동을 담기게 된다. - 처리된 데이터를 Model에 저장
+		model.addAttribute("asia", asia);
+		model.addAttribute("africa", africa);
+		model.addAttribute("australia", australia);
+		model.addAttribute("europe", europe);
+		model.addAttribute("northAmerica", northAmerica);
+		model.addAttribute("southAmerica", southAmerica);
+		
+		return "air/airAdminAirport";
+	}
+	
+	// 6. 관리자 기종 관리
+	@GetMapping("/airAdminAirplane.do")
+	public String airAdminAirplane(Long airlineNo, Model model, HttpServletRequest request) throws Exception{
+		
+		PageObject pageObject = PageObject.getInstance(request);
+		
+		log.info("pageObject.getInstance" + pageObject);
+		
+		model.addAttribute("flightList", service.flightList(pageObject, 1L));
+		model.addAttribute("pageObject", pageObject);
+		
+		return "air/airAdminAirplane";
+	}
+	
+	// 6. 관리자 기종 등록
+	@GetMapping("/airAdminAirplaneWriteForm.do")
+	public String airAdminAirplaneWriteForm(String product, Model model){
+		
+		
+		return "air/airAdminAirplaneWriteForm";
 	}
 
 }

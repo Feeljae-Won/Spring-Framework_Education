@@ -86,7 +86,9 @@
 		where no = #{no}
 	</select>
 
-	<!-- 상품 등록 -->
+
+
+	<!-- 1. 상품 상세정보 등록 -->
 	<insert id="write">
 		<!-- 먼저 GoodsVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. -->
 		<selectKey keyProperty="no" resultType="Long" order="BEFORE">
@@ -95,6 +97,46 @@
 		insert into goods(no, title, content, writer, pw)
 		values(#{no}, #{title}, #{content}, #{writer}, #{pw})
 	</insert>
+	
+	<!-- 2. 상품 추가 이미지 등록 -->
+<!-- 	<insert id="writeImage"> -->
+		<!-- 먼저 GoodsVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. -->
+<!-- 		<selectKey keyProperty="no" resultType="Long" order="BEFORE"> -->
+<!-- 			select goods_seq.nextval from dual -->
+<!-- 		</selectKey> -->
+<!-- 		insert into goods(no, title, content, writer, pw) -->
+<!-- 		values(#{no}, #{title}, #{content}, #{writer}, #{pw}) -->
+<!-- 	</insert> -->
+	
+	<!-- 3. 상품 사이즈 & 컬러 등록 -->
+<!-- 	<insert id="writeSizeColor"> -->
+		<!-- 먼저 GoodsVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. -->
+<!-- 		<selectKey keyProperty="no" resultType="Long" order="BEFORE"> -->
+<!-- 			select goods_seq.nextval from dual -->
+<!-- 		</selectKey> -->
+<!-- 		insert into goods(no, title, content, writer, pw) -->
+<!-- 		values(#{no}, #{title}, #{content}, #{writer}, #{pw}) -->
+<!-- 	</insert> -->
+	
+	<!-- 4. 상품 옵션 등록 -->
+<!-- 	<insert id="writeOption"> -->
+<!-- 		<selectKey keyProperty="no" resultType="Long" order="BEFORE"> -->
+<!-- 			select goods_seq.nextval from dual -->
+<!-- 		</selectKey> -->
+<!-- 		insert into goods(no, title, content, writer, pw) -->
+<!-- 		values(#{no}, #{title}, #{content}, #{writer}, #{pw}) -->
+<!-- 	</insert> -->
+	
+		<!-- 5. 상품 가격 등록 --> 
+<!-- 	<insert id="writePrice"> -->
+	 		<!-- 먼저 GoodsVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. --> 
+<!-- 		<selectKey keyProperty="no" resultType="Long" order="BEFORE"> -->
+<!-- 			select goods_seq.nextval from dual -->
+<!-- 		</selectKey> -->
+<!-- 		insert into goods(no, title, content, writer, pw) -->
+<!-- 		values(#{no}, #{title}, #{content}, #{writer}, #{pw}) -->
+<!-- 	</insert> -->
+	
 
 	<!-- 상품 수정 -->
 	<update id="update">

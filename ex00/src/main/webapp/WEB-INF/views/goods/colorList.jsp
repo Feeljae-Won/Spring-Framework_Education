@@ -5,7 +5,7 @@
 	<c:forEach items="${colorList }" var="vo">
 		<div class="form-check mb-2 mr-sm-2">
 			<label>
-				<input type="checkbox" name="color_no" value="${vo.color_no }" class="form-control">
+				<input type="checkbox" name="color_nos" value="${vo.color_no }" class="form-control">
 				${vo.color_name }
 			</label>
 		</div>

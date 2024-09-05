@@ -44,21 +44,11 @@ $(function() {
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="airAdminNOC.do"> 
-						<Strong>국가 관리</Strong>
+						<Strong>국가 및 공항 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#"> 
-						<Strong>공항 관리</Strong>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#"> 
-						<Strong>기종 등록</Strong>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#"> 
+					<a class="nav-link " href="airAdminAirplane.do"> 
 						<Strong>항공사 기종 관리</Strong>
 					</a>
 				</li>

@@ -3,6 +3,9 @@ package org.zerock.goods.service;
 import java.util.List;
 
 import org.zerock.goods.vo.ColorVO;
+import org.zerock.goods.vo.GoodsImageVO;
+import org.zerock.goods.vo.GoodsOptionVO;
+import org.zerock.goods.vo.GoodsSizeColorVO;
 import org.zerock.goods.vo.GoodsVO;
 import org.zerock.goods.vo.SizeVO;
 
@@ -17,7 +20,8 @@ public interface GoodsService {
 	public GoodsVO view(Long no, int inc);
 	
 	// 상품 등록
-	public Integer write(GoodsVO vo);
+	public Integer write(GoodsVO vo, 
+			List<GoodsImageVO> goodsImageList, List<GoodsSizeColorVO> goodsSizeColorList, List<GoodsOptionVO> goodsOptionList);
 	
 	// 상품 수정 - 텍스트 정보 + 대표 이미지 + 상세 설명 이미지
 	public Integer update(GoodsVO vo);

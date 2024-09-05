@@ -5,6 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.zerock.goods.vo.ColorVO;
+import org.zerock.goods.vo.GoodsImageVO;
+import org.zerock.goods.vo.GoodsOptionVO;
+import org.zerock.goods.vo.GoodsSizeColorVO;
 import org.zerock.goods.vo.GoodsVO;
 import org.zerock.goods.vo.SizeVO;
 
@@ -25,10 +28,17 @@ public interface GoodsMapper {
 	// 보기
 	public GoodsVO view(Long no);
 
-	// 등록
+	// ------- [ 상품 정보 등록 ] - transactional 처리 ---------
+	// 1. 상품 정보 등록
 	public Integer write(GoodsVO vo);
-	// 글등록 트랜젝션 처리 테스트
-	// public Integer writeTx(GoossVO vo);
+	// 2. 추가 이미지
+	public Integer writeImage(List<GoodsImageVO> goodsImageList);
+	// 3. 상품 사이즈&컬러
+	public Integer writeSizeColor(List<GoodsSizeColorVO> goodsSizeColorList);
+	// 4. 상품 옵션
+	public Integer writeOption(List<GoodsOptionVO> goodsOptionList);
+	// 5. 상품 가격
+	public Integer writePrice(GoodsVO vo);
 	
 	// 수정
 	public Integer update(GoodsVO vo);

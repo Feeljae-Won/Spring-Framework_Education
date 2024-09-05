@@ -72,7 +72,7 @@
 		
 		let appendOptionTag = "";
 		appendOptionTag +=	"<div class=\"input-group mt-2\" >";
-		appendOptionTag +=		"<input class=\"form-control\" name=\"option_name\" >";
+		appendOptionTag +=		"<input class=\"form-control\" name=\"option_names\" >";
 		appendOptionTag +=			"<div class=\"input-group-append\">";
 		appendOptionTag +=				"<button type=\"button\" class=\"btn btn-danger btn-sm removeOptionBtn\">";
 		appendOptionTag +=					"<i class=\"fa fa-close\"></i>";
@@ -169,16 +169,18 @@ legend {
 				<input class="form-control datepicker" id="product_date" name="product_date" placeholder="제조년월" required readonly>
 			</div>
 			<div class="form-group">
-				<label for="detail_image_name"><b>> 상세 설명 이미지</b></label>
-				<input class="form-control" id="detail_image_name" name="detail_image_name" type="file">
+				<!-- VO 객체의 property와 이름이 다르다. 파일 자체이므로 DB에는 파일 이름만 꺼내서 저장한다. -->
+				<label for="detailImageFile"><b>> 상세 설명 이미지</b></label>
+				<input class="form-control" id="detailImageFile" name="detailImageFile" type="file">
 			</div>
 			<div class="form-group">
 				<label for="content"><b>> 상세 설명</b></label>
 				<textarea class="form-control" id="content" name="content" rows="10" placeholder="상세 설명을 입력하세요." required></textarea>
 			</div>
 			<div class="form-group">
-				<label for="image_name"><b>> 대표 이미지</b></label>
-				<input class="form-control" id="image_name" name="image_name" type="file" required>
+				<!-- VO 객체의 property와 이름이 다르다. 파일 자체이므로 DB에는 파일 이름만 꺼내서 저장한다. -->
+				<label for="imageFile"><b>> 대표 이미지</b></label>
+				<input class="form-control" id="imageFile" name="imageFile" type="file" required>
 			</div>
 		</fieldset>
 			<!-- 상품 기본 정보 입력 끝 -->
@@ -244,7 +246,7 @@ legend {
 				</legend>
 				<div id="optionDiv">
 					<div class="input-group mb-2"> 
-						<input name="option_name" class="form-control"/>	
+						<input name="option_names" class="form-control"/>	
 					</div>		
 				</div>
 			</fieldset>
@@ -259,6 +261,7 @@ legend {
 			</legend>
 			<!-- 첫번째 첨부파일은 삭제할 수 없다. -->
 			<div class="input-group" >
+				<!-- VO 객체의 property와 이름이 다르다. 파일 자체이므로 DB에는 파일 이름만 꺼내서 저장한다. -->
 				<input class="form-control imageFiles" type="file" name="imageFiles" >
 			</div>
 		</fieldset>

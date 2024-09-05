@@ -25,7 +25,9 @@ public class GoodsVO {
 	private Integer discount_rate; // 현재 가격에 대한 할인율
 	private Integer delivery_charge; // 배송료
 	private Integer saved_rate; // 구매 시 적립율
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date sale_startDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date sale_endDate;
 	
 	// 판매가 getter 만들기-> ${sale_price}
