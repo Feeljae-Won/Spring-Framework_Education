@@ -118,7 +118,7 @@ $(function() {
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#"> 
+					<a class="nav-link" href="airAdminRouteRice.do"> 
 						<Strong>노선 및 운임 관리</Strong>
 					</a>
 				</li>

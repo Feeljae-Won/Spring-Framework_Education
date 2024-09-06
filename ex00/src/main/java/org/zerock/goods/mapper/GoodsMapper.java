@@ -18,10 +18,10 @@ import com.webjjang.util.page.PageObject;
 public interface GoodsMapper {
 
 	//상품 리스트
-	public List<GoodsVO> list(PageObject pageObject,  GoodsSearchVO searchVO);
+	public List<GoodsVO> list(@Param("pageObject") PageObject pageObject, @Param("searchVO") GoodsSearchVO searchVO);
 	
 	// 상품 리스트 페이지 처리를 위한 전체 데이터 개수
-	public Long getTotalRow(PageObject pageObject);
+	public Long getTotalRow(@Param("searchVO") GoodsSearchVO searchVO);
 	
 	// 보기 조회수 1 증가
 	public Integer increase(Long no);

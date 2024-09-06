@@ -19,17 +19,6 @@
 #header:hover {
 	cursor:pointer;
 }
-
-fieldset {
-	border-radius:15px; 
-	background-color:#e0e0e0;
-}
-
-legend {
-	font-size:16px; 
-	background-color:white; 
-	border-radius:5px;
-}
 .searchBtn:hover {
 	cursor:pointer;
 	background-color: #e25600 !important;
@@ -45,107 +34,10 @@ legend {
 	border:1px solid rgba(255, 255, 255, 0);
 }
 
-.hiddenInput {
-	display: none;
-}
-
 </style>
 <script type="text/javascript">
 $(function() {
 	
-	// 바로 중분류의 데이터를 세팅한다.
-	$(".airplaneList").load("/ajax/getAirplane.do?airplanePdt="	+ $(".airplanePdt").val());
-	
-	
-	
-	let inputRowCnt = 1;
-	let inputRow = "";
-	inputRow+= '<tr>';
-	inputRow+=		'<td class="">';
-	inputRow+=			'<select class="form-control mr-4 airplanePdt" name="airplanePdt" id="airplanePdt" style="width:90%;">';
-	inputRow+=				'<option value="AIRBUS">AIRBUS (에어버스)</option>';
-	inputRow+=				'<option value="BOEING">BOEING (보잉)</option>';
-	inputRow+=			'</select>';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<select class="form-control mr-4 airplaneList" name="airplanePdt" id="airplaneList" style="width:90%;">';
-	inputRow+=			'</select>';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="flightName" id="flightName" placeholder="flightName" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="seatCapacity" id="seatCapacity" type="number" value="300" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="ecoCnt" id="ecoCnt" type="number" value="216" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="prEcoCnt" id="prEcoCnt" type="number" value="48"style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="bisCnt" id="bisCnt" type="number" value="24" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="fstCnt" id="fstCnt" type="number" value="12" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<i class="fa fa-close btn-danger btn inputDeleteBtn" style="color:white;"></i>';
-	inputRow+=		'</td>';
-	inputRow+=	'</tr>';
-	
-	// 항공편 등록 창 보이기
-	$(".addFlightBtn").click(function(){
-		$(".hiddenInput").toggle();
-	});
-	
-	// input 항목 늘리기
-	$(".addBtn").click(function(){
-		
-		if(inputRowCnt >= 10) {
-			alert("항공편 추가는 최대 10개까지만 가능합니다.");
-			return false;
-		}
-		
-		let newRow = $(inputRow).clone();
-		
-		$("#inputRow").append(newRow);
-		
-		// 새로 추가된 행의 대분류 선택에 따른 중분류 리스트 세팅
-	    newRow.find(".airplaneList").load("/ajax/getAirplane.do?airplanePdt=" + newRow.find(".airplanePdt").val());
-		inputRowCnt++;
-	});
-	
-	// 대분류 선택에 따른 중분류 리스트 가져오기
-	$("#inputRow").on("change", ".airplanePdt", function() {
-	    let airplanePdt = $(this).closest("tr").find(".airplanePdt").val();
-	    $(this).closest("tr").find(".airplaneList").load("/ajax/getAirplane.do?airplanePdt=" + airplanePdt);
-	});
-	
-	// inputRow x 버튼 클릭하면 해당 줄 삭제
-	$("#inputRow").on("click", ".inputDeleteBtn", function() {
-		
-		$(this).closest("tr").remove();
-		inputRowCnt--;
-	});
-	
-	// 항공편 일괄 등록 버튼
-	$("#totalAddBtn").click(function(){
-		
-		$(this).html('<span class="spinner-border spinner-border-sm"></span> Loading..');
-	});
-	
-	$(".dataRow").click(function() {
-		let flightName = $(this).data("flightname");
-		console.log(flightName);
-		
-		$(".collapse").hide();
-		
-		$("#view"+flightName).load("/ajax/getFlightInfo.do?flightName="	+ flightName);
-		
-		$("#view"+flightName).toggle("collapse");
-		
-	})
 	
 	
 });
@@ -172,12 +64,12 @@ $(function() {
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link active" href="airAdminAirplane.do"> 
+					<a class="nav-link" href="airAdminAirplane.do"> 
 						<Strong>항공사 기종 관리</Strong>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="airAdminRouteRice.do"> 
+					<a class="nav-link active" href="airAdminRouteRice.do"> 
 						<Strong>노선 및 운임 관리</Strong>
 					</a>
 				</li>

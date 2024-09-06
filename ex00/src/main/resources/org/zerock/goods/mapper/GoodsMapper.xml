@@ -25,10 +25,13 @@
 				where
 					(<!-- 일반 조건. -->
 						<!-- 현재 판매되고 있는 물건 - 가격 정보가 현재 가격으로 존재한다. -->
-						<![CDATA[
-						sale_startDate <= trunc(sysdate)
-						and trunc(sysdate) <= sale_endDate
-						]]>
+						(
+							<!-- 기간에 대한 검색 조건 -->
+							<![CDATA[
+							sale_startDate <= trunc(sysdate)
+							and trunc(sysdate) <= sale_endDate
+							]]>
+						)
 						<!-- 검색을 달아야 한다. -->
 						<include refid="search" />
 					)
@@ -40,35 +43,53 @@
 				order by goods_no desc
 			)
 		)
-		where rnum between #{startRow} and #{endRow}
+		where rnum between #{pageObject.startRow} and #{pageObject.endRow}
 	</select>
 
 	<!-- 상품 리스트 페이지 처리를 위한 전체 데이터 개수 가져오기 -->
 	<select id="getTotalRow" resultType="Long">
 		select count(*)
-		from goods
+		from goods g, price p
 		<!-- 검색을 달아야한다. -->
-		where 1=1
+		where (1=1)
 		<include refid="search" />
+			and
+				g.goods_no = p.goods_no
 	</select>
 	
 	<!-- 상품 리스트의 검색 처리 -->
 	<sql id="search">
-		<if test="word != null and word != ''.toString()">
-			where
- 			<!-- prefixOverrides="or" - 맨 앞에 or는 제거한다. -->
-			<trim prefixOverrides="or">
-				<!-- 'test' : 문자열(String), 't' : 문자(char) -> 문자열 - toString()사용  -->
-				<if test="key.indexOf('t') >= 0">
-					or title like '%' || #{word} || '%'
+		<!-- 검색 데이터가 존재하면 쿼리를 추가 시킨다. -->
+		<if test="searchVO.exist">
+			and (
+ 			<!-- prefixOverrides="and" - 맨 앞에 and는 제거한다. -->
+			<trim prefixOverrides="and">
+				<!-- 대분류 검색  -->
+				<if test="searchVO.cate_code1 != null and searchVO.cate_code1 > 0">
+					and cate_code1 = #{searchVO.cate_code1}
 				</if>
-				<if test="key.indexOf('c') >= 0">
-					or content like '%' || #{word} || '%'
+				<!-- 중분류 검색 -->
+				<if test="searchVO.cate_code2 != null and searchVO.cate_code2 > 0">
+					and cate_code2 = #{searchVO.cate_code2}
 				</if>
-				<if test="key.indexOf('w') >= 0">
-					or writer like '%' || #{word} || '%'
+				<!-- 상품명 검색 -->
+				<if test="searchVO.goods_name != null and searchVO.goods_name != ''.toString()">
+					and goods_name like '%' || #{searchVO.goods_name} || '%'
+				</if>
+				<!-- 최저가 검색 -->
+				<if test="searchVO.min != null and searchVO.min > 0">
+					<![CDATA[
+						and sale_price >= #{searchVO.min}
+					]]>
+				</if>
+				<!-- 최대가 검색 -->
+				<if test="searchVO.max != null and searchVO.max > 0">
+					<![CDATA[
+						and sale_price <= #{searchVO.max}
+					]]>
 				</if>
 			</trim>
+			)
 		</if>
 	</sql>
 
@@ -159,15 +180,14 @@
 	<!-- 5. 상품 가격 등록  -->
 	<insert id="writePrice">
 		insert into price(
-			price_no, goods_no, price, discount, discount_Rate, delivery_charge, 
+			price_no, goods_no, price, discount, sale_price, discount_Rate, delivery_charge, 
 			saved_rate 
 			<if test="sale_startDate != null">, sale_startDate</if>
-   			<if test="sale_endDate != null">, sale_endDate</if>
-			sale_startdate, sale_endDate
+   			<if test="sale_endDate != null">, sale_endDate </if>
 			)
-    	values(
-   			price_seq.nextval, #{goods_no}, #{price}, #{discount}, #{discount_rate}, #{delivery_charge}, 
-   			#{saved_rate}, 
+    		values(
+   			price_seq.nextval, #{goods_no}, #{price}, #{discount}, #{sale_price, jdbcType = INTERGER} #{discount_rate}, #{delivery_charge}, 
+   			#{saved_rate}
    			<if test="sale_startDate != null">, #{sale_startDate, jdbcType = DATE}</if>
    			<if test="sale_endDate != null">, #{sale_endDate, jdbcType = DATE}</if>
    			)

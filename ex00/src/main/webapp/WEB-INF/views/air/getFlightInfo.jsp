@@ -43,7 +43,7 @@
 				<table class="table table-sm text-center align-text-middle table-borderless" 
 					style="table-layout: fixed; width: 100%;">
 					<tr>
-						<th style="width:15px;">경로 번호</th>
+						<th style="width:20px;">경로 번호</th>
 						<th style="width:15px;">유형</th>
 						<th >출발지</th>
 						<th >출발 공항</th>

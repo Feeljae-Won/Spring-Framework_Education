@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,7 +54,9 @@ public class GoodsController {
 	@GetMapping("/list.do")
 	// 검색을 위한 데이터를 따로 받아야 한다.
 	// public ModelAndView list(Model model) {
-	public String list(Model model,  GoodsSearchVO searchVO, HttpServletRequest request)
+	// @ModelAttribute() - 전달 받은 데이터를 Model에 담아서 바로 JSP 까지 보낼 때 사용.
+	// 	- 속성 명은 보통 타입으로 사용한다.  name = "searchVO" 설정해서 사용
+	public String list(Model model, @ModelAttribute(name = "searchVO") GoodsSearchVO searchVO, HttpServletRequest request)
 			throws Exception {
 	//	public String list(HttpServletRequest request) {
 		log.info("list.do");
@@ -72,6 +75,10 @@ public class GoodsController {
 		// pageObject에 데이터 가져 오기 전에는 시작 페이지, 끝 페이지, 전체 페이지가 정해지지 않는다.
 		log.info(pageObject);
 		model.addAttribute("pageObject", pageObject);
+		
+		// 대분류를 가져와서 JSP로 넘기기
+		model.addAttribute("bigList", categoryService.list(0));
+//		model.addAttribute("searchVO", searchVO);
 		// 검색에 대한 정보도 넘겨야 한다.
 		
 		return "goods/list";

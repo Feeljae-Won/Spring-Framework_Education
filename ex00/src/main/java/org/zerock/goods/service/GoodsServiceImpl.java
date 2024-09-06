@@ -38,7 +38,7 @@ public class GoodsServiceImpl implements GoodsService{
 	public List<GoodsVO> list(PageObject pageObject,  GoodsSearchVO searchVO) {
 		log.info("list() 실행");
 		// 전체 데이터 개수 구하기
-		pageObject.setTotalRow(mapper.getTotalRow(pageObject));
+		pageObject.setTotalRow(mapper.getTotalRow(searchVO));
 		return mapper.list(pageObject, searchVO);
 	}
 	

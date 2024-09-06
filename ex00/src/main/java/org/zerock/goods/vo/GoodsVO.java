@@ -20,23 +20,16 @@ public class GoodsVO {
 	private Date product_date;
 	private String image_name; // 리스트에 나타날 대표 이미지
 	private Long hit;
-	private Integer price; // 현재 판매 가격
+	private Integer price; 
 	
 	private Integer discount; // 현재 가격에 대한 할인가
 	private Integer discount_rate; // 현재 가격에 대한 할인율
 	private Integer delivery_charge; // 배송료
 	private Integer saved_rate; // 구매 시 적립율
+	private Integer sale_price; // 현재 판매 가격
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date sale_startDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date sale_endDate;
-	
-	// 판매가 getter 만들기-> ${sale_price}
-	public Integer getSale_price() {
-		// 할인가가 있는 경우 처리 : 정가 - 할인가
-		if(discount != null && discount != 0) return price - discount;
-		// 할인율이 있응 경우 처리 : 정가 - (정가 * 할인율 / 100) - 10원 미만 절삭
-		return (price - (price * discount_rate / 100)) / 10 * 10;
-	}
 	
 }

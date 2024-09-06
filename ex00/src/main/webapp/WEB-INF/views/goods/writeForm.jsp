@@ -118,6 +118,31 @@
 			$("#sizeFieldSet input, #colorFieldSet input").prop("checked", false);
 		});
 		
+		// 현재 판매가 계싼
+		$("#price, #discount, #discount_rate").keyup(function() {
+			
+			let price = 0;
+			let discount = 0;
+			let discount_rate = 0;
+			let sale_price = 0;
+			
+			// number() - 캐스팅
+			price = Number($("#price").val());
+			discount = Number($("#discount").val());
+			discount_rate = Number($("#discount_rate").val());
+			
+			// 계산
+			if(discount > 0) sale_price = price - discount;
+			else if(discount_rate > 0) 
+				sale_price = Math.floor((price - (price * discount_rate / 100) ) / 10) * 10;
+			else sale_price = price;
+			
+			// 계산된 값 넣기
+			$("#sale_price").val(sale_price);
+			
+			
+		});
+		
 			
 	});
 </script>
@@ -192,21 +217,26 @@ legend {
 			<legend class="w-auto px-2"> <b>[ 상품 가격 정보 입력 ]</b></legend>
 			<div class="form-inline form-group">
 				<label for="price" class="mr-2"><b>> 정가</b></label>
-				<input class="form-control mr-5" id="price" name="price" placeholder="정가 입력" required>
+				<input class="form-control mr-5" id="price" name="price" value="0" placeholder="정가 입력" required>
 			</div>
 			<div class="form-inline form-group">
 				<label for="discount" class="mr-2"><b>> 할인가</b></label>
-				<input class="form-control mr-5" id="discount" name="discount" placeholder="할인가">
+				<input class="form-control mr-5" id="discount" name="discount" value="0" placeholder="할인가">
 				
 				<label for="discount_rate" class="mr-2"><b>> 할인율</b></label>
-				<input class="form-control mr-5" id="discount_rate" name="discount_rate" placeholder="할인율" >
+				<input class="form-control mr-5" id="discount_rate" name="discount_rate" value="0" placeholder="할인율" 
+					style="width: 120px;">
+				
+				<label for="discount_rate" class="mr-2"><b>> 판매가</b></label>
+				<input class="form-control mr-5" id="sale_price" name="sale_price" value="0" placeholder="현재 판매가" readonly >
 			</div>
 			<div class="form-inline form-group">
 				<label for="delivery_charge" class="mr-2"><b>> 배송료</b></label>
 				<input class="form-control mr-5" id="delivery_charge" name="delivery_charge" placeholder="배송료" value="0">
 				
 				<label for="saved_rate" class="mr-2"><b>> 적립율</b></label>
-				<input class="form-control mr-5" id="saved_rate" name="saved_rate" placeholder="배송료" value="0">
+				<input class="form-control mr-5" id="saved_rate" name="saved_rate" placeholder="배송료" value="0"
+					style="width: 120px;">
 			</div>
 			<div class="form-inline form-group">
 				<label for="sale_startDate" class="mr-2"><b>> 판매 기간</b></label>

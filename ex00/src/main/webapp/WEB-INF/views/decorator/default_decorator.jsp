@@ -402,6 +402,10 @@ html .ui-button.ui-state-disabled:active {
          aria-hidden="true" style="margin-left: 5px; margin-right: 8px;"></i>
          즐길거리
       </a>
+      <a href="/goods/list.do"> <i class="fa fa-shopping-bag"
+         aria-hidden="true" style="margin-left: 5px; margin-right: 8px;"></i>
+         쇼핑몰
+      </a>
       <hr>
       <c:if
          test="${!empty login && (login.gradeNo == 1 || login.gradeNo == 9 || login.gradeNo == 5)}">

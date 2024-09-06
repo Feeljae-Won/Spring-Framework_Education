@@ -34,20 +34,20 @@
 		    aopt.flightName,
 		    <!-- 일 처리 -->
 		    CASE 
-		        WHEN EXTRACT(DAY FROM asch.duration) != 0 
-		        THEN EXTRACT(DAY FROM asch.duration) || '일 ' 
+		        WHEN EXTRACT(DAY FROM ash.duration) != 0 
+		        THEN EXTRACT(DAY FROM ash.duration) || '일 ' 
 		        ELSE '' 
 		    END || 
 		    <!-- 시간 처리 -->
 		    CASE 
-		        WHEN EXTRACT(HOUR FROM asch.duration) != 0 
-		        THEN EXTRACT(HOUR FROM asch.duration) || '시간 ' 
+		        WHEN EXTRACT(HOUR FROM ash.duration) != 0 
+		        THEN EXTRACT(HOUR FROM ash.duration) || '시간 ' 
 		        ELSE '' 
 		    END || 
 		    <!-- 분 처리 -->
 		    CASE 
-		        WHEN EXTRACT(MINUTE FROM asch.duration) != 0 
-		        THEN EXTRACT(MINUTE FROM asch.duration) || '분 ' 
+		        WHEN EXTRACT(MINUTE FROM ash.duration) != 0 
+		        THEN EXTRACT(MINUTE FROM ash.duration) || '분 ' 
 		        ELSE '' 
 		    END AS duration,
 		    ash.ScheduleId, 
