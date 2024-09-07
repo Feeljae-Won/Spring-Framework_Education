@@ -44,5 +44,14 @@ public interface AirMapper {
 	
 	// 관리자 - 항공편 상세보기
 	public AirVO getFlightInfo(@Param("flightName") String flightName);
+	
+	// 항공 노선 리스트
+	public List<AirVO> routeList(@Param("pageObject") PageObject pageObject, @Param("airlineNo") Long airlineNo);
+	
+	// 전체 데이터 개수 가져오기
+	public Long getRouteTotalRow(@Param("pageObject") PageObject pageObject, @Param("airlineNo") Long airlineNo);
+	
+	// 전체 데이터 개수 가져오기
+	public AirVO getPrice(@Param("airlineNo") Long airlineNo, @Param("routeId") Long routeId);
 
 }

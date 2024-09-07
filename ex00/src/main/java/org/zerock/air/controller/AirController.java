@@ -223,17 +223,24 @@ public class AirController {
 	
 	// 6-1. 관리자 기종 상세보기 - ajax 처리
 		
-	// 6-2. 관리자 기종 등록
-	@GetMapping("/airAdminAirplaneWriteForm.do")
-	public String airAdminAirplaneWriteForm(String product, Model model){
+	// 6-2. 관리자 기종 등록 - 
+	
+	// 6-3. 관리자 기종 수정 - 
+	
+	// 6-4. 관리자 기종 삭제 - 
+	
+	// 7-1. 관리자 노선 및 운임 리스트
+	@GetMapping("/airAdminRoutePrice.do")
+	public String airAdminRoutePrice(Long airlineNo, Model model, HttpServletRequest request) throws Exception{
+		
+		PageObject pageObject = PageObject.getInstance(request);
+		
+		model.addAttribute("routeList", service.routeList(pageObject, 1L));
+		model.addAttribute("pageObject", pageObject);
 		
 		
-		return "air/airAdminAirplaneWriteForm";
+		return "air/airAdminRoutePrice";
 	}
-	
-	// 6-3. 관리자 기종 수정
-	
-	// 6-4. 관리자 기종 삭제
 	
 
 

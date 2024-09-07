@@ -29,7 +29,6 @@ public class AirServiceImpl implements AirService{
 	// 공항 검색 리스트
 	@Override
 	public List<AirVO> searchList(String searchAirport) {
-		log.info("list() 실행");
 		// 전체 데이터 개수 구하기
 		return mapper.searchList(searchAirport);
 	}
@@ -93,6 +92,23 @@ public class AirServiceImpl implements AirService{
 	@Override
 	public AirVO getFlightInfo(String flightName) {
 		return mapper.getFlightInfo(flightName);
+	}
+	
+	// 항공 노선 리스트
+	@Override
+	public List<AirVO> routeList(PageObject pageObject, Long airlineNo) {
+		// 전체 데이터 개수 구하기
+		pageObject.setTotalRow(mapper.getRouteTotalRow(pageObject, airlineNo));
+		return mapper.routeList(pageObject, airlineNo);
+	}
+	
+	// 항공 노선에 따른 금액 상세보기
+	@Override
+	public AirVO getPrice(Long airlineNo, Long routeId) {
+		// 노선에 따른 금액 가져오기
+		
+		log.info("---------------------------------- routeId : " + routeId);
+		return mapper.getPrice(1L, routeId);
 	}
 
 

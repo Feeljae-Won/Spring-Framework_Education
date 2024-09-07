@@ -37,4 +37,10 @@ public interface AirService {
 	
 	// 관리자 기종 상세보기
 	public AirVO getFlightInfo(String flightName);
+	
+	// 항공 노선 리스트
+	public List<AirVO> routeList(PageObject pageObject, Long airlineNo);
+	
+	// 항공 노선에 따른 금액 가져오기
+	public AirVO getPrice(Long airlineNo, Long routeId);
 }

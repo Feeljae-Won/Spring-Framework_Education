@@ -44,8 +44,10 @@ public class AirVO {
 	// 운항 노선
 	private Long routeId; // 노선 고유 번호
 	private String departure; // 출발지
+	private String departureCountry; // 출발 국가
 	private String departureKor;
 	private String arrival; // 도착지
+	private String arrivalCountry; // 도착 국가
 	private String arrivalKor;
 	private String type; // 국내 D, 국외 I
 	private double distance; // 운항 거리

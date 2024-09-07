@@ -335,8 +335,18 @@ html .ui-button.ui-state-disabled:active {
 }
 
 </style>
+<!-- 천 단위 콤마 관련 함수 -->
+<script type="text/javascript" src="/js/priceAddComma.js"></script>
 <script type="text/javascript">
 $(function() {
+	
+	// 백엔드에서 전달받은 숫자 데이터에 콤마를 추가하여 표시
+    $(".totalPrice").each(function() {
+        let totalPrice = $(this).text().trim();
+        if (totalPrice) {
+            $(this).text(addCommas(totalPrice));  // 콤마 추가
+        }
+    });
 	
 	// 공항 버튼을 클릭했을 때 동작
 	$('.airport').click(function() {
@@ -692,7 +702,8 @@ $(function() {
 		let seatGrade = $(this).closest(".dataRow").find("#selectedSeatGrade").text();
 		let scheduleId_d = $(this).data("scheduleid");
 		
-		let departPrice = parseInt($(this).closest(".dataRow").find("#selectedTotalPrice").text(),10);
+		let departPrice = $(this).closest(".dataRow").find(".totalPrice").data("totalprice");
+		console.log(departPrice);
 		
 		let adult = parseInt($(this).data("adult"), 10);
 		let child = parseInt($(this).data("child"), 10);
@@ -716,7 +727,7 @@ $(function() {
 		text += airlineKor + " (" + flightName + ") " + departDate + " (" + departureTime + " ~ " + arrivalTime + ") " + seatGrade;
 		
 		$("#bottomDepartInfo").text(text);
-		$("#totalPrice").text(totalPrice);
+		$("#totalPrice").text(addCommas(totalPrice));
 		$("#departPrice").val(totalPrice);
 		$("#nextAirlineKor").val(airlineKor);
 		$("#nextFlightName").val(flightName);
@@ -868,17 +879,17 @@ $(function() {
 									<b>
 								    <!-- 일반석일 경우 -->
 								    <c:if test="${param.seatGrade == '일반석'}">
-								        <span>${list.totalPrice} 원</span>
+								        <span class="totalPrice" data-totalprice="${list.totalPrice}">${list.totalPrice} 원</span>
 								    </c:if>
 								    
 								    <!-- 비즈니스석일 경우 -->
 								    <c:if test="${param.seatGrade == '비즈니스석'}">
-								        <span>${list.totalPrice * 2} 원</span>
+								        <span class="totalPrice" data-totalprice="${list.totalPrice * 2}">${list.totalPrice * 2} 원</span>
 								    </c:if>
 								    
 								    <!-- 퍼스트 클래스일 경우 -->
 								    <c:if test="${param.seatGrade == '일등석'}">
-								        <span>${list.totalPrice * 4} 원</span>
+								        <span class="totalPrice" data-totalprice="${list.totalPrice * 4}">${list.totalPrice * 4} 원</span>
 								    </c:if>
 									</b>
 								</span>

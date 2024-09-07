@@ -48,8 +48,12 @@ legend {
 .hiddenInput {
 	display: none;
 }
+.selected {
+	background-color: #FEDB92;
+}
 
 </style>
+<script type="text/javascript" src="/js/priceAddComma.js"></script>
 <script type="text/javascript">
 $(function() {
 	
@@ -135,9 +139,13 @@ $(function() {
 		$(this).html('<span class="spinner-border spinner-border-sm"></span> Loading..');
 	});
 	
+	// 항공편 상세보기
 	$(".dataRow").click(function() {
 		let flightName = $(this).data("flightname");
 		console.log(flightName);
+		
+		$(".dataRow").removeClass("selected");
+		$(this).addClass("selected");
 		
 		$(".collapse").hide();
 		
@@ -177,7 +185,7 @@ $(function() {
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="airAdminRouteRice.do"> 
+					<a class="nav-link" href="airAdminRoutePrice.do"> 
 						<Strong>노선 및 운임 관리</Strong>
 					</a>
 				</li>
@@ -191,7 +199,6 @@ $(function() {
 			<!-- Tab panes -->
 			<div class="tab-content">
 				<div id="nocTab" class="container-fluid p-3 tab-pane active">
-					<br>
 					<button class="searchBtn float-right addFlightBtn">[ 항공편 등록 ]</button>
 					<h3>
 						항공사 기종 관리

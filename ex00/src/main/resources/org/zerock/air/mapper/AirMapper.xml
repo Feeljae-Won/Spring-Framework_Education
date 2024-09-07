@@ -197,6 +197,53 @@
 	    and
 	        asch.flightName = #{flightName}
 	</select>
+	
+	<!-- 전체 데이터 가져오기 -->
+    <select id="getRouteTotalRow" resultType="Long">
+		select count(*) from airRoute where airlineno = #{airlineNo}
+	</select>
+	
+	<!-- 항공 노선 리스트-->
+	<select id="routeList" resultType="org.zerock.air.vo.AirVO">
+		 select rnum, routeId, departureCountry, departure, departureKor, 
+	          arrivalCountry, arrival, arrivalKor, type, distance 
+	    from
+	        ( 
+	        select rownum rnum, routeId, departureCountry, departure, departureKor, 
+	                arrivalCountry, arrival, arrivalKor, type, distance 
+	        from
+	            (
+	            select r.routeId, dc.countryKor departureCountry, r.departure, dap.airportKor departureKor, 
+	                ac.countryKor arrivalCountry, r.arrival, aap.airportKor arrivalKor, r.type, r.distance
+	            from
+	                airRoute r, airport dap, airport aap, country dc, country ac
+	            where
+	            	r.airlineNo = #{airlineNo}
+	            	and 
+		            	(
+			                r.departure = dap.airportCode
+			                and r.arrival = aap.airportCode
+			                and dap.countryCode = dc.countryCode
+			                and aap.countryCode = ac.countryCode
+		                )
+	            order by routeId asc
+	            )
+	        )
+	    where 
+	    	rnum between #{pageObject.startRow} and #{pageObject.endRow}
+	
+	</select>
+	
+	<!-- 항공 노선에 따른 금액 상세보기 -->
+	<select id="getPrice" resultType="org.zerock.air.vo.AirVO">
+		select 
+			priceId, routeID, basePrice, tax, fuelSurCharge, BookingFee
+		from 
+			airPrice
+		where 
+			airlineNo = #{airlineNo} and routeID = #{routeId}
+	
+	</select>
 		
 	
 </mapper>

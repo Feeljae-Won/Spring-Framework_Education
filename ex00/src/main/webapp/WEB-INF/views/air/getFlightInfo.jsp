@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 	<td colspan="12" class="text-left">
 
 		<div class="p-3" >
@@ -16,7 +17,7 @@
 			</button>
 		
 			<div class="p-3 mt-2" style="font-weight:border; background-color:#e4e4e4;border-radius:10px;">
-				<h6 class="ml-3"> <Strong> * 항공사 기본 정보</Strong> </h6>
+				<h6 class="ml-3"> <Strong> * 항공편 기본 정보</Strong> </h6>
 				<table class="table table-sm text-center align-text-middle table-borderless" 
 					style=" table-layout: fixed; width: 100%;">
 					<tr>
@@ -64,7 +65,10 @@
 						<td>${info.departureTime }</td>
 						<td>${info.arrivalTime }</td>
 						<td>${info.duration }</td>
-						<td>${info.distance } km</td>
+						<td class="number" data-distance="${info.distance }">
+							<fmt:formatNumber value="${info.distance}" type="number" />
+							 km
+						</td>
 					</tr>
 				</table>
 			</div>
