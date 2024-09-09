@@ -39,8 +39,24 @@ public class AirController {
 	
 	// 1. 항공 메인
 	@GetMapping("/main.do")
-	public String list() throws Exception {
+	public String list(Model model) throws Exception {
 		log.info("AirController.main() --------------------------");
+		
+		// 대륙별 리스트 가져오기
+		List<AirVO> asia = service.nocList("ASIA");
+		List<AirVO> africa = service.nocList("AFRICA");
+		List<AirVO> australia = service.nocList("AUSTRALIA");
+		List<AirVO> europe = service.nocList("EUROPE");
+		List<AirVO> northAmerica = service.nocList("NORTH AMERICA");
+		List<AirVO> southAmerica = service.nocList("SOUTH AMERICA");
+		
+		// model에 담으로 request에 자동을 담기게 된다. - 처리된 데이터를 Model에 저장
+		model.addAttribute("asia", asia);
+		model.addAttribute("africa", africa);
+		model.addAttribute("australia", australia);
+		model.addAttribute("europe", europe);
+		model.addAttribute("northAmerica", northAmerica);
+		model.addAttribute("southAmerica", southAmerica);
 		
 		return "air/main";
 	} // end of list()
@@ -235,11 +251,36 @@ public class AirController {
 		
 		PageObject pageObject = PageObject.getInstance(request);
 		
-		model.addAttribute("routeList", service.routeList(pageObject, 1L));
+		model.addAttribute("routeList", service.routeList(pageObject, 1L, 0L));
 		model.addAttribute("pageObject", pageObject);
 		
 		
 		return "air/airAdminRoutePrice";
+	}
+	
+	// 8-1. 관리자 운항 스케줄 리스트
+	@GetMapping("/airAdminSchedule.do")
+	public String airAdminSchedule(Long airlineNo, Long routeId, Model model, HttpServletRequest request) throws Exception{
+		
+		PageObject pageObject = PageObject.getInstance(request);
+		
+		model.addAttribute("routeList", service.routeList(pageObject, 1L, 0L));
+		model.addAttribute("pageObject", pageObject);
+		
+		return "air/airAdminSchedule";
+	}
+	
+	// 8-2. 관리자 운항 스케줄 상세보기
+	@GetMapping("/airAdminScheduleDetail.do")
+	public String airAdminScheduleDetail(Long airlineNo, Long routeId, Model model, HttpServletRequest request) throws Exception{
+		
+		PageObject pageObject = PageObject.getInstance(request);
+		
+		model.addAttribute("routeList", service.routeList(pageObject, 1L, routeId));
+		model.addAttribute("scheduleList", service.airScheduleDetail(1L, routeId, pageObject));
+		model.addAttribute("pageObject", pageObject);
+		
+		return "air/airAdminScheduleDetail";
 	}
 	
 

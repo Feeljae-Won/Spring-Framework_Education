@@ -1,39 +1,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>일반 게시판 글보기</title>
+<title>상품 상세보기</title>
+<style type="text/css">
 
-<!-- 1. 필요한 전역 변수 선언 : 직접 코딩 -->
-<script type="text/javascript">
-	// 보고 있는 일반 게시판 글 번호를 전역 변수로 지정해 보자.
-	let id = "test"; // 강제 로그인 - 내가 작성한 댓글에 대해서만 수정 또는 삭제할 수 있다.
-	let no = ${vo.no};
-	let replyPage = 1;
-	console.log("전역 변수 no : " + no);
-</script>
+#smallImageDiv img {
+	width: 100px;
+	height: 100px;
+	margin: 3px;
+}
 
-<!-- 2. util 추가 -->
-<script type="text/javascript" src="/js/utility.js"></script>
+#smallImageDiv img:hover {
+	opacity:70%;
+	pointer:cursor;
+}
+#goodsDetailDiv .data {
+	padding:10px;
+	border-bottom: 1px solid #e0e0e0;
+}
 
-<!-- 2. 날짜 처리 함수 선언 -->
-<script type="text/javascript" src="/js/dateTime.js"></script>
-
-<!-- 3. 댓글 객체(replyService) 선언 : Ajax 처리 포함 -->
-<script type="text/javascript" src="/js/reply.js"></script>
-
-<!-- 4. 댓글 호출 처리 함수 선언 + 이벤트 처리  -->
-<script type="text/javascript" src="/js/replyProcess.js"></script>
-
+</style>
 <script type="text/javascript">
 	$(function() {
 		// 글 수정 버튼 처리
 		$(".updateBtn").click(function() {
-			let no = $(this).data("no");
-// 			alert(no);
-			location = "updateForm.do?no=" + no + "&inc=0";
+			let goods_no = $(this).data("goods_no");
+			location = "updateForm.do?goods_no=" + goods_no + "&inc=0";
 		});
 		
 		// 글 삭제 버튼
@@ -43,8 +40,12 @@
 		
 		// 리스트 버튼에 대한 처리
 		$("#listBtn").click(function() {
-			location = "list.do?page=${param.page}&perPageNum=${param.perPageNum}"
-					+ "&key=${param.key}&word=${param.word}";
+			location = "list.do?page=${param.page}&perPageNum=${param.perPageNum}";
+		});
+		
+		// 이미지 보기 작은 이미지 클릭 -> 큰 이미지 보이기
+		$("#smallImageDiv img").click(function() {
+			$("#bigImageDiv img").attr("src", $(this).attr("src"));
 		});
 	});
 </script>
@@ -53,63 +54,101 @@
 <body>
 <p>
 <div class="container">
-	<form action="delete.do" method="post">
-		<button type="button" class="btn btn-danger float-right deleteBtn" id="deleteBtn"data-toggle="modal" data-target="#deleteModal">
-			글 삭제
-		</button>
-	</form> 
-	<button class="btn btn-secondary float-right updateBtn" data-no="${vo.no }">글 수정</button>
-	<button type="button" class="btn btn-dark float-right" id="listBtn">리스트</button>
-	<h4>일반 게시판 글 보기</h4>
-	<hr>
-	<div class="">
-		<span class="float-right">${vo.writeDate }</span>
-		<h3>${vo.no }. ${vo.title }</h3>
-		<span class="float-right">${vo.hit }</span>
-		<span>${vo.writer }</span>
-		<hr>
-		<div style="height:300px;">
-			<pre>${vo.content }</pre>
-		</div>
-		<hr>
-		<!-- 글보기 card 끝 -->
-		<div>
-			<jsp:include page="boardReply.jsp"></jsp:include>
-		</div>
+	<div class="card">
+		<div class="card-header"><h2>상품 상세 보기</h2></div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-6">
+						<div id="smallImageDiv">
+							<img src="${vo.image_name }" class="img-thumbnail">
+							<c:if test="${!empty image}">
+								<c:forEach items="${image }" var="imageVO">
+									<img src="${imageVO.image_name }" class="img-thumbnail">
+								</c:forEach>
+ 							</c:if>
+						</div>
+						<div id="bigImageDiv" class="img-thumbnail">
+							<!-- 대표 이미지 -->
+							<img src="${vo.image_name }" style="width:100%;">
+						</div>
+						
+					</div>
+					<div class="col-md-6" id="goodsDetailDiv">
+						<div class="data"><i class="fa fa-check"></i>분류 : ${vo.cate_name}</div>
+						<div class="data"><i class="fa fa-check"></i>상품 번호 : ${vo.goods_no}</div>
+						<div class="data"><i class="fa fa-check"></i>상품명 : ${vo.goods_name}</div>
+						<div class="data"><i class="fa fa-check"></i>제조사 : ${vo.company}</div>
+						<div class="data"><i class="fa fa-check"></i>제조일 : 
+							<fmt:formatDate value="${vo.product_date}" pattern="yyyy-MM-dd"/>
+						</div>
+						<div class="data"><i class="fa fa-check"></i>정가 : 
+							<fmt:formatNumber value="${vo.price }" />원
+						</div>
+						<div class="data"><i class="fa fa-check"></i>할인가 : 
+							<fmt:formatNumber value="${(empty vo.discount )? '0' : vo.discount}" />원
+						</div>
+						<div class="data"><i class="fa fa-check"></i>할인율 : ${(empty vo.discount_rate)? '0' : vo.discount_rate}%
+						</div>
+						<div class="data"><i class="fa fa-check"></i>배송비 : 
+							<fmt:formatNumber value="${(empty vo.delivery_charge)? '0' : vo.delivery_charge }" />원
+							(5만원 이상 무료 배송)
+						</div>
+						<div class="data" style="color:red;"><i class="fa fa-check"></i>판매가 : 
+							<fmt:formatNumber value="${vo.sale_price }" />원
+						</div>
+						<div class="data"><i class="fa fa-check"></i>적립금 : 
+							<fmt:formatNumber value="${(vo.price * vo.saved_rate) / 100}" />원 (${vo.saved_rate }%)
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-12">
+						<form action="/cart/write.do" method="post">
+							<div class="form-inline p-3">
+								<c:if test="${!empty sizeColor }">
+									<div class="input-group mb-3" style="border-bottom:0;">
+										<div class="input-group-prepend" style="border-bottom:0;">
+											<span class="input-group-text">> 사이즈/색상 : </span>
+										</div>
+										<select class="form-control">
+											<option value="0">사이즈/색상 선택</option>
+											<c:forEach items="${sizeColor }" var="sizeColorVO">
+												<option value="${sizeColorVO.size_no }">
+													${sizeColorVO.size_name }
+													<c:if test="${!empty sizeColorVO.color_no && sizeColorVO.color_no != 0 }">
+														/ ${sizeColorVO.color_name }
+													</c:if>
+												</option>
+											</c:forEach>
+										</select>
+										<div class="input-group-append">
+											<button type="button" class="btn btn-outline-secondary">
+												<i class="fa fa-plus"></i>
+											</button>
+										</div>
+									</div>
+								</c:if>
+								<c:if test="${!empty option }">
+									
+								</c:if>
+								<c:if test="${empty option and empty sizeColor }">
+									
+								</c:if>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+					</div>
+				</div>
+			</div>
+	
 	</div>
-</div>
-<p>
 
-<!-- The Modal -->
-<div class="modal" id="deleteModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">게시판 글 삭제</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <b>${vo.no }</b>번 글을 삭제하시겠습니까?
-        <br><br>
-        삭제 하려면 비밀번호를 입력하세요.
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer form-inline">
-      	<form action="delete.do" method="post">
-      		<input type="hidden" name="no" value="${vo.no }">
-      		<input class="form-control float-left mr-3" type="password" name="pw" id="pw" placeholder="비밀번호 입력">
-      		<button type="submit" class="btn btn-danger lastDeleteBtn" id="lastDeleteBtn">Delete</button>
-      	</form>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-
-    </div>
-  </div>
 </div>
 </body>
 </html>

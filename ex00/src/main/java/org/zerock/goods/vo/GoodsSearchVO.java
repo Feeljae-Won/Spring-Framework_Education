@@ -17,7 +17,7 @@ public class GoodsSearchVO {
 	// 상품 검색 - url 뒤에 위에 5개의 데이터를 붙혀서 리턴하는 메서드 작성
 	public String getQuery() throws Exception {
 		return "cate_code1=" + toStr(cate_code1) + "&cate_code2=" + toStr(cate_code2) 
-				+ "&goods_name=" + URLEncoder.encode(goods_name, "utf-8")
+				+ "&goods_name=" + URLEncoder.encode(toStr(goods_name), "utf-8")
 				+ "&min=" + toStr(min) + "&max=" + toStr(max);
 	}
 	

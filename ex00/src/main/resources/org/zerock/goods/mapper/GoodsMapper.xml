@@ -8,17 +8,19 @@
 	<select id="list" resultType="org.zerock.goods.vo.GoodsVO">
 		select
 			goods_no, goods_name,
-			price, discount, discount_rate, hit, saved_rate,
-			image_name
+			price, discount, discount_rate, sale_price, 
+			hit, saved_rate, image_name
 		from (
 			select
 				rownum rnum, goods_no, goods_name,
-				price, discount, discount_rate, hit, saved_rate,
+				price, discount, discount_rate, sale_price, 
+				hit, saved_rate,
 				image_name
 			from (
 				select
 					 g.goods_no, g.goods_name,
-					 p.price, p.discount, p.discount_rate, g.hit, saved_rate,
+					 p.price, p.discount, p.discount_rate,
+					 p.sale_price,  g.hit, saved_rate,
 					 g.image_name
 				from
 					goods g, price p
@@ -26,9 +28,8 @@
 					(<!-- 일반 조건. -->
 						<!-- 현재 판매되고 있는 물건 - 가격 정보가 현재 가격으로 존재한다. -->
 						(
-							<!-- 기간에 대한 검색 조건 -->
 							<![CDATA[
-							sale_startDate <= trunc(sysdate)
+							sale_startDate <= sysdate
 							and trunc(sysdate) <= sale_endDate
 							]]>
 						)
@@ -59,34 +60,31 @@
 	
 	<!-- 상품 리스트의 검색 처리 -->
 	<sql id="search">
-		<!-- 검색 데이터가 존재하면 쿼리를 추가 시킨다. -->
+		<!-- 검색 데이터가 존재하면 쿼리를 추가시킨다. -->
 		<if test="searchVO.exist">
-			and (
- 			<!-- prefixOverrides="and" - 맨 앞에 and는 제거한다. -->
+ 			and (
 			<trim prefixOverrides="and">
-				<!-- 대분류 검색  -->
+				<!-- 대분류 검색 추가 -->
 				<if test="searchVO.cate_code1 != null and searchVO.cate_code1 > 0">
 					and cate_code1 = #{searchVO.cate_code1}
 				</if>
-				<!-- 중분류 검색 -->
+				<!-- 중분류 검색 추가 -->
 				<if test="searchVO.cate_code2 != null and searchVO.cate_code2 > 0">
 					and cate_code2 = #{searchVO.cate_code2}
 				</if>
-				<!-- 상품명 검색 -->
+				<!-- 상품명 검색 추가 -->
 				<if test="searchVO.goods_name != null and searchVO.goods_name != ''.toString()">
 					and goods_name like '%' || #{searchVO.goods_name} || '%'
 				</if>
-				<!-- 최저가 검색 -->
+				<!-- 최소가 검색 추가 -->
 				<if test="searchVO.min != null and searchVO.min > 0">
-					<![CDATA[
-						and sale_price >= #{searchVO.min}
-					]]>
+					and sale_price >= #{searchVO.min}
 				</if>
-				<!-- 최대가 검색 -->
+				<!-- 최대가 검색 추가 -->
 				<if test="searchVO.max != null and searchVO.max > 0">
-					<![CDATA[
-						and sale_price <= #{searchVO.max}
-					]]>
+				<![CDATA[
+					and sale_price <= #{searchVO.max}
+				]]>
 				</if>
 			</trim>
 			)
@@ -97,102 +95,146 @@
 	<!-- # {obj} 1. 변수의 이름, 2. vo의 getter 이름, 3. Map의 key -->
 	<update id="increase">
 		update goods set hit = hit + 1
-		where no = #{no}
+		where goods_no = #{goods_no}
 	</update>
 
-	<!-- 상품 보기 -->
+	<!-- 상품 정보 보기 -->
 	<select id="view" resultType="org.zerock.goods.vo.GoodsVO">
-		select no, title, content, writer, writeDate, hit
-		from goods
-		where no = #{no}
+		select
+			g.goods_no, g.goods_name, g.content, 
+			g.cate_code1, g.cate_code2, c.cate_name,
+			g.company, g.product_date,
+			g.image_name, g.detail_image_name,
+			p.price, p.discount, p.discount_rate,
+			p.sale_price, p.delivery_charge, p.saved_rate,
+			hit
+		<!-- from 뒤에 사용할 수 있는 것 : 1. table, 2. select 쿼리, 3. view table -->
+		from goods g, price p, category c
+		where (g.goods_no = #{goods_no})
+			and (g.goods_no = p.goods_no)
+			and (g.cate_code1 = c.cate_code1)
+			and (g.cate_code2 = c.cate_code2)
+	</select>
+	<!-- 상품 이미지 리스트 -->
+	<select id="imageList" resultType="org.zerock.goods.vo.GoodsImageVO">
+		select
+			image_no, goods_no, image_name
+		<!-- from 뒤에 사용할 수 있는 것 : 1. table, 2. select 쿼리, 3. view table -->
+		from goods_image
+		where (goods_no = #{goods_no})
+	</select>
+	<!-- 상품 사이즈와 색상 리스트 -->
+	<select id="sizeColorList" resultType="org.zerock.goods.vo.GoodsSizeColorVO">
+		select
+			g.goods_sizeColor_no, g.goods_no,
+			g.size_no, s.size_name, g.color_no, c.color_name
+		<!-- from 뒤에 사용할 수 있는 것 : 1. table, 2. select 쿼리, 3. view table -->
+		from goods_sizeColor g, basic_color c, basic_size s
+		where (g.goods_no = #{goods_no})
+			and (g.size_no = s.size_no and g.color_no = c.color_no(+))
+	</select>
+	<!-- 상품 옵션 리스트 -->
+	<select id="optionList" resultType="org.zerock.goods.vo.GoodsOptionVO">
+		select
+			goods_option_no, goods_no, option_name
+		<!-- from 뒤에 사용할 수 있는 것 : 1. table, 2. select 쿼리, 3. view table -->
+		from goods_option
+		where (goods_no = #{goods_no})
 	</select>
 
-
-
-	<!-- 1. 상품 상세정보 등록 -->
+	<!-- 1. 상품 정보 등록 -->
 	<insert id="write">
 		<!-- 먼저 GoodsVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. -->
 		<selectKey keyProperty="goods_no" resultType="Long" order="BEFORE">
 			select goods_seq.nextval from dual
 		</selectKey>
-			insert into goods(
-				goods_no, cate_code1, cate_code2, goods_name, company, product_date, 
-				image_name, detail_image_name, content
-				)
-			values(
-				#{goods_no}, #{cate_code1}, #{cate_code2}, #{goods_name}, #{company}, 
-				#{product_date},
-				#{image_name}, 
-				<!-- 지원되는 JDBC 타입 - jdbcType = 
-					VARCHAR : 문자열
-					INTEGER : 정수
-					BIGINT : 큰 정수
-					DOUBLE : 실수
-					DATE : 날짜
-					TIMESTAMP : 타임스탬프
-					BOOLEAN : 논리형 
-				-->
-				#{detail_image_name, jdbcType=VARCHAR}, 
-<!-- 				<if test="detail_image_name == null">null, </if> -->
-<!-- 				<if test="detail_image_name != null">#{detail_image_name, jdbcType=varchar},  </if> -->
-				#{content}
-				)
+		INSERT INTO goods(goods_no, cate_code1, cate_code2, goods_name,
+			company, product_date, image_name, detail_image_name, content)
+		VALUES (#{goods_no}, #{cate_code1}, #{cate_code2}, #{goods_name},
+			#{company}, #{product_date}, #{image_name},
+			<!-- 지원되는 JDBC 타입 - Null 처리가 됨.
+				VARCHAR: 문자열, INTEGER: 정수, BIGINT: 큰 정수,
+				DOUBLE: 실수, DATE: 날짜, TIMESTAMP: 타임스탬프,
+				BOOLEAN: 논리형 -->
+			#{detail_image_name, jdbcType=VARCHAR},
+			#{content})
 	</insert>
-	
+
 	<!-- 2. 상품 추가 이미지 등록 -->
-	<insert id="writeImage">
-		<!-- 먼저 GoodsVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. -->
-		insert into goods_image(image_no, goods_no, image_name)
-		select goods_image_seq.nextval, goods_no, image_name
-			from (
-			<foreach collection="list" item="vo" index="index" separator="union all">
-				select #{vo.goods_no} goods_no, #{vo.image_name} image_name from dual
-			</foreach>
-			)
+	<insert id="writeImage" parameterType="java.util.List">
+		<!-- 먼저 GoodsVO의 goods_no를 가져와서 세팅해 준다. -->
+	    INSERT INTO goods_image(image_no, goods_no, image_name)
+	    select goods_image_seq.nextval, goods_no, image_name from (
+	       <foreach collection="list" item="vo" separator=" union all ">
+		        select #{vo.goods_no} goods_no, #{vo.image_name} image_name 
+		        from dual 
+		   </foreach>
+		 )
 	</insert>
-	
-	<!-- 3. 상품 사이즈 & 컬러 등록 -->
+
+	<!-- 3. 상품 사이즈 / 색상 등록 -->
 	<insert id="writeSizeColor">
-		<!-- 먼저 GoodsVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. -->
-		insert into goods_sizeColor(goods_sizeColor_no, goods_no, size_no, color_no)
-		select goods_sizeColor_seq.nextval, goods_no, size_no, color_no
-			from (
-			<foreach collection="list" item="vo" index="index" separator="union all">
-				select #{vo.goods_no} goods_no, #{vo.size_no} size_no,
-				#{vo.color_no, jdbcType = INTEGER} color_no
-					from dual
-			</foreach>
-				)
+		<!-- 먼저 GoodsVO의 goods_no를 가져와서 세팅해 준다. -->
+	    INSERT INTO goods_sizeColor(goods_sizeColor_no, goods_no,
+	    	 size_no, color_no)
+	    select goods_sizeColor_seq.nextval, goods_no, size_no, color_no from (
+	       <foreach collection="list" item="vo" separator=" union all ">
+		        select #{vo.goods_no} goods_no,
+				<!-- 지원되는 JDBC 타입 - Null 처리가 됨.
+					VARCHAR: 문자열, INTEGER: 정수, BIGINT: 큰 정수,
+					DOUBLE: 실수, DATE: 날짜, TIMESTAMP: 타임스탬프,
+					BOOLEAN: 논리형 -->
+		        	#{vo.size_no} size_no, #{vo.color_no, jdbcType=BIGINT} color_no  
+		        from dual
+		   </foreach>
+		 )
 	</insert>
-	
-	<!-- 4. 상품 옵션 등록 -->
+
+	<!-- 4. 상품 옵션 정보 등록 -->
 	<insert id="writeOption">
-		<!-- 먼저 GoodsVO의 no에 setter를 이용해서 시퀀스에서 받아온 번호를 세팅해 준다. -->
-		insert into goods_option(goods_option_no, goods_no, option_name)
-		select goods_option_seq.nextval, goods_no, option_name
-			from (
-			<foreach collection="list" item="vo" index="index" separator="union all">
-				select #{vo.goods_no} goods_no, #{vo.option_name} option_name from dual
-			</foreach>
-			)
+		<!-- 먼저 GoodsVO의 goods_no를 가져와서 세팅해 준다. -->
+	    INSERT INTO goods_option(goods_option_no, goods_no,
+	    	 option_name)
+	    select goods_option_seq.nextval, goods_no, option_name from (
+	       <foreach collection="list" item="vo" separator=" union all ">
+		        select #{vo.goods_no} goods_no, #{vo.option_name} option_name 
+		        from dual 
+		   </foreach>
+		 )
 	</insert>
 	
-	<!-- 5. 상품 가격 등록  -->
+	<!-- 5. 상품 가격 등록 -->
 	<insert id="writePrice">
-		insert into price(
-			price_no, goods_no, price, discount, sale_price, discount_Rate, delivery_charge, 
-			saved_rate 
-			<if test="sale_startDate != null">, sale_startDate</if>
-   			<if test="sale_endDate != null">, sale_endDate </if>
-			)
-    		values(
-   			price_seq.nextval, #{goods_no}, #{price}, #{discount}, #{sale_price, jdbcType = INTERGER} #{discount_rate}, #{delivery_charge}, 
-   			#{saved_rate}
-   			<if test="sale_startDate != null">, #{sale_startDate, jdbcType = DATE}</if>
-   			<if test="sale_endDate != null">, #{sale_endDate, jdbcType = DATE}</if>
-   			)
+		<!-- 먼저 GoodsVO의 goods_no를 가져와서 세팅해 준다. -->
+		INSERT INTO price(price_no, goods_no, price, discount,
+			discount_rate, sale_price, delivery_charge,
+        	saved_rate
+        	<if test="sale_startDate != null">
+        		,sale_startDate
+        	</if>
+        	<if test="sale_endDate != null">
+        		, sale_endDate
+        	</if>
+        )
+    	VALUES
+    		(price_seq.nextval, #{goods_no}, #{price},
+			<!-- 지원되는 JDBC 타입 - Null 처리가 됨.
+				VARCHAR: 문자열, INTEGER: 정수, BIGINT: 큰 정수,
+				DOUBLE: 실수, DATE: 날짜, TIMESTAMP: 타임스탬프,
+				BOOLEAN: 논리형 -->
+    		#{discount, jdbcType=BIGINT},
+			#{discount_rate, jdbcType=INTEGER},
+			#{sale_price, jdbcType=INTEGER}, #{delivery_charge},
+        	#{saved_rate}
+        	<if test="sale_startDate != null">
+        		, #{sale_startDate}
+        	</if>
+        	<if test="sale_endDate != null">
+        		, #{sale_endDate}
+        	</if>
+        	
+        	)
 	</insert>
-	
 
 	<!-- 상품 수정 -->
 	<update id="update">
@@ -217,15 +259,11 @@
 		from basic_size
 		where cate_code1 = #{cate_code1}
 	</select>
-	
-	<!-- 색상 가져오기 -->
+	<!-- 컬러 가져오기 -->
 	<select id="getColor" resultType="org.zerock.goods.vo.ColorVO">
 		select color_no, cate_code1, cate_code2, color_name
 		from basic_color
 		where cate_code1 = #{cate_code1}
 	</select>
 	
-	
-	
-
 </mapper>

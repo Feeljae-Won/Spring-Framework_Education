@@ -9,9 +9,16 @@
 <meta charset="UTF-8">
 <title>항공 관리자</title>
 <style type="text/css">
+.choice {
+	background-color: #FF9933;
+	border-radius:5px;
+	color: white !important;
+}
+li > a{
+	color:black;
+}
 .dataRow:hover {
 	background: #d4d4d4;
-	border: 3px solid red;
 	cursor:pointer;
 }
 .dataRow > .card-header {
@@ -98,8 +105,6 @@ $(function() {
 	<div class="card">
 		<div class="card-header">
 			<h4>항공 관리</h4>
-		</div>
-		<div class="card-body">
 			<!-- Nav tabs -->
 			<ul class="nav nav-pills">
 				<li class="nav-item">
@@ -107,8 +112,8 @@ $(function() {
 						<Strong>요약</Strong>
 					</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link active" href="airAdminNOC.do"> 
+				<li class="nav-item choice">
+					<a class="nav-link choice" href="airAdminNOC.do"> 
 						<Strong>국가 및 공항 관리</Strong>
 					</a>
 				</li>
@@ -123,18 +128,22 @@ $(function() {
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#"> 
+					<a class="nav-link" href="airAdminSchedule.do"> 
 						<Strong>운항 스케줄 관리</Strong>
 					</a>
 				</li>
 			</ul>
+		</div>
+		
+		<div class="card-body">
+			
 
 			<!-- Tab panes -->
 			<div class="tab-content">
 				<div id="nocTab" class="container-fluid p-3 tab-pane active">
 					<h3>
 						국가 및 공항 관리
-						<button class="btn btn-primary btn-sm" id="addBtn">add</button>
+						<button class="btn btn-sm btn-warning" id="addBtn"><i class="fa fa-plus"></i> add</button>
 					</h3>
 					<small>
 						<span class="ml-3 mt-2">

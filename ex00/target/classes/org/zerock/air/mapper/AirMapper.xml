@@ -205,20 +205,23 @@
 	
 	<!-- 항공 노선 리스트-->
 	<select id="routeList" resultType="org.zerock.air.vo.AirVO">
-		 select rnum, routeId, departureCountry, departure, departureKor, 
-	          arrivalCountry, arrival, arrivalKor, type, distance 
+		 select rnum, routeId, departureCountry, departure, departureKor, departureEng,
+	          arrivalCountry, arrival, arrivalKor, arrivalEng, type, distance 
 	    from
 	        ( 
-	        select rownum rnum, routeId, departureCountry, departure, departureKor, 
-	                arrivalCountry, arrival, arrivalKor, type, distance 
+	        select rownum rnum, routeId, departureCountry, departure, departureKor, departureEng,
+	                arrivalCountry, arrival, arrivalKor, arrivalEng, type, distance 
 	        from
 	            (
-	            select r.routeId, dc.countryKor departureCountry, r.departure, dap.airportKor departureKor, 
-	                ac.countryKor arrivalCountry, r.arrival, aap.airportKor arrivalKor, r.type, r.distance
+	            select r.routeId, dc.countryKor departureCountry, r.departure, dap.airportKor departureKor, dap.airportEng departureEng, 
+	                ac.countryKor arrivalCountry, r.arrival, aap.airportKor arrivalKor, r.type, r.distance, aap.airportEng arrivalEng
 	            from
 	                airRoute r, airport dap, airport aap, country dc, country ac
 	            where
 	            	r.airlineNo = #{airlineNo}
+	            	<if test="routeId != 0">
+	            		and r.routeId = #{routeId}
+	            	</if>
 	            	and 
 		            	(
 			                r.departure = dap.airportCode
@@ -243,6 +246,49 @@
 		where 
 			airlineNo = #{airlineNo} and routeID = #{routeId}
 	
+	</select>
+	
+	<select id="airScheduleDetail" resultType="org.zerock.air.vo.AirVO">
+		select
+			rnum, scheduleId, flightName, departure, arrival, departureTime, arrivalTime, duration, status
+		from (
+			select 
+				rownum rnum, scheduleId, flightName, departure, arrival, departureTime, arrivalTime, duration, status
+			from (
+				select 
+					asch.scheduleId, asch.flightName, 
+				    r.departure, r.arrival,
+				    to_char(asch.departureTime, 'yyyy-mm-dd hh24:mi') departureTime,
+				    to_char(asch.arrivalTime, 'yyyy-mm-dd hh24:mi') arrivalTime, 
+				        <!-- 일 처리 -->
+					    CASE 
+					        WHEN EXTRACT(DAY FROM asch.duration) != 0 
+					        THEN EXTRACT(DAY FROM asch.duration) || '일 ' 
+					        ELSE '' 
+					    END || 
+				        <!-- 시간 처리 -->
+					    CASE 
+					        WHEN EXTRACT(HOUR FROM asch.duration) != 0 
+					        THEN EXTRACT(HOUR FROM asch.duration) || '시간 ' 
+					        ELSE '' 
+					    END || 
+					    <!-- 분 처리 --> 
+					    CASE 
+					        WHEN EXTRACT(MINUTE FROM asch.duration) != 0 
+					        THEN EXTRACT(MINUTE FROM asch.duration) || '분 ' 
+					        ELSE '' 
+					    END AS duration, asch.status
+				from 
+					airschedule asch, airroute r
+				where (
+						asch.routeId = #{routeId} and asch.airlineNo = #{airlineNo}
+					)
+				    and asch.routeId = r.routeId
+				order by asch.routeId asc
+			)
+		)
+		where
+			rnum between #{pageObject.startRow} and #{pageObject.endRow}
 	</select>
 		
 	

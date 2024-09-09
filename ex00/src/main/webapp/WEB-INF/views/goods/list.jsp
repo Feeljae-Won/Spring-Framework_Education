@@ -87,9 +87,14 @@ $(function(){
 	$(".dataRow").click(function(){
 		// alert("click");
 		// 글번호 필요 - 수집
-		let no = $(this).find(".no").text();
-		console.log("no = " + no);
-		location="view.do?no=" + no + "&${pageObject.pageQuery}";
+		let goods_no = $(this).find(".goods_no").text();
+		console.log("goods_no = " + goods_no);
+		console.log("searchVO = ${searchVO}");
+		console.log("searchVO.query = ${searchVO.query}");
+		location="view.do?goods_no=" + goods_no + "&inc=1"
+				+ "&${pageObject.pageQuery}"
+				+ "&${searchVO.query}"
+				;
 	});
 	
 	// 검색 버튼
@@ -105,8 +110,8 @@ $(function(){
 	});
 	
 	// 검색 데이터 세팅
-	$("#cate_code1").val("${searchVO.cate_code1}");
-	$("#cate_code2").val("${searchVO.cate_code2}");
+	$("#cate_code1").val("${(searchVO.cate_code1 == null)?'0':searchVO.cate_code1}");
+	$("#cate_code2").val("${(searchVO.cate_code2 == null)?'0':searchVO.cate_code2}");
 	$("#min").val("${searchVO.min}");
 	$("#max").val("${searchVO.max}");
 	$("#goods_name").val("${searchVO.goods_name}");
@@ -148,7 +153,7 @@ $(function(){
 					<label for="cate_code2" class="mr-3"><b>> 중분류</b></label>
 					<select class="form-control" name="cate_code2"
 						 id="cate_code2"  style="margin: 0 10px;">
-							<option value="0">대분류 선택</option>
+							<option value="0" selected>대분류 선택</option>
 							<!-- ajax를 이용한 중분류 option 로딩하기 -->
 					</select>
 					<label for="min" class="mr-3" ><b>> 가격대</b></label>

@@ -17,8 +17,19 @@ public interface GoodsService {
 	// 상품 리스트
 	public List<GoodsVO> list(PageObject pageObject, GoodsSearchVO searchVO);
 	
-	// 상품 보기
+	// 상품 보기 ----------------------------------------
 	public GoodsVO view(Long no, int inc);
+	
+	// 상세보기 이미지 리스트 받아오기
+	public List<GoodsImageVO> viewImageList(Long good_no);
+	
+	// 상세보기 사이즈 가져오기
+	public List<GoodsSizeColorVO> sizeColorList(Long goods_no);
+	
+	// 상세보기 옵션 가져오기
+	public List<GoodsOptionVO> optionList(Long goods_no);
+	
+	// 상세보기 끝 --------------------------------------
 	
 	// 상품 등록
 	public Integer write(GoodsVO vo, 
@@ -35,6 +46,8 @@ public interface GoodsService {
 	
 	// 상품 색상 가져오기
 	public List<ColorVO> getColor(Integer cate_code1);
+
+
 	
 	// 상품 이미지 추가
 	// 상품 이미지 변경

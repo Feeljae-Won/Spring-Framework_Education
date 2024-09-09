@@ -86,10 +86,20 @@ public class GoodsController {
 	
 	//--- 상품관리 글보기 ------------------------------------
 	@GetMapping("/view.do")
-	public String view(Model model, Long no, int inc) {
-		log.info("view.do");
+	public String view(Model model, Long goods_no, int inc, @ModelAttribute(name = "searchVO") GoodsSearchVO searchVO) {
+		log.info("view.do - goods_no = " + goods_no + ", inc = " + inc);
 		
-		model.addAttribute("vo", service.view(no, inc));
+		// 상품 상세 정보 가져오기 - 현재 판매 가격 포함
+		model.addAttribute("vo", service.view(goods_no, inc));
+		
+		// 사이즈와 색상 리스트
+		model.addAttribute("sizeColor", service.sizeColorList(goods_no));
+		
+		// 옵션 리스트
+		model.addAttribute("option", service.optionList(goods_no));
+		
+		// 첨부 이미지 파일 여러개 리스트
+		model.addAttribute("image", service.viewImageList(goods_no));
 		
 		return "goods/view";
 	}

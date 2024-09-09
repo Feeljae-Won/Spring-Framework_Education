@@ -46,12 +46,15 @@ public interface AirMapper {
 	public AirVO getFlightInfo(@Param("flightName") String flightName);
 	
 	// 항공 노선 리스트
-	public List<AirVO> routeList(@Param("pageObject") PageObject pageObject, @Param("airlineNo") Long airlineNo);
+	public List<AirVO> routeList(@Param("pageObject") PageObject pageObject, @Param("airlineNo") Long airlineNo, @Param("routeId") Long routeId);
 	
 	// 전체 데이터 개수 가져오기
 	public Long getRouteTotalRow(@Param("pageObject") PageObject pageObject, @Param("airlineNo") Long airlineNo);
 	
 	// 전체 데이터 개수 가져오기
 	public AirVO getPrice(@Param("airlineNo") Long airlineNo, @Param("routeId") Long routeId);
+	
+	// 노선별 스케줄 리스트
+	public List<AirVO> airScheduleDetail(@Param("airlineNo") Long airlingeNo, @Param("routeId") Long routeId, @Param("pageObject") PageObject pageObject);
 
 }

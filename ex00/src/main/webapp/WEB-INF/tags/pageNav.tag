@@ -61,7 +61,7 @@
 	  	 data-page="${cnt }">
 	  	 	<!-- 페이지와 cnt가 같으면 링크가 없음 -->
 	  	 	<c:if test="${pageObject.page == cnt }">
-	  			<a class="page-link" href="" onclick="return false"
+	  			<a class="page-link" href="" onclick="return false" style="background-color:#FF9933; border:#FF9933;"
 	  			 ${noMove } ${tooltip }>${cnt}</a>
 	  	 	</c:if>
 	  	 	<!-- 페이지와 cnt가 같지 않으면 링크가 있음 -->

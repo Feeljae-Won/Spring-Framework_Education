@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -684,6 +685,24 @@ $(function() {
 		
 	});
 	
+	$("#allAirportBtn").click(function() {
+		$("#allAirportModal").modal("show");
+		
+		// 각 나라의 airportListBtn 눌렀을 때 공항 리스트 처리
+		$(".airportListBtn").click(function() {
+			let country = $(this).data("countrycode");
+			// console.log(country);
+			
+			$(".collapse").find(".airList").remove();
+			$(".collapse").collapse("hide");
+			
+			// 바로 중분류의 데이터를 세팅한다.
+			$("#airportList" + country).load("/ajax/getAirport.do?countryCode="	+ country);
+			$("#airportList" + country).collapse("show");
+		});
+		
+	});
+	
 });
 </script>
 </head>
@@ -824,9 +843,188 @@ $(function() {
 	</div>
 	
 	<p class="mt-5">
-		<i class="material-icons" style="font-size:18px;color:#E37027">place</i>
-		<strong>모든 공항 보기</strong>
+		<button class="btn btn-light btn-sm" id="allAirportBtn">
+			<i class="material-icons" style="font-size:18px;color:#E37027">place</i>
+			<strong>모든 공항 보기</strong>
+		</button>
 	</p>
+</div>
+
+<!-- 모든 공항 리스트 -->
+<div class="modal" id="allAirportModal">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">공항 리스트<h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <!-- 대륙별 리스트 -->
+		<!-- 아시아  -->
+		<h6><strong><i class="material-icons" style="font-size:20px; color:#E37027;">flag</i> 아시아 (Asia)</strong></h6>
+		<ul class="list-group ml-3">
+			<c:forEach items="${asia }" var="vo">
+				<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
+					data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+					
+					<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+					<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+							id="airportListBtn${vo.countryCode }" >
+						[ 공항 리스트 ]
+					</button>
+					
+					<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+						<div class="airList">
+							<ul>
+								<li>
+									인천 국제 공항
+								</li>
+							</ul>
+						</div>
+					</div>
+					
+				</li>
+			</c:forEach>
+			
+		</ul>
+		<hr>
+		<h6><strong><i class="material-icons" style="font-size:20px; color:#E37027;">flag</i> 북미 (North Ameirca)</strong></h6>
+		<ul class="list-group ml-3">
+			<c:forEach items="${northAmerica }" var="vo">
+				<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
+					data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+					
+					<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+					<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+							id="airportListBtn${vo.countryCode }" >
+						[ 공항 리스트 ]
+					</button>
+					
+					<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+						<div class="airList">
+							<ul>
+								<li>
+									인천 국제 공항
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</c:forEach>
+		</ul>
+		<hr>
+		<h6><strong><i class="material-icons" style="font-size:20px; color:#E37027;">flag</i> 남미 (South America)</strong></h6>
+		<ul class="list-group ml-3">
+			<c:forEach items="${southAmerica }" var="vo">
+				<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
+					data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+					
+					<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+					<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+							id="airportListBtn${vo.countryCode }" >
+						[ 공항 리스트 ]
+					</button>
+					
+					<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+						<div class="airList">
+							<ul>
+								<li>
+									인천 국제 공항
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</c:forEach>
+		</ul>
+		<hr>
+		<h6><strong><i class="material-icons" style="font-size:20px; color:#E37027;">flag</i> 유럽 (Europe)</strong></h6>
+		<ul class="list-group ml-3">
+			<c:forEach items="${europe }" var="vo">
+				<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
+					data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+					
+					<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b>
+					<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+							id="airportListBtn${vo.countryCode }" >
+						[ 공항 리스트 ]
+					</button>
+					
+					<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+						<div class="airList">
+							<ul>
+								<li>
+									인천 국제 공항
+								</li>
+							</ul>
+						</div>
+					</div> 
+				</li>
+			</c:forEach>
+		</ul>
+		<hr>
+		<h6><strong><i class="material-icons" style="font-size:20px; color:#E37027;">flag</i> 오스트레일리아 (Australia)</strong></h6>
+		<ul class="list-group ml-3">
+			<c:forEach items="${australia }" var="vo">
+				<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
+					data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+					
+					<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+					<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+							id="airportListBtn${vo.countryCode }" >
+						[ 공항 리스트 ]
+					</button>
+					
+					<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+						<div class="airList">
+							<ul>
+								<li>
+									인천 국제 공항
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</c:forEach>
+		</ul>
+		<hr>
+		<h6><strong><i class="material-icons" style="font-size:20px; color:#E37027;">flag</i> 아프리카 (Africa)</strong></h6>
+		<ul class="list-group ml-3">
+			<c:forEach items="${africa }" var="vo">
+				<li class="list-group-item" data-pan="${vo.pan }" data-countrykor="${vo.countryKor }"
+					data-countryeng="${vo.countryEng }" data-countrycode="${vo.countryCode }">
+					
+					<b>${vo.countryKor }</b> <small>${vo.countryEng }</small> - 국가 코드 : <b>${vo.countryCode }</b> 
+					<button class="btn btn-light btn-sm airportListBtn ml-3" data-countrycode="${vo.countryCode }"
+							id="airportListBtn${vo.countryCode }" >
+						[ 공항 리스트 ]
+					</button>
+					
+					<div id="airportList${vo.countryCode }" class="collapse airportList p-3 ml-3">
+						<div class="airList">
+							<ul>
+								<li>
+									인천 국제 공항
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</c:forEach>
+		</ul>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <!-- 모달 창 -->

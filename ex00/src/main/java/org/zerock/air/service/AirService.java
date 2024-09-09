@@ -39,8 +39,11 @@ public interface AirService {
 	public AirVO getFlightInfo(String flightName);
 	
 	// 항공 노선 리스트
-	public List<AirVO> routeList(PageObject pageObject, Long airlineNo);
+	public List<AirVO> routeList(PageObject pageObject, Long airlineNo, Long routeId);
 	
 	// 항공 노선에 따른 금액 가져오기
 	public AirVO getPrice(Long airlineNo, Long routeId);
+
+	// 노선별 운항 스케줄 리스트
+	public List<AirVO> airScheduleDetail(Long airlingeNo, Long routeId, PageObject pageObject);
 }

@@ -12,9 +12,7 @@
 			<img src="${info.photo }" class="" style="width:130px;">
 			<i class="fa fa-plane" style="margin-left: 5px; margin-right:1px; color:#FF9933;"></i> 
 				<span>편명 : <strong>${info.flightName }</strong></span>
-			<button class="btn btn-sm btn-light">
-				<i class="fa fa-pencil-square-o" style="font-size:15px;"></i>
-			</button>
+			<button class="btn btn-sm btn-light"><i class="	fa fa-pencil" style="font-size:16px;"></i></button>
 		
 			<div class="p-3 mt-2" style="font-weight:border; background-color:#e4e4e4;border-radius:10px;">
 				<h6 class="ml-3"> <Strong> * 항공편 기본 정보</Strong> </h6>

@@ -9,6 +9,14 @@
 <meta charset="UTF-8">
 <title>항공 관리자</title>
 <style type="text/css">
+.choice {
+	background-color: #FF9933;
+	border-radius:5px;
+	color: white !important;
+}
+li > a{
+	color:black;
+}
 .dataRow:hover {
 	background: #d4d4d4;
 	cursor:pointer;
@@ -165,8 +173,6 @@ $(function() {
 	<div class="card">
 		<div class="card-header">
 			<h4>항공 관리</h4>
-		</div>
-		<div class="card-body">
 			<!-- Nav tabs -->
 			<ul class="nav nav-pills">
 				<li class="nav-item">
@@ -174,13 +180,13 @@ $(function() {
 						<Strong>요약</Strong>
 					</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="airAdminNOC.do"> 
+				<li class="nav-item ">
+					<a class="nav-link " href="airAdminNOC.do"> 
 						<Strong>국가 및 공항 관리</Strong>
 					</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link active" href="airAdminAirplane.do"> 
+				<li class="nav-item choice">
+					<a class="nav-link choice" href="airAdminAirplane.do"> 
 						<Strong>항공사 기종 관리</Strong>
 					</a>
 				</li>
@@ -190,11 +196,15 @@ $(function() {
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#"> 
+					<a class="nav-link" href="airAdminSchedule.do"> 
 						<Strong>운항 스케줄 관리</Strong>
 					</a>
 				</li>
 			</ul>
+		</div>
+		
+		<div class="card-body">
+			
 
 			<!-- Tab panes -->
 			<div class="tab-content">
@@ -279,6 +289,28 @@ $(function() {
 							<br>* <b>[ 삭제 ]</b> : 해당 항공편과 관련된 <span style="color:red; font-weight:bold;">모든 데이터가 삭제</span> 됩니다. 
 						</span>
 					</small>
+					<!-- 검색 -->
+					<div class="row float-right">
+					  	<div class="col-md-4 form-inline ">
+					  		<div class="form-group">
+								<select class="form-control" name="searchKey" id="searchKey"  style="margin: 0 10px;">
+										<option value="all">모두</option>
+										<option value="flightName">편명</option>
+										<option value="airplaneId">기종</option>
+										<option value="airplanePdt">제조사</option>
+										<option value="departure">출발지</option>
+										<option value="arrival">도착지</option>
+										<!-- ajax를 이용한 중분류 option 로딩하기 -->
+								</select>
+								<input class="form-control " id="searchWord" name="searchWord" placeholder="검색">
+								<div class="input-group-append">
+								    <button class="btn btn-outline-primary " id="searchBtn">
+								     	<i class="fa fa-search"></i>
+								    </button>
+								</div>
+							</div>
+					  	</div>
+					</div>
 					<table class="table text-center align-middle mt-3">
 						<tr>
 							<th>순번</th>

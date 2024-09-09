@@ -24,10 +24,16 @@ public interface GoodsMapper {
 	public Long getTotalRow(@Param("searchVO") GoodsSearchVO searchVO);
 	
 	// 보기 조회수 1 증가
-	public Integer increase(Long no);
+	public Integer increase(@Param("goods_no") Long goods_no);
 	
 	// 보기
-	public GoodsVO view(Long no);
+	public GoodsVO view(@Param("goods_no") Long goods_no);
+	// 상품 상세보기 이미지 가져오기
+	public List<GoodsImageVO> imageList(@Param("goods_no") Long goods_no);
+	// 상품 상세보기 이미지 가져오기
+	public List<GoodsSizeColorVO> sizeColorList(@Param("goods_no") Long goods_no);
+	// 상품 상세보기 이미지 가져오기
+	public List<GoodsOptionVO> optionList(@Param("goods_no") Long goods_no);
 
 	// ------- [ 상품 정보 등록 ] - transactional 처리 ---------
 	// 1. 상품 정보 등록
@@ -53,4 +59,8 @@ public interface GoodsMapper {
 	
 	// 상품 색상 가져오기
 	public List<ColorVO> getColor(@Param("cate_code1") Integer cate_code1);
+
+
+
+
 }

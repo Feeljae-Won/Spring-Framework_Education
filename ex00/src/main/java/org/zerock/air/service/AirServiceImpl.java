@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.zerock.air.mapper.AirMapper;
@@ -96,10 +97,10 @@ public class AirServiceImpl implements AirService{
 	
 	// 항공 노선 리스트
 	@Override
-	public List<AirVO> routeList(PageObject pageObject, Long airlineNo) {
+	public List<AirVO> routeList(PageObject pageObject, Long airlineNo, Long routeId) {
 		// 전체 데이터 개수 구하기
 		pageObject.setTotalRow(mapper.getRouteTotalRow(pageObject, airlineNo));
-		return mapper.routeList(pageObject, airlineNo);
+		return mapper.routeList(pageObject, airlineNo, routeId);
 	}
 	
 	// 항공 노선에 따른 금액 상세보기
@@ -109,6 +110,13 @@ public class AirServiceImpl implements AirService{
 		
 		log.info("---------------------------------- routeId : " + routeId);
 		return mapper.getPrice(1L, routeId);
+	}
+	
+	// 노선별 스케줄 리스트
+	@Override
+	public List<AirVO> airScheduleDetail(@Param("airlineNo") Long airlingeNo, @Param("routeId") Long routeId, @Param("pageObject") PageObject pageObject) {
+		
+		return mapper.airScheduleDetail(1L, routeId, pageObject);
 	}
 
 
