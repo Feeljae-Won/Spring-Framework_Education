@@ -54,7 +54,7 @@ public class PageObject {
 		endRow = startRow + perPageNum -1;
 		
 		// JSP 하단 부분에 몇개의 페이지를 표시할지 정한다.
-		perGroupPageNum = 10;
+		perGroupPageNum = 5;
 		System.out.println("PageObject(페이지,페이지 당 글수)");
 	}
 	
