@@ -68,43 +68,7 @@ $(function() {
 	// 바로 중분류의 데이터를 세팅한다.
 	$(".airplaneList").load("/ajax/getAirplane.do?airplanePdt="	+ $(".airplanePdt").val());
 	
-	
-	
 	let inputRowCnt = 1;
-	let inputRow = "";
-	inputRow+= '<tr>';
-	inputRow+=		'<td class="">';
-	inputRow+=			'<select class="form-control mr-4 airplanePdt" name="airplanePdt" id="airplanePdt" style="width:90%;">';
-	inputRow+=				'<option value="AIRBUS">AIRBUS (에어버스)</option>';
-	inputRow+=				'<option value="BOEING">BOEING (보잉)</option>';
-	inputRow+=			'</select>';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<select class="form-control mr-4 airplaneList" name="airplanePdt" id="airplaneList" style="width:90%;">';
-	inputRow+=			'</select>';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="flightName" id="flightName" placeholder="flightName" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="seatCapacity" id="seatCapacity" type="number" value="300" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="ecoCnt" id="ecoCnt" type="number" value="216" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="prEcoCnt" id="prEcoCnt" type="number" value="48"style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="bisCnt" id="bisCnt" type="number" value="24" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<input class="form-control" name="fstCnt" id="fstCnt" type="number" value="12" style="width:90%;">';
-	inputRow+=		'</td>';
-	inputRow+=		'<td>';
-	inputRow+=			'<i class="fa fa-close btn-danger btn inputDeleteBtn" style="color:white;"></i>';
-	inputRow+=		'</td>';
-	inputRow+=	'</tr>';
 	
 	// 항공편 등록 창 보이기
 	$(".addFlightBtn").click(function(){
@@ -119,13 +83,48 @@ $(function() {
 			return false;
 		}
 		
+		let inputRow = "";
+		inputRow+= '<tr>';
+		inputRow+=		'<td class="">';
+		inputRow+=			'<select class="form-control mr-4 airplanePdt" name="list[' + inputRowCnt + '].airplanePdt" id="airplanePdt" style="width:90%;">';
+		inputRow+=				'<option value="AIRBUS">AIRBUS (에어버스)</option>';
+		inputRow+=				'<option value="BOEING">BOEING (보잉)</option>';
+		inputRow+=			'</select>';
+		inputRow+=		'</td>';
+		inputRow+=		'<td>';
+		inputRow+=			'<select class="form-control mr-4 airplaneList" name="list[' + inputRowCnt + '].airplaneId" id="airplaneList" style="width:90%;">';
+		inputRow+=			'</select>';
+		inputRow+=		'</td>';
+		inputRow+=		'<td>';
+		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].flightName" id="flightName" placeholder="flightName" style="width:90%;">';
+		inputRow+=		'</td>';
+		inputRow+=		'<td>';
+		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].seatCapacity" id="seatCapacity" type="number" value="300" style="width:90%;">';
+		inputRow+=		'</td>';
+		inputRow+=		'<td>';
+		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].ecoCnt" id="ecoCnt" type="number" value="216" style="width:90%;">';
+		inputRow+=		'</td>';
+		inputRow+=		'<td>';
+		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].prEcoCnt" id="prEcoCnt" type="number" value="48"style="width:90%;">';
+		inputRow+=		'</td>';
+		inputRow+=		'<td>';
+		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].bisCnt" id="bisCnt" type="number" value="24" style="width:90%;">';
+		inputRow+=		'</td>';
+		inputRow+=		'<td>';
+		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].fstCnt" id="fstCnt" type="number" value="12" style="width:90%;">';
+		inputRow+=		'</td>';
+		inputRow+=		'<td>';
+		inputRow+=			'<i class="fa fa-close btn-danger btn inputDeleteBtn" style="color:white;"></i>';
+		inputRow+=		'</td>';
+		inputRow+=	'</tr>';
+		
 		let newRow = $(inputRow).clone();
 		
 		$("#inputRow").append(newRow);
 		
 		// 새로 추가된 행의 대분류 선택에 따른 중분류 리스트 세팅
 	    newRow.find(".airplaneList").load("/ajax/getAirplane.do?airplanePdt=" + newRow.find(".airplanePdt").val());
-		inputRowCnt++;
+		return inputRowCnt++;
 	});
 	
 	// 대분류 선택에 따른 중분류 리스트 가져오기
@@ -222,7 +221,7 @@ $(function() {
 						</span>
 					</small>
 					<div class="hiddenInput mt-3 mb-3 p-3" style="background:#e2e2e2; border-radius:10px; padding:10px;">
-						<form>
+						<form action="/airplaneWrite.do" method="post">
 							<!-- 비행기 등록 폼 -->
 							<button type="button" class="btn searchBtn float-right mb-2" id="totalAddBtn">일괄 등록</button>
 							<h5> 항공편 등록 </h5>
@@ -241,37 +240,37 @@ $(function() {
 							<tbody id="inputRow">
 								<tr>
 									<td >
-										<select class="form-control mr-4 airplanePdt" name="airplanePdt" id="airplanePdt" style="width:90%;">
+										<select class="form-control mr-4 airplanePdt" name="list[0].airplanePdt" id="airplanePdt" style="width:90%;">
 											<option value="AIRBUS">AIRBUS (에어버스)</option>
 											<option value="BOEING">BOEING (보잉)</option>
 										</select>
 									</td>
 									<td>
-										<select class="form-control mr-4 airplaneList" name="airplanePdt" id="airplaneList" style="width:90%;">
+										<select class="form-control mr-4 airplaneList" name="list[0].airplaneId" id="airplaneList" style="width:90%;">
 										</select>
 									</td>
 									<td>
-										<input class="form-control" name="flightName" id="flightName" placeholder="flightName"
+										<input class="form-control" name="list[0].flightName" id="flightName" placeholder="flightName"
 											style="width:90%;">
 									</td>
 									<td>
-										<input class="form-control" name="seatCapacity" id="seatCapacity" type="number" value="300"
+										<input class="form-control" name="list[0].seatCapacity" id="seatCapacity" type="number" value="300"
 											style="width:90%;">
 									</td>
 									<td>
-										<input class="form-control" name="ecoCnt" id="ecoCnt" type="number" value="216"
+										<input class="form-control" name="list[0].ecoCnt" id="ecoCnt" type="number" value="216"
 											style="width:90%;">
 									</td>
 									<td>
-										<input class="form-control" name="prEcoCnt" id="prEcoCnt" type="number" value="48"
+										<input class="form-control" name="list[0].prEcoCnt" id="prEcoCnt" type="number" value="48"
 											style="width:90%;">
 									</td>
 									<td>
-										<input class="form-control" name="bisCnt" id="bisCnt" type="number" value="24"
+										<input class="form-control" name="list[0].bisCnt" id="bisCnt" type="number" value="24"
 											style="width:90%;">
 									</td>
 									<td>
-										<input class="form-control" name="fstCnt" id="fstCnt" type="number" value="12"
+										<input class="form-control" name="list[0].fstCnt" id="fstCnt" type="number" value="12"
 											style="width:90%;">
 									</td>
 									<td>

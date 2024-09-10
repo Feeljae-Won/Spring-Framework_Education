@@ -106,38 +106,83 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col-md-12">
-						<form action="/cart/write.do" method="post">
-							<div class="form-inline p-3">
-								<c:if test="${!empty sizeColor }">
-									<div class="input-group mb-3" style="border-bottom:0;">
-										<div class="input-group-prepend" style="border-bottom:0;">
-											<span class="input-group-text">> 사이즈/색상 : </span>
-										</div>
-										<select class="form-control">
-											<option value="0">사이즈/색상 선택</option>
-											<c:forEach items="${sizeColor }" var="sizeColorVO">
-												<option value="${sizeColorVO.size_no }">
-													${sizeColorVO.size_name }
-													<c:if test="${!empty sizeColorVO.color_no && sizeColorVO.color_no != 0 }">
-														/ ${sizeColorVO.color_name }
-													</c:if>
-												</option>
-											</c:forEach>
-										</select>
-										<div class="input-group-append">
-											<button type="button" class="btn btn-outline-secondary">
-												<i class="fa fa-plus"></i>
-											</button>
-										</div>
+
+						<div class="form-inline p-3">
+							<c:if test="${!empty sizeColor }">
+								<div class="input-group mb-3" style="border-bottom:0;">
+									<div class="input-group-prepend" style="border-bottom:0;">
+										<span class="input-group-text">> 사이즈/색상 : </span>
 									</div>
-								</c:if>
-								<c:if test="${!empty option }">
-									
-								</c:if>
-								<c:if test="${empty option and empty sizeColor }">
-									
-								</c:if>
+									<select class="form-control">
+										<option value="0">사이즈/색상 선택</option>
+										<c:forEach items="${sizeColor }" var="sizeColorVO">
+											<option value="${sizeColorVO.size_no }">
+												${sizeColorVO.size_name }
+												<c:if test="${!empty sizeColorVO.color_no && sizeColorVO.color_no != 0 }">
+													/ ${sizeColorVO.color_name }
+												</c:if>
+											</option>
+										</c:forEach>
+									</select>
+									<!-- 옵션 추가 버튼 -->
+									<div class="input-group-append">
+										<button type="button" class="btn btn-outline-secondary">
+											<i class="fa fa-plus"></i>
+										</button>
+									</div>
+								</div>
+							</c:if>
+							<c:if test="${!empty option }">
+								
+							</c:if>
+							<c:if test="${empty option and empty sizeColor }">
+								
+							</c:if>
+						</div>
+						
+						<form action="/cart/write.do" method="post">
+							<!-- 사용자가 구매하려는 것을 선택해서 +를 클릭하면 만들어지는 입력 한 세트 시작 -->
+							<div class="form-inline">
+								<input name="list[0].goods_no" type="hidden" value="${vo.goods_no }">
+								<input name="list[0].size_no" type="hidden" value="2">
+								<input name="list[0].color_no" type="hidden" value="0">
+								<input name="list[0].goods_option_no" type="hidden" value="0">
+								
+								<div class="form-group">
+									<label>사이즈</label>
+									<input value="M" class="form-control" readonly>
+								</div>
+								<div class="form-group">
+									<label>수량</label>
+									<input type="number" name="list[0].count" value="1" class="form-control" min="0">
+								</div>
+								
 							</div>
+							<!-- 사용자가 구매하려는 것을 선택해서 +를 클릭하면 만들어지는 입력 한 세트 끝 -->
+							<!-- 사용자가 구매하려는 것을 선택해서 +를 클릭하면 만들어지는 입력 한 세트 시작 -->
+							<div class="form-inline">
+								<input name="list[1].goods_no" type="hidden" value="${vo.goods_no }">
+								<input name="list[1].size_no" type="hidden" value="3">
+								<input name="list[1].color_no" type="hidden" value="1">
+								<input name="list[1].goods_option_no" type="hidden" value="0">
+								
+								<div class="form-group">
+									<label>사이즈</label>
+									<input value="M" class="form-control" readonly>
+								</div>
+								<div class="form-group">
+									<label>수량</label>
+									<input type="number" name="list[1].count" value="3" class="form-control" min="0">
+								</div>
+								
+							</div>
+							<!-- 사용자가 구매하려는 것을 선택해서 +를 클릭하면 만들어지는 입력 한 세트 끝 -->
+							<div>
+								<!-- 구매 총액과 배송료는 jQuery로 계산해서 넣어주어야 한다. -->
+								구매 총액 : <span id="totalPrice">${vo.sale_price * 4 }</span>
+								배송비 : <span id="deliveryCharge">${(vo.sale_price * 4 < 50000) ? vo.delivery_charge:'0' }</span>
+							</div>
+							<button class="btn btn-warning">장바구니</button>
 						</form>
 					</div>
 				</div>

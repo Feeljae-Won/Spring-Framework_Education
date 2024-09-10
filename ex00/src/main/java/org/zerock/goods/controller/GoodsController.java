@@ -55,6 +55,7 @@ public class GoodsController {
 	// 검색을 위한 데이터를 따로 받아야 한다.
 	// public ModelAndView list(Model model) {
 	// @ModelAttribute() - 전달 받은 데이터를 Model에 담아서 바로 JSP 까지 보낼 때 사용.
+	// 		-> 객체 property 형식
 	// 	- 속성 명은 보통 타입으로 사용한다.  name = "searchVO" 설정해서 사용
 	public String list(Model model, @ModelAttribute(name = "searchVO") GoodsSearchVO searchVO, HttpServletRequest request)
 			throws Exception {
