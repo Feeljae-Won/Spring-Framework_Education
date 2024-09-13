@@ -735,8 +735,8 @@ $(function() {
 		$("#nextArrivalTime").val(arrivalTime);
 		$("#scheduleId_a").val(scheduleId_a);
 		
-		$("#nextForm").attr("action", "/air/main.do");
-		$("#nextForm").attr("method", "get");
+		$("#nextForm").attr("action", "/airReservation/writeForm.do");
+		$("#nextForm").attr("method", "post");
 		$(".nextBtn").attr("type","submit");
 		$(".nextBtn").removeClass("disabled");
 		
@@ -779,9 +779,9 @@ $(function() {
 						data-target="#datePickerModal">
 						<i class="material-icons mr-3" style="font-size:22px">date_range</i> 
 						<b>
-						<span id="dateRange">${param.departureTime }
+						<span id="dateRange">${param.arrivalTime }
 							<c:if test="${!empty param.arrivalTime }">
-								~ ${param.arrivalTime }
+								~ ${param.departureTime }
 							</c:if>
 						</span>
 						</b>
@@ -936,7 +936,7 @@ $(function() {
 				</div>
 			</div>
 			<span id="bottomDepartInfo">가는 편 : 
-				${param.airlineKor } (${param.flightName }) ${param.departureTime } (${param.paramDepartureTime }
+				${param.airlineKor } (${param.flightName }) ${param.arrivalTime } (${param.paramDepartureTime }
 				 ~ 
 				 ${param.paramArrivalTime }) ${param.seatGrade }
 			</span>

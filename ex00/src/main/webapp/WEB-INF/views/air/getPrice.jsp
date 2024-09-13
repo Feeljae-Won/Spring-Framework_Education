@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script type="text/javascript" src="/js/priceAddComma.js"></script>
-	<table class="table text-center" id="priceInfo">
+	<table class="table text-center">
 		<tr class="priceList">
 			<th style="width:110px;">기본 운임</th>
 			<td class="form-inline">
@@ -13,6 +13,9 @@
 				<input type="hidden" id="tax" name="tax" value="${priceInfo.tax }">
 				<input type="hidden" id="fuelSurCharge" name="fuelSurCharge" value="${priceInfo.fuelSurCharge }">
 				<input type="hidden" id="bookingFee" name="bookingFee" value="${priceInfo.bookingFee }">
+				<input type="hidden" id="hiddenRouteId" name="routeId" value="${priceInfo.routeId }">
+				<input type="hidden" id="priceId" name="priceId" value="${priceInfo.priceId }">
+				<input type="hidden" id="hiddenDistance" name="distance" value="${priceInfo.distance }">
 			</td>
 		</tr>	
 		<tr>
@@ -74,13 +77,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<div class="float-right">
-					<button class="btn btn-warning" type="button">저장</button>
-					<button class="btn btn-secondary" type="reset">초기화</button>
-				</div>
-			</td>
-		</tr>
 	</table>
 <script type="text/javascript">
 	

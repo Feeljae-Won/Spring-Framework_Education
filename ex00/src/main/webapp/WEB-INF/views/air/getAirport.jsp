@@ -5,7 +5,7 @@
 		<div class="airList" data-airportcode="${vo.airportCode }" >
 			<ul>
 				<li class="mb-2">
-					<b>${vo.airportCode }</b> - <strong>${vo.airportKor}</strong> <small>(${vo.airportEng })</small>
+					<b class="airportCode">${vo.airportCode }</b> - <strong class="airportKor">${vo.airportKor}</strong> (<small class="airportEng">${vo.airportEng }</small>)
 					<i class="fa fa-pencil airportUpdateBtn btn-light btn-sm" style="color:#E37027;"></i>
 					<i class="fa fa-close airportDeleteBtn btn-light btn-sm" style="color:red;"></i>											
 				</li>

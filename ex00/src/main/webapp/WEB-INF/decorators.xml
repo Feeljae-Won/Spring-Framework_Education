@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE XML>
-<!-- 작성자 : 김승준 -->
-<!-- 작성일 : 2017-01-13 -->
-<!-- 꾸미기(레이아웃)에 대한 선언 -->
+<!-- 작성자 : 원필재 -->
+<!-- 작성일 : 2024-09-10 -->
+<!-- 기본적인 레이아웃에 대한 선언 -->
 <decorators defaultdir="/WEB-INF/views/decorator">
 	<!-- hello에 대한 요청이 들어오면 적용시키는 레이아웃 선언 -->
 	<decorator name="main" page="default_decorator.jsp">
@@ -14,6 +14,19 @@
 		<pattern>/air/*</pattern>
 		<pattern>/category/*</pattern>
 		<pattern>/goods/*</pattern>
+
+	</decorator>
+	
+	<!--  -->
+	<decorator name="sbAdmin" page="sbAdmin_decorator.jsp">
+		<pattern>/m/main/*</pattern>
+		<pattern>/m/board/*</pattern>
+		<pattern>/m/notice/*</pattern>
+		<pattern>/m/member/*</pattern>
+		<pattern>/m/image/*</pattern>
+		<pattern>/m/air/*</pattern>
+		<pattern>/m/category/*</pattern>
+		<pattern>/m/goods/*</pattern>
 
 	</decorator>
 	

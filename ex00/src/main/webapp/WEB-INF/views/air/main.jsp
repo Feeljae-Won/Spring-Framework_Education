@@ -17,7 +17,7 @@ body, html {
 }
 
 .background-image {
-	left:15px;
+/* 	left:15px; */
 	position: relative;
 	width: 100%;
 	height: 600px;
@@ -1106,7 +1106,7 @@ $(function() {
 					<strong>탑승객은 성인 1명을 포함해야 합니다.</strong> 
 				</div>
             	<ul>
-            		<li class="mb-5 flex-container">
+            		<li class="mb-5 flex-container p-0">
 				      	<div class="d-flex align-items-center">
 					      	<i class="material-icons" style="font-size:36px">person_pin_circle</i>
 					        <b style="font-size:20px;">성인(Adult)</b>

@@ -64,12 +64,22 @@ public class AjaxController {
 	
 	//--- 노선에 따른 금액 가져오기 ------------------------------------
 	@GetMapping("/getPrice.do")
-	public String gerPrice(Model model, Long airlineNo, Long routeId) {
+	public String getPrice(Model model, Long airlineNo, Long routeId) {
 		log.info("getPrice.do");
 		// 중분류를 가져와서 JSP로 넘기기
 		model.addAttribute("priceInfo", airService.getPrice(airlineNo, routeId));
 		// midList.jsp 에 select tag 작성
 		return "air/getPrice";
+	}
+	
+	//--- 스케줄 등록 - 스케줄 없는 항공편 리스트 ------------------------------------
+	@GetMapping("/getFlightList.do")
+	public String getFlightList(Model model, Long airlineNo) {
+		log.info("getFlightList.do");
+		// 중분류를 가져와서 JSP로 넘기기
+		model.addAttribute("flightList", airService.getFlightList(airlineNo));
+		// midList.jsp 에 select tag 작성
+		return "air/getFlightList";
 	}
 
 	//--- 상품관리 중분류 가져오기 ------------------------------------

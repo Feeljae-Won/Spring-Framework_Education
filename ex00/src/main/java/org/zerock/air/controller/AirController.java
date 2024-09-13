@@ -1,5 +1,6 @@
 package org.zerock.air.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.air.service.AirService;
 import org.zerock.air.vo.AirVO;
+import org.zerock.air.vo.AirplaneVO;
+import org.zerock.air.vo.PriceVO;
+import org.zerock.air.vo.RouteVO;
+import org.zerock.air.vo.ScheduleVO;
 
 import com.webjjang.util.page.PageObject;
 
@@ -223,6 +229,40 @@ public class AirController {
 		return "air/airAdminAirport";
 	}
 	
+	// 5-2. 관리자 공항 추가
+	@PostMapping("/airportWrite.do")
+	public String airportWrite(AirVO vo, RedirectAttributes rttr) {
+		
+		if (service.airportWrite(vo) == 1) {
+			rttr.addFlashAttribute("msg", "공항이 등록되었습니다.");
+		} else 
+			rttr.addFlashAttribute("msg", "공항 등록에 실패했습니다.");
+		
+		return "redirect:/air/airAdminNOC.do";
+	}
+	
+	// 5-3. 관리자 공항 수정
+	@PostMapping("/airportUpdate.do")
+	public String airportUpdate(AirVO vo, RedirectAttributes rttr) {
+		if (service.airportUpdate(vo) == 1) {
+			rttr.addFlashAttribute("msg", "공항이 수정 되었습니다.");
+		} else 
+			rttr.addFlashAttribute("msg", "공항 수정에 실패했습니다.");
+		
+		return "redirect:/air/airAdminNOC.do";
+	}
+	
+	// 5-3. 관리자 공항 수정
+	@PostMapping("/airportDelete.do")
+	public String airportDelete(AirVO vo, RedirectAttributes rttr) {
+		if (service.airportDelete(vo) == 1) {
+			rttr.addFlashAttribute("msg", "공항이 삭제 되었습니다.");
+		} else 
+			rttr.addFlashAttribute("msg", "공항 삭제에 실패했습니다.");
+		
+		return "redirect:/air/airAdminNOC.do";
+	}
+	
 	// 6. 관리자 기종 관리 리스트
 	@GetMapping("/airAdminAirplane.do")
 	public String airAdminAirplane(Long airlineNo, Model model, HttpServletRequest request) throws Exception{
@@ -239,7 +279,20 @@ public class AirController {
 	
 	// 6-1. 관리자 기종 상세보기 - ajax 처리
 		
-	// 6-2. 관리자 기종 등록 - 
+	// 6-2. 관리자 기종 등록 - 포스트
+	@PostMapping("/airplaneWrite.do")
+	public String airplaneWrite(@ModelAttribute("list") AirplaneVO vo, RedirectAttributes rttr) {
+		
+		log.info(vo.getList());
+		ArrayList<AirplaneVO> list = (ArrayList<AirplaneVO>) vo.getList();
+		
+		if (service.write(list) == 1) {
+			rttr.addFlashAttribute("msg", "항공기가 등록되었습니다.");
+		} else 
+			rttr.addFlashAttribute("msg", "항공기 등록에 실패했습니다.");
+		
+		return "redirect:/air/airAdminAirplane.do";
+	}
 	
 	// 6-3. 관리자 기종 수정 - 
 	
@@ -258,7 +311,78 @@ public class AirController {
 		return "air/airAdminRoutePrice";
 	}
 	
-	// 8-1. 관리자 운항 스케줄 리스트
+	// 7-2. 노선 등록 버튼
+	@PostMapping("/airRouteWrite.do")
+	public String airRouteWrite(RouteVO vo, Model model, RedirectAttributes rttr) {
+		
+		log.info(vo);
+		
+		if (service.routeWrite(vo) == 1) {
+			rttr.addFlashAttribute("msg", "항공 노선이 등록되었습니다.");
+		} else
+			rttr.addFlashAttribute("msg", "항공 노선 등록을 실패 했습니다.");
+		
+		return "redirect:/air/airAdminRoutePrice.do";
+	}
+	
+	// 7-3. 노선 수정 버튼
+	@PostMapping("/airRouteUpdate.do")
+	public String airRouteUpdate(RouteVO vo, Model model, RedirectAttributes rttr) {
+		
+		log.info(vo);
+		
+		if (service.routeUpdate(vo) == 1) {
+			rttr.addFlashAttribute("msg", "항공 노선을 수정했습니다.");
+		} else
+			rttr.addFlashAttribute("msg", "항공 노선 수정을 실패 했습니다.");
+		
+		return "redirect:/air/airAdminRoutePrice.do";
+	}
+	
+	// 7-4. 노선 삭제 버튼
+	@PostMapping("/airRouteDelete.do")
+	public String airRouteDelete(Long routeId, Model model, RedirectAttributes rttr) {
+		
+		log.info(routeId);
+		
+		if (service.routeDelete(routeId) == 1) {
+			rttr.addFlashAttribute("msg", "항공 노선을 삭제했습니다.");
+		} else
+			rttr.addFlashAttribute("msg", "항공 노선 삭제를 실패 했습니다.");
+		
+		return "redirect:/air/airAdminRoutePrice.do";
+	}
+	
+	// 8-1. 노선별 금액 상세보기 -- ajax 처리
+	
+	// 8-2. 노선별 금액 등록
+	@PostMapping("/airPriceWrite.do")
+	public String airAdminPriceWrite(PriceVO vo, RedirectAttributes rttr) {
+		
+		log.info(vo);
+		if (service.priceWrite(vo) == 1) {
+			rttr.addFlashAttribute("msg", "가격 등록을 성공했습니다.");
+		} else
+			rttr.addFlashAttribute("msg", "가격 등록을 실패 했습니다. 다시 시도해 주세요.");
+		
+		return "redirect:/air/airAdminRoutePrice.do";
+	}
+	
+	// 8-3. 노선별 금액 수정
+	@PostMapping("/airPriceUpdate.do")
+	public String airAdminPriceUpdate(PriceVO vo, RedirectAttributes rttr) {
+		
+		log.info(vo);
+		if (service.priceUpdate(vo) == 1) {
+			rttr.addFlashAttribute("msg", "가격 수정을 성공했습니다.");
+		} else
+			rttr.addFlashAttribute("msg", "가격 수정을 실패 했습니다. 다시 시도해 주세요.");
+		
+		return "redirect:/air/airAdminRoutePrice.do";
+	}
+	
+	
+	// 9-1. 관리자 운항 스케줄 리스트
 	@GetMapping("/airAdminSchedule.do")
 	public String airAdminSchedule(Long airlineNo, Long routeId, Model model, HttpServletRequest request) throws Exception{
 		
@@ -270,17 +394,47 @@ public class AirController {
 		return "air/airAdminSchedule";
 	}
 	
-	// 8-2. 관리자 운항 스케줄 상세보기
+	// 9-2. 관리자 운항 스케줄 상세보기
 	@GetMapping("/airAdminScheduleDetail.do")
 	public String airAdminScheduleDetail(Long airlineNo, Long routeId, Model model, HttpServletRequest request) throws Exception{
 		
 		PageObject pageObject = PageObject.getInstance(request);
 		
-		model.addAttribute("routeList", service.routeList(pageObject, 1L, routeId));
+		model.addAttribute("vo", service.routeView(1L, routeId));
 		model.addAttribute("scheduleList", service.airScheduleDetail(1L, routeId, pageObject));
 		model.addAttribute("pageObject", pageObject);
 		
 		return "air/airAdminScheduleDetail";
+	}
+	
+	// 9-3. 관리자 운항 스케줄 등록 폼
+	@GetMapping("/airAdminScheduleWriteForm.do")
+	public String airAdminScheduleWriteForm(Long airlineNo, Long routeId, Model model) throws Exception{
+		
+		
+		model.addAttribute("vo", service.routeView(1L, routeId));
+		
+		return "air/airAdminScheduleWriteForm";
+	}
+	
+	// 9-3. 관리자 운항 스케줄 등록
+	@PostMapping("/airAdminScheduleWrite.do")
+	public String airAdminScheduleWrite(Long airlineNo, ScheduleVO vo, Model model) throws Exception{
+		
+		log.info(vo);
+		model.addAttribute("vo", service.airScheduleWrite(1L, vo));
+		
+//		return "air/airAdminScheduleWrite";
+		return "redirect:/air/airAdminScheduleDetail.do?routeId=" + vo.getRouteId();
+	}
+	
+	// 9-5. 관리자 운항 스케줄 삭제
+	@GetMapping("/airAdminScheduleDelete.do")
+	public String airAdminScheduleDelete(Long airlineNo, Long scheduleId, Long routeId) {
+		
+		service.airScheduleDelete(1L, scheduleId);
+		
+		return "redirect:/air/airAdminScheduleDetail.do?routeId=" + routeId;
 	}
 	
 

@@ -86,13 +86,44 @@ $(function() {
 	// 노선 등록 창 보이기
 	$("#addRouteBtn").click(function(){
 		$(".hiddenInput").toggle();
+		
+		// 창이 열리면 체크박스 상태를 확인
+	    $("#routeWriteBtn").click(function() {
+	        
+	    	let departure = $("#departure").val();
+	    	let arrival = $("#arrival").val();
+	    	let distance = $("#distance").val();
+	    	let type = $("#type").val();
+	    	let goback = $("#goBackStr").prop('checked');
+	    	
+	    	// 체크박스 상태 확인
+	        if (goback) {
+	            $("#goBackStr").val("true");  // 체크되었을 때 true 값을 설정
+	        } else {
+	            $("#goBackStr").val("false");  // 체크되지 않았을 때 hidden으로 false를 전달
+	        }
+	    	
+// 	     	alert("goback = " + $("#goBackStr").val());
+
+			if(departure == null || departure === "") {
+				alert("출발지를 입력하셔야 합니다.");
+				return false;
+			} else if(arrival == null || arrival === "") {
+				alert("도착지를 입력하셔야 합니다.");
+				return false;
+			} else if(distance == null || distance === "") {
+				alert("운항 거리를 입력하셔야 합니다.");
+				return false;
+			} 
+			else {
+		        $(this).html('<span class="spinner-border spinner-border-sm"></span> Loading..');
+		        $("#routeWriteForm").attr("action", "airRouteWrite.do");
+		        $("#routeWriteForm").attr("method", "post");
+		        $("#routeWriteForm").submit();
+			}
+	    });
 	});
 	
-	// 노선 등록 버튼
-	$("#totalAddBtn").click(function(){
-		
-		$(this).html('<span class="spinner-border spinner-border-sm"></span> Loading..');
-	});
 	
 	// 공항 버튼을 클릭했을 때 동작
 	$('.airport').on("focus",function() {
@@ -101,7 +132,7 @@ $(function() {
 		$("#searchAirport").val("");
 
 		// '출발지 검색' 또는 '도착지 검색'에 맞게 텍스트를 설정
-		if ($(this).attr('id') === 'departure') {
+		if ($(this).data('departure') === 'departure') {
 			$('#airportList h5').text('출발지 검색');
 			$('#searchAirport').data('target', 'departure'); // target 설정
 		} else {
@@ -176,10 +207,14 @@ $(function() {
             $('#departure').val(selectedCode);
             $('#departureKor').val(selectedName);
             $('#departureCountry').val(selectedCountry);
+            $('#modalDeparture').val(selectedCode);
+            $('#modalDepartureKor').val(selectedName);
         } else if ($('#searchAirport').data('target') === 'arrival') {
             $('#arrival').val(selectedCode);
             $('#arrivalKor').val(selectedName);
             $('#arrivalCountry').val(selectedCountry);
+            $('#modalArrival').val(selectedCode);
+            $('#modalArrivalKor').val(selectedName);
             console.log(departureCountry + " +  " + selectedCountry)
             if (departureCountry === selectedCountry) {
             	$("#type").val("D");
@@ -199,18 +234,138 @@ $(function() {
     });
 	
  	// 출발지 선택 시
-    $('#departureAirport').click(function() {
+    $('.departureAirport').click(function() {
         $('#searchAirport').data('target', 'departure');
         $('#airportList').show();
     });
 
     // 도착지 선택 시
-    $('#arrivalAirport').click(function() {
+    $('.arrivalAirport').click(function() {
         $('#searchAirport').data('target', 'arrival');
         $('#airportList').show();
     });
     
-	
+    
+    $("#goback").click(function() {
+    	$(this).attr("checked", false);
+    });
+    
+    // 노선 수정
+    $(".routeUpdateBtn").click(function() {
+    	let routeId = $(this).closest(".dataRow").find(".routeId").data("routeid");
+    	let departure = $(this).closest(".dataRow").find(".departure").data("departure");
+    	let departureKor = $(this).closest(".dataRow").find("#deaprtureKorRow").text();
+    	let arrival = $(this).closest(".dataRow").find(".arrival").data("arrival");
+    	let arrivalKor = $(this).closest(".dataRow").find("#arrivalKorRow").text();
+    	let distance = $(this).closest(".dataRow").find(".distance").data("distance");
+    	let type = $(this).closest(".dataRow").find(".type").data("type");
+    	let typeStr = $(this).closest(".dataRow").find(".type").text();
+    	
+//     	console.log("routeId : " + routeId);
+//     	console.log("departure : " + departure);
+//     	console.log("arrival : " + arrival);
+//     	console.log("distance : " + distance);
+    	console.log("type : " + type);
+//     	console.log("typeStr : " + typeStr);
+
+		$("#modalRouteId").val(routeId);
+		$("#modalDeparture").val(departure);
+		$("#modalDepartureKor").val(departureKor);
+		$("#modalArrival").val(arrival);
+		$("#modalArrivalKor").val(arrivalKor);
+		$("#modalDistance").val(distance);
+		$("#modalType").val(type);
+		$("#modalTypeStr").val(typeStr);
+    	
+    	$("#routeUpdateModal").modal("show");
+    });
+    
+   	// 모달창 안에 수정 버튼 클릭
+   	$("#modalRouteUpdateBtn").click(function() {
+   		let routeId = $("#modalRouteId").val();
+   		let departure = $("#modalDeparture").val();
+   		let arrival = $("#modalArrival").val();
+   		let distance = $("#modalDistance").val();
+   		let type = $("#modalType").val();
+   		
+//    		alert("routeId : "+ routeId + ", departure : " + departure + ", arrival : " + arrival + ", distance : " + distance + ", type : " + type);
+
+		if(departure == null || departure === "") {
+			alert("출발지를 입력하셔야 합니다.");
+			return false;
+		} else if(arrival == null || arrival === "") {
+			alert("도착지를 입력하셔야 합니다.");
+			return false;
+		} else if(distance == null || distance === "") {
+			alert("운항 거리를 입력하셔야 합니다.");
+			return false;
+		} 
+		else {
+	        $(this).html('<span class="spinner-border spinner-border-sm"></span> Loading..');
+	        $("#routeUpdateForm").attr("action", "airRouteUpdate.do");
+	        $("#routeUpdateForm").attr("method", "post");
+	        $("#routeUpdateForm").submit();
+		}
+   		
+   	});
+   	
+   	// 노선 삭제
+   	$(".routeDeleteBtn").click(function() {
+   		let routeId = $(this).closest(".dataRow").find(".routeId").data("routeid");
+    	let departure = $(this).closest(".dataRow").find(".departure").data("departure");
+    	let departureKor = $(this).closest(".dataRow").find("#deaprtureKorRow").text();
+    	let arrival = $(this).closest(".dataRow").find(".arrival").data("arrival");
+    	let arrivalKor = $(this).closest(".dataRow").find("#arrivalKorRow").text();
+    	let distance = $(this).closest(".dataRow").find(".distance").data("distance");
+    	let type = $(this).closest(".dataRow").find(".type").data("type");
+    	let typeStr = $(this).closest(".dataRow").find(".type").text();
+    	
+    	$("#deleteModalRouteId").text(routeId);
+    	$("#deleteModalDeparture").text(departure);
+    	$("#deleteModalDepartureKor").text(departureKor);
+    	$("#deleteModalArrival").text(arrival);
+    	$("#deleteModalArrivalKor").text(arrivalKor);
+    	$("#deleteModalDistance").text(distance + " km");
+    	$("#deleteModalTypeStr").text(typeStr);
+    	$("#routeDeleteId").val(routeId);
+    	
+    	
+   		$("#routeDeleteModal").modal("show");
+   	});
+   	
+   	$("#modalDeleteBtn").click(function() {
+   		// alert("modalDeleteBtn");
+   		$(this).html('<span class="spinner-border spinner-border-sm"></span> Loading..');
+        $("#routeDeleteForm").attr("action", "airRouteDelete.do");
+        $("#routeDeleteForm").attr("method", "post");
+        $("#routeDeleteForm").submit();
+   	});
+   	
+   	$(".submitBtn").click(function(){
+   		let priceId = $("#priceId").val();
+   		let routeId = $("#hiddenRouteId").val();
+   		let basePrice = $("#basePrice").val();
+   		let tax = $("#tax").val();
+   		let fuelSurCharge = $("#fuelSurCharge").val();
+   		let bookingFee	= $("#bookingFee").val();
+   		let distance = $("#hiddenDistance").val();
+   		
+//    		alert(priceId + " + " + routeId + " + " + basePrice + " + " + tax + " + " + fuelSurCharge + " + " + bookingFee + " + " + distance);
+   		
+   		if (priceId === 0 || priceId == "") {
+//    			alert("가격 정보 없음");
+   			$("#priceForm").attr("action", "airPriceWrite.do");
+   	        $("#priceForm").attr("method", "post");
+   	        $("#priceForm").submit();
+   		} else {
+//    			alert("가격 정보 있음");
+   			$("#priceForm").attr("action", "airPriceUpdate.do");
+   	        $("#priceForm").attr("method", "post");
+   	        $("#priceForm").submit();
+   		}
+   		
+   	});
+   	
 });
 </script>
 
@@ -274,17 +429,17 @@ $(function() {
 							<fieldset class="border p-4">
 							<legend class="w-auto px-2"> <b>[ 노선 ]</b></legend>
 								<div class="hiddenInput  p-3" style="background:#e2e2e2; border-radius:10px; padding:10px;">
-								<form>
+								<form id="routeWriteForm">
 									<!-- 노선 등록 폼 -->
-									<button type="button" class="btn searchBtn float-right mb-2" id="totalAddBtn">등록</button>
+									<button type="button" class="btn searchBtn float-right mb-2" id="routeWriteBtn">등록</button>
 									<h5> 노선 등록 </h5>
 									<table class="table text-center align-middle mb-2">
 										<tr>
 											<th style="width:6%;">번호</th>
-											<th style="width:10%;">출발지</th>
-											<th style="width:20%;">출발공항</th>
-											<th style="width:10%;">도착지</th>
-											<th style="width:20%;">도착공항</th>
+											<th style="width:10%; background-color:#ff782b;">출발지</th>
+											<th style="width:20%; background-color:#ff782b;">출발공항</th>
+											<th style="width:10%; background-color:#db3d08;">도착지</th>
+											<th style="width:20%; background-color:#db3d08;">도착공항</th>
 											<th style="width:20%;">거리</th>
 											<th style="width:8%;">타입</th>
 											<th style="width:6%;">왕복</th>
@@ -295,7 +450,7 @@ $(function() {
 												<input class="form-control" name="routeId" id="routeId" readonly>
 											</td>
 											<td >
-												<input class="form-control airport" name="departure" id="departure" required
+												<input class="form-control airport" name="departure" id="departure" required data-departure="departure"
 													placeholder="코드 검색">
 											</td>
 											<td >
@@ -318,8 +473,8 @@ $(function() {
 												<input type="hidden" name="type" id="type">
 											</td>
 											<td >
-												<input type="checkbox" class="form-check-input" name="goBack" id="goBack" 
-													style="width:25px;height:25px;">
+												<input type="checkbox" class="form-check-input" name="goBackStr" id="goBack" checked value="true"
+    												style="width:25px;height:25px;">
 											</td>
 										</tr>
 									</tbody>
@@ -349,24 +504,29 @@ $(function() {
 							</div>
 								<table class="table text-center align-middle mt-2">
 									<tr>
-										<th style=width:8%;>번호</th>
-										<th style=width:8%;>타입</th>
-										<th style=width:10%;>출발 국가</th>
-										<th style=width:25%;>출발지</th>
-										<th style=width:10%;>도착 국가</th>
-										<th style=width:25%;>도착지</th>
-										<th style=width:16%;>거리</th>
+										<th style="width:8%;">번호</th>
+										<th style="width:8%;">타입</th>
+										<th style="width:10%; background-color:#ff782b;">출발 국가</th>
+										<th style="width:25%; background-color:#ff782b;">출발지</th>
+										<th style="width:10%; background-color:#db3d08">도착 국가</th>
+										<th style="width:25%; background-color:#db3d08">도착지</th>
+										<th style="width:16%;">거리</th>
+										<th style="width:8%;">변경</th>
 									</tr>
 									<c:forEach items="${routeList }" var="vo">
 										<tr class="dataRow">
 											<td class="routeId" data-routeid="${vo.routeId}">${vo.routeId }</td>
 											<td class="type" data-type="${vo.type}">${(vo.type =='I')? '국제선' : '국내선'}</td>
 											<td class="departureCountry">${vo.departureCountry }</td>
-											<td class="departure" data-departure="${vo.departure}">${vo.departure } ( ${vo.departureKor } )</td>
+											<td class="departure" data-departure="${vo.departure}">${vo.departure } ( <span id="deaprtureKorRow">${vo.departureKor }</span> )</td>
 											<td class="arrivalCountry" >${vo.arrivalCountry }</td>
-											<td class="arrival" data-arrival="${vo.arrival}">${vo.arrival } ( ${vo.arrivalKor } )</td>
+											<td class="arrival" data-arrival="${vo.arrival}">${vo.arrival } ( <span id="arrivalKorRow">${vo.arrivalKor }</span> )</td>
 											<td class="distance" data-distance="${vo.distance}">
 												<fmt:formatNumber value="${vo.distance}" type="number" /> km
+											</td>
+											<td class="btn-group" >
+												<button class="btn btn-sm btn-light routeUpdateBtn"><i class="fa fa-pencil" style="font-size:18px;"></i></button>
+												<button class="btn btn-sm btn-danger routeDeleteBtn"><i class="fa fa-minus"></i></button>
 											</td>
 										</tr>
 									</c:forEach>
@@ -388,78 +548,78 @@ $(function() {
 											* 기본 운임을 입력하면 자동계산 됩니다.
 										</small>											
 									</span>
-									<table class="table text-center" id="priceInfo">
-										<tr class="priceList">
-											<th style="width:110px;">기본 운임</th>
-											<td class="form-inline">
-												<input class="form-control basePrice text-right ml-3" id="basePrice" name="basePrice" value="" type="number"
-													style="width:80%"><span class="ml-2">원</span>
-											</td>
-										</tr>	
-										<tr class="priceList">
-											<th>세금</th>
-											<td class="text-right"> 
-												<span id="tax" >
-												</span>
-												<span class="ml-2">원</span>
-											
-											</td>
-										</tr>	
-										<tr class="priceList">
-											<th>유류할증료</th>
-											<td class="text-right">
-												<span id="fuelSurCharge" >
-												</span>
-												<span class="ml-2">원</span>
-											</td>
-										</tr>	
-										<tr class="priceList">
-											<th>발권 수수료</th>
-											<td class="text-right">
-												<span id="bookingFee">
-												</span>
-												<span class="ml-2">원</span>
-											</td>
-										</tr>	
-										<tr class="priceList">
-											<th style="border-top: 5px double #444; background-color:#FF5F49">총액 <br>
-												<small>(일반석)</small>
-											</th>
-											<td style="border-top: 5px double #444;" class="text-right">
-												<span id="ecoPrice">
-												</span>
-												<span class="ml-2">원</span>
-											</td>
-										</tr>	
-										<tr class="priceList">
-											<th style="background-color:#FF5F49">총액 <br>
-												<small>(비즈니스)</small>
-											</th>
-											<td class="text-right">
-												<span id="bisPrice">
-												</span>
-												<span class="ml-2">원</span>
-											</td>
-										</tr>	
-										<tr class="priceList">
-											<th style="background-color:#FF5F49">총액 <br>
-												<small>(일등석)</small>
-											</th>
-											<td class="text-right">
-												<span id="fstPrice" >
-												</span>
-												<span class="ml-2">원</span>
-											</td>
-										</tr>
-										<tr class="priceList">
-											<td colspan="2">
-												<div class="float-right">
-													<button class="btn btn-warning" type="button">저장</button>
-													<button class="btn btn-secondary" type="reset">초기화</button>
-												</div>
-											</td>
-										</tr>
-								</table>
+									<form id="priceForm">
+										<div id="priceInfo">
+											<table class="table text-center" >
+												<tr class="priceList">
+													<th style="width:110px;">기본 운임</th>
+													<td class="form-inline">
+														<input class="form-control basePrice text-right ml-3" id="basePrice" name="basePrice" value="" type="number"
+															style="width:80%"><span class="ml-2">원</span>
+													</td>
+												</tr>	
+												<tr class="priceList">
+													<th>세금</th>
+													<td class="text-right"> 
+														<span id="tax" >
+														</span>
+														<span class="ml-2">원</span>
+													
+													</td>
+												</tr>	
+												<tr class="priceList">
+													<th>유류할증료</th>
+													<td class="text-right">
+														<span id="fuelSurCharge" >
+														</span>
+														<span class="ml-2">원</span>
+													</td>
+												</tr>	
+												<tr class="priceList">
+													<th>발권 수수료</th>
+													<td class="text-right">
+														<span id="bookingFee">
+														</span>
+														<span class="ml-2">원</span>
+													</td>
+												</tr>	
+												<tr class="priceList">
+													<th style="border-top: 5px double #444; background-color:#FF5F49">총액 <br>
+														<small>(일반석)</small>
+													</th>
+													<td style="border-top: 5px double #444;" class="text-right">
+														<span id="ecoPrice">
+														</span>
+														<span class="ml-2">원</span>
+													</td>
+												</tr>	
+												<tr class="priceList">
+													<th style="background-color:#FF5F49">총액 <br>
+														<small>(비즈니스)</small>
+													</th>
+													<td class="text-right">
+														<span id="bisPrice">
+														</span>
+														<span class="ml-2">원</span>
+													</td>
+												</tr>	
+												<tr class="priceList">
+													<th style="background-color:#FF5F49">총액 <br>
+														<small>(일등석)</small>
+													</th>
+													<td class="text-right">
+														<span id="fstPrice" >
+														</span>
+														<span class="ml-2">원</span>
+													</td>
+												</tr>
+										</table>
+									</div>
+									<div class="float-right">
+										<button class="btn btn-warning submitBtn" type="button">저장</button>
+										<button class="btn btn-secondary" type="reset">초기화</button>
+									</div>
+								</form>
 							</fieldset>
 						</div>
 					
@@ -473,6 +633,134 @@ $(function() {
 			</div>
 		</div>
 	</div>
+</div>
+
+
+
+<!-- 노선 수정 모달 -->
+<div class="modal" id="routeUpdateModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">노선 수정</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+       		<form id="routeUpdateForm">
+	        <table class="table text-center align-middle mb-2">
+				<tr>
+					<th style="width:6%;">번호</th>
+					<th style="width:10%;">출발지</th>
+					<th style="width:20%;">출발공항</th>
+					<th style="width:10%;">도착지</th>
+					<th style="width:20%;">도착공항</th>
+					<th style="width:20%;">거리</th>
+					<th style="width:8%;">타입</th>
+				</tr>
+			<tbody id="inputRow">
+				<tr>
+					<td >
+						<input class="form-control" name="routeId" id="modalRouteId" readonly>
+					</td>
+					<td >
+						<input class="form-control airport " name="departure" id="modalDeparture" required data-departure="departure"
+							placeholder="코드 검색">
+					</td>
+					<td >
+						<input class="form-control" name="departureKor" id="modalDepartureKor" readonly>
+					</td>
+					<td >
+						<input class="form-control airport arrivalAirport" name="arrival" id="modalArrival" required data-arrival="arrival"
+							placeholder="코드 검색" >
+					</td>
+					<td >
+						<input class="form-control" name="arrivalKor" id="modalArrivalKor" readonly>
+					</td>
+					<td >
+						<input class="form-control" name="distance" id="modalDistance" placeholder="거리 입력 (km)" required>
+					</td>
+					<td >
+						<input class="form-control" id="modalTypeStr" readonly>
+						<input type="hidden" name="type" id="modalType">
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" id="modalRouteUpdateBtn">Update</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 노선 삭제 모달 -->
+<div class="modal" id="routeDeleteModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">노선 삭제</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <form id="routeDeleteForm">
+      <div class="modal-body">
+      		<span>
+      			해당 노선을 정말 삭제하시겠습니까?
+      			<br>삭제하면 관련된 모든 데이터가 <span style="font-weight:bold; color:red;">삭제</span>됩니다.
+      			<br>삭제된 이후 복구는 불가능합니다.
+      		</span>
+      		<hr>
+      		<span><strong>삭제할 노선 : </strong></span>
+      		
+	        <table class="table table-sm text-center align-middle mb-2">
+				<tr>
+					<th style="width:6%;">번호</th>
+					<th style="width:10%;">출발지</th>
+					<th style="width:20%;">출발공항</th>
+					<th style="width:10%;">도착지</th>
+					<th style="width:20%;">도착공항</th>
+					<th style="width:20%;">거리</th>
+					<th style="width:8%;">타입</th>
+				</tr>
+			<tbody id="inputRow">
+				<tr>
+					<td id="deleteModalRouteId"></td>
+					<td id="deleteModalDeparture"></td>
+					<td id="deleteModalDepartureKor"></td>
+					<td id="deleteModalArrival"></td>
+					<td id="deleteModalArrivalKor"></td>
+					<td id="deleteModalDistance"></td>
+					<td id="deleteModalTypeStr"></td>
+					
+				</tr>
+			</tbody>
+			</table>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+		<input type="hidden" name="routeId" id="routeDeleteId">
+        <button type="button" class="btn btn-danger" id="modalDeleteBtn">Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+      </div>
+      </form>
+
+    </div>
+  </div>
 </div>
 
 <!-- 공항 검색 -->

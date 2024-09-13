@@ -96,6 +96,86 @@ $(function() {
 		$("#airportList" + country).load("/ajax/getAirport.do?countryCode="	+ country);
 		$("#airportList" + country).collapse("show");
 	});
+	
+	$(".airportList").on("click", ".airportAddBtn", function(){
+		let code = $(this).closest(".list-group-item").data("countrycode");
+		let nameKor = $(this).closest(".list-group-item").data("countrykor");
+// 		alert(code + nameKor);
+		
+		$("#modalCountryCode").val(code);
+		$("#modalCountryKor").val(nameKor);
+		$("#airportModal").modal("show");
+		
+		$("#airportAddBtn").click(function() {
+			let airportCode = $("#modalAirportCode").val();
+			let airportKor = $("#modalAirportKor").val();
+			let airportEng = $("#modalAirportEng").val();
+			
+			if (airportCode == null || airportCode === "") {
+				alert("공항 코드는 필수 입니다.");
+				return false;
+			} else if(airportKor == null || airportKor === "") {
+				alert("공항 한글명을 입력해 주세요.");
+				return false;
+			} else if(airportEng == null || airportEng === "") {
+				alert("공항 영문을 입력해 주세요.");
+				return false;
+			} else {
+				$("#airportForm").attr("action", "airportWrite.do");
+				$("#airportForm").attr("method", "post");
+				$("#airportForm").submit();
+			}
+		});
+	});
+	
+	$(".airportList").on("click", ".airportUpdateBtn", function(){
+		let code = $(this).closest(".list-group-item").data("countrycode");
+		let nameKor = $(this).closest(".list-group-item").data("countrykor");
+		
+		let airportCode = $(this).closest("li").find(".airportCode").text();
+		let airportKor = $(this).closest("li").find(".airportKor").text();
+		let airportEng = $(this).closest("li").find(".airportEng").text();
+		
+		$("#updateModalCountryCode").val(code);
+		$("#updateModalCountryKor").val(nameKor);
+		$("#updateModalAirportCode").val(airportCode);
+		$("#updateModalAirportKor").val(airportKor);
+		$("#updateModalAirportEng").val(airportEng);
+		
+		$("#airportUpdateModal").modal("show");
+		
+		$("#airportUpdateBtn").click(function() {
+			$("#airportUpdateForm").attr("action", "airportUpdate.do");
+			$("#airportUpdateForm").attr("method", "post");
+			$("#airportUpdateForm").submit();
+		});
+		
+	});
+	
+	$(".airportList").on("click", ".airportDeleteBtn", function(){
+		let code = $(this).closest(".list-group-item").data("countrycode");
+		let nameKor = $(this).closest(".list-group-item").data("countrykor");
+		
+		let airportCode = $(this).closest("li").find(".airportCode").text();
+		let airportKor = $(this).closest("li").find(".airportKor").text();
+		let airportEng = $(this).closest("li").find(".airportEng").text();
+		
+		$("#deleteModalCountryCode").val(code);
+		$("#deleteModalCountryKor").val(nameKor);
+		$("#deleteModalAirportCode").val(airportCode);
+		$("#deleteModalAirportKor").val(airportKor);
+		$("#deleteModalAirportEng").val(airportEng);
+		
+		$("#airportDeleteModal").modal("show");
+		
+		$("#airportDeleteBtn").click(function() {
+			$("#airportDeleteForm").attr("action", "airportDelete.do");
+			$("#airportDeleteForm").attr("method", "post");
+			$("#airportDeleteForm").submit();
+		});
+		
+	});
+	 
 });
 </script>
 
@@ -393,6 +473,165 @@ $(function() {
 
 		</div>
 	</div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="airportModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">공항 등록</h4>
+        
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+	<form id="airportForm">
+      <!-- Modal body -->
+      <div class="modal-body p-3">
+     	 <span id="modalText">
+        	<br>공항을 등록하세요.
+        	<br>공항 코드는 등록 후 변경이 <b style="color:red;">불가능</b>합니다. 
+        	<br>정확히 기입해 주세요.
+        </span>
+        <hr>
+        <div class="form-group">
+        	<label><strong>> 국가코드</strong></label>
+        	<input class="form-control" id="modalCountryCode" name="countryCode" readonly>
+        </div>
+        <div class="form-group">
+        	<label><strong>> 국가</strong></label>
+        	<input class="form-control" id="modalCountryKor" name="countryKor" readonly>
+        </div>
+        <hr>
+        <div class="form-group">
+        	<label><strong>> 공항 코드</strong></label>
+        	<input class="form-control" id="modalAirportCode" name="airportCode" placeholder="3자리 코드입력(변경불가)">
+        </div>
+        <div class="form-group">
+        	<label><strong>> 공항 한글</strong></label>
+        	<input class="form-control" id="modalAirportKor" name="airportKor" placeholder="공항 한글명">
+        </div>
+        <div class="form-group">
+        	<label><strong>> 공항 영문</strong></label>
+        	<input class="form-control" id="modalAirportEng" name="airportEng" placeholder="공항 영문">
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="airportAddBtn">Submit</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="airportUpdateModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">공항 수정</h4>
+        
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+	<form id="airportUpdateForm">
+      <!-- Modal body -->
+      <div class="modal-body p-3">
+     	 <span id="modalText">
+        	<br>공항 수정은 한글명과 영문만 수정할 수 있습니다.
+        </span>
+        <hr>
+        <div class="form-group">
+        	<label><strong>> 국가코드</strong></label>
+        	<input class="form-control" id="updateModalCountryCode" name="countryCode" readonly>
+        </div>
+        <div class="form-group">
+        	<label><strong>> 국가</strong></label>
+        	<input class="form-control" id="updateModalCountryKor" name="countryKor" readonly>
+        </div>
+        <hr>
+        <div class="form-group">
+        	<label><strong>> 공항 코드</strong></label>
+        	<input class="form-control" id="updateModalAirportCode" name="airportCode" readonly>
+        </div>
+        <div class="form-group">
+        	<label><strong>> 공항 한글</strong></label>
+        	<input class="form-control" id="updateModalAirportKor" name="airportKor" placeholder="공항 한글명">
+        </div>
+        <div class="form-group">
+        	<label><strong>> 공항 영문</strong></label>
+        	<input class="form-control" id="updateModalAirportEng" name="airportEng" placeholder="공항 영문">
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="airportUpdateBtn">Submit</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="airportDeleteModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">공항 삭제</h4>
+        
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+	<form id="airportDeleteForm">
+      <!-- Modal body -->
+      <div class="modal-body p-3">
+     	 <span id="modalText">
+        	공항을 삭제하면 관련된 모든 운항 정보가 삭제됩니다.
+        	<br> 그래도 정말 삭제하시겠습니까?
+        </span>
+        <hr>
+        <div class="form-group">
+        	<label><strong>> 국가코드</strong></label>
+        	<input class="form-control" id="deleteModalCountryCode" name="countryCode" readonly>
+        </div>
+        <div class="form-group">
+        	<label><strong>> 국가</strong></label>
+        	<input class="form-control" id="deleteModalCountryKor" name="countryKor" readonly>
+        </div>
+        <hr>
+        <div class="form-group">
+        	<label><strong>> 공항 코드</strong></label>
+        	<input class="form-control" id="deleteModalAirportCode" name="airportCode" readonly>
+        </div>
+        <div class="form-group">
+        	<label><strong>> 공항 한글</strong></label>
+        	<input class="form-control" id="deleteModalAirportKor" name="airportKor" readonly>
+        </div>
+        <div class="form-group">
+        	<label><strong>> 공항 영문</strong></label>
+        	<input class="form-control" id="deleteModalAirportEng" name="airportEng" readonly>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="airportDeleteBtn">Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
 </div>
 </body>
 </html>

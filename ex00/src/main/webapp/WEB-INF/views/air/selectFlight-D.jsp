@@ -741,8 +741,8 @@ $(function() {
 			$(".nextBtn").attr("type","submit");
 			$(".nextBtn").removeClass("disabled");
 		} else {
-			$("#nextForm").attr("action", "/air/main.do");
-			$("#nextForm").attr("method", "get");
+			$("#nextForm").attr("action", "/airReservation/writeForm.do");
+			$("#nextForm").attr("method", "post");
 			$(".nextBtn").attr("type","submit");
 			$(".nextBtn").removeClass("disabled");
 		}
@@ -805,10 +805,10 @@ $(function() {
 						<c:if test="${!empty param.aPassenger }">
 							<b><span id="aPassenger">성인 : ${param.aPassenger }</span></b>
 						</c:if>
-						<c:if test="${!empty cPassenger }">
+						<c:if test="${!empty param.cPassenger }">
 							<b><span id="cPassenger">, 소아 : ${param.cPassenger }</span></b>
 						</c:if>
-						<c:if test="${!empty iPassenger }">
+						<c:if test="${!empty param.iPassenger }">
 							<b><span id="iPassenger">, 유아 : ${param.iPassenger }</span></b>
 						</c:if>
 					</span>

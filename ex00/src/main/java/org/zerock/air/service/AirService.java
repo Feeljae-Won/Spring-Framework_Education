@@ -1,8 +1,13 @@
 package org.zerock.air.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.zerock.air.vo.AirVO;
+import org.zerock.air.vo.AirplaneVO;
+import org.zerock.air.vo.PriceVO;
+import org.zerock.air.vo.RouteVO;
+import org.zerock.air.vo.ScheduleVO;
 
 import com.webjjang.util.page.PageObject;
 
@@ -29,6 +34,15 @@ public interface AirService {
 	// 국가별 공항 리스트 가져오기
 	public List<AirVO> getAirport(String countryCode);
 	
+	// 공항 등록
+	public Integer airportWrite(AirVO vo);
+	
+	// 공항 수정
+	public Integer airportUpdate(AirVO vo);
+	
+	// 공항 삭제
+	public Integer airportDelete(AirVO vo);
+	
 	// 제조사별 비행기 모델 리스트 가져오기
 	public List<AirVO> getAirplane(String airplanePdt);
 	
@@ -38,12 +52,45 @@ public interface AirService {
 	// 관리자 기종 상세보기
 	public AirVO getFlightInfo(String flightName);
 	
+	// 항공편 등록
+	public Integer write(ArrayList<AirplaneVO> list);
+
 	// 항공 노선 리스트
 	public List<AirVO> routeList(PageObject pageObject, Long airlineNo, Long routeId);
 	
+	// 항공 노선 상세보기
+	public AirVO routeView(Long airlineNo, Long routeId);
+	
+	// 항공 노선 등록
+	public Integer routeWrite(RouteVO vo);
+	
+	// 항공 노선 수정
+	public Integer routeUpdate(RouteVO vo);
+	
+	// 항공 노선 수정
+	public Integer routeDelete(Long routeId);
+	
 	// 항공 노선에 따른 금액 가져오기
 	public AirVO getPrice(Long airlineNo, Long routeId);
+	
+	// 노선에 금액 등록
+	public Integer priceWrite(PriceVO vo);
+	
+	// 노선에 금액 수정
+	public Integer priceUpdate(PriceVO vo);
 
 	// 노선별 운항 스케줄 리스트
-	public List<AirVO> airScheduleDetail(Long airlingeNo, Long routeId, PageObject pageObject);
+	public List<AirVO> airScheduleDetail(Long airlineNo, Long routeId, PageObject pageObject);
+	
+	// 스케줄 등록 - 스케줄 없는 항공편 리스트
+	public List<AirVO> getFlightList(Long airlingeNo);
+	
+	// 스케줄 등록 - 일괄 등록
+	public Integer airScheduleWrite(Long airlineNo, ScheduleVO vo);
+	
+	// 스케줄 삭제
+	public Integer airScheduleDelete(Long airlineNo, Long scheduleId);
+	
+	
+
 }

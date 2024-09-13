@@ -150,15 +150,15 @@ $(function() {
 					</div>
 					<table class="table text-center align-middle mt-2">
 						<tr>
-							<th style=width:8%;>번호</th>
-							<th style=width:8%;>타입</th>
-							<th >출발 국가</th>
-							<th >출발지</th>
-							<th >출발 공항</th>
-							<th >도착 국가</th>
-							<th >도착지</th>
-							<th >출발</th>
-							<th style=width:16%;>거리</th>
+							<th style="width:8%;">번호</th>
+							<th style="width:8%;">타입</th>
+							<th style="background-color:#ff782b;">출발 국가</th>
+							<th style="width:8%; background-color:#ff782b;">출발지</th>
+							<th style="background-color:#ff782b;">출발 공항</th>
+							<th style="background-color:#db3d08">도착 국가</th>
+							<th style="width:8%; background-color:#db3d08;">도착지</th>
+							<th style="background-color:#db3d08">도착 공항</th>
+							<th style="width:8%;">거리</th>
 						</tr>
 						<c:forEach items="${routeList }" var="vo">
 							<tr class="dataRow">

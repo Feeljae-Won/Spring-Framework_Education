@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-    <%@ taglib prefix="pagNav" tagdir="/WEB-INF/tags" %>
+    <%@ taglib prefix="pageNavSchedule" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,11 +69,41 @@ $(function() {
 	$(".dataRow").click(function() {
 		
 		let routeId = $(this).find(".routeId").data("routeid");
-		alert(routeId);
-		location="airSheduleDetail.do?routeId=" + routeId;
+// 		alert(routeId);
+// 		location="airSheduleDetail.do?routeId=" + routeId;
 		
 	});
 	
+	// 스케줄 추가 버튼
+	$("#scheduleAddBtn").click(function(){
+		let routeId = $(".routeId").data("routeid");
+// 		alert(routeId);
+		location = "airAdminScheduleWriteForm.do?routeId=" + routeId;
+	});
+	
+	// 스케줄 수정
+	$(".scheduleUpdateBtn").click(function() {
+		
+		// 데이터 수집
+		let scheduleId = $(this).closest(".dataRow").find(".scheduleId").val();
+		let departrue = $(this).closest(".dataRow").find(".departure").val();
+		let arrival = $(this).closest(".dataRow").find(".arrival").val();
+		let departDate = $(this).closest(".dataRow").find(".departDate").val();
+		let departTimeStr = $(this).closest(".dataRow").find(".departTimeStr").val();
+		let arrivalDate = $(this).closest(".dataRow").find(".arrivalDate").val();
+		let arrivalTimeStr = $(this).closest(".dataRow").find(".arrivalTimeStr").val();
+		
+		$("#updateScheduleModal").modal("show");
+	});
+	
+	// 스케줄 수정
+	$(".scheduleDeleteBtn").click(function() {
+		let scheduleId = $(this).closest(".dataRow").find(".scheduleId").data("scheduleid");
+		let routeId = $(this).data("routeid");
+		
+// 		alert("scheduleId : " + scheduleId + ", routeId : " + routeId);
+		location = "airAdminScheduleDelete.do?scheduleId=" + scheduleId + "&routeId=" + routeId;
+	});
 	
 });
 </script>
@@ -127,15 +157,14 @@ $(function() {
 						<tr>
 							<th style=width:8%;>노선번호</th>
 							<th style=width:8%;>타입</th>
-							<th >출발 국가</th>
-							<th >출발지</th>
-							<th >출발 공항</th>
-							<th >도착 국가</th>
-							<th >도착지</th>
-							<th >출발</th>
+							<th style="background-color:#ff782b;">출발 국가</th>
+							<th style="background-color:#ff782b;">출발지</th>
+							<th style="background-color:#ff782b;">출발 공항</th>
+							<th style="background-color:#db3d08">도착 국가</th>
+							<th style="background-color:#db3d08">도착지</th>
+							<th style="background-color:#db3d08">도착 공항</th>
 							<th style=width:16%;>거리</th>
 						</tr>
-						<c:forEach items="${routeList }" var="vo">
 							<tr class="">
 								<td class="routeId" data-routeid="${vo.routeId}">${vo.routeId }</td>
 								<td class="type" data-type="${vo.type}">${(vo.type =='I')? '국제선' : '국내선'}</td>
@@ -149,7 +178,6 @@ $(function() {
 									<fmt:formatNumber value="${vo.distance}" type="number" /> km
 								</td>
 							</tr>
-						</c:forEach>
 					</table>
 			</fieldset>
 			<hr>
@@ -178,44 +206,120 @@ $(function() {
 			</div>
 			<h5>
 				운항 스케줄 리스트
-				<button class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> add</button>
+				<button class="btn btn-sm btn-warning" id="scheduleAddBtn"><i class="fa fa-plus"></i> add</button>
 			</h5>
 			<table class="table text-center align-middle mt-2">
 				<tr>
-					<th style=width:10%;>스케줄 번호</th>
-					<th style=width:10%;>출발지</th>
-					<th style=width:10%;>도착지</th>
-					<th >출발 시간</th>
-					<th >도착 시간</th>
-					<th style=width:15%;>소요시간</th>
-					<th style=width:10%;>운항 편명</th>
-					<th style=width:6%>상태</th>
-					<th style=width:8%>편집</th>
+					<th style="width:10%;">스케줄 번호</th>
+					<th style="width:10%;background-color:#ff782b;">출발지</th>
+					<th style="background-color:#ff782b;">출발 시간</th>
+					<th style="width:10%;background-color:#db3d08;">도착지</th>
+					<th style="background-color:#db3d08">도착 시간</th>
+					<th style="width:15%;">소요시간</th>
+					<th style="width:10%;">운항 편명</th>
+					<th style="width:6%">상태</th>
+					<th style="width:8%">편집</th>
 				</tr>
-				<c:forEach items="${scheduleList }" var="vo">
-					<tr class="dataRow">
-						<td class="routeId" data-scheduleid="${vo.scheduleId}">${vo.scheduleId }</td>
-						<td class="departure" >${vo.departure }</td>
-						<td class="arrival" >${vo.arrival }</td>
-						<td class="departureTime" >${vo.departureTime }</td>
-						<td class="arrivalTime" >${vo.arrivalTime }</td>
-						<td class="duration" >${vo.duration }</td>
-						<td class="flightName" >${vo.flightName }</td>
-						<td class="status" >${vo.status }</td>
-						<td class="btn-group" >
-							<button class="btn btn-sm btn-light"><i class="	fa fa-pencil" style="font-size:18px;"></i></button>
-							<button class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
+				<c:if test="${!empty scheduleList }">
+					<c:forEach items="${scheduleList }" var="vo">
+						<tr class="dataRow">
+							<td class="scheduleId" data-scheduleid="${vo.scheduleId}">${vo.scheduleId }</td>
+							<td class="departure" >${vo.departure }</td>
+							<td class="departureTime" >${vo.departureTime }</td>
+							<td class="arrival" >${vo.arrival }</td>
+							<td class="arrivalTime" >${vo.arrivalTime }</td>
+							<td class="duration" >${vo.duration }</td>
+							<td class="flightName" >${vo.flightName }</td>
+							<td class="status" >${vo.status }</td>
+							<td class="btn-group" >
+								<button class="btn btn-sm btn-light scheduleUpdateBtn"><i class="fa fa-pencil" style="font-size:18px;"></i></button>
+								<button class="btn btn-sm btn-danger scheduleDeleteBtn" data-routeid="${vo.routeId }"><i class="fa fa-minus"></i></button>
+							</td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				<c:if test="${empty scheduleList }">
+					<tr>
+						<td colspan="12">
+							<div class="alert alert-warning">
+								<strong>해당 항공편의 스케줄이 없습니다.</strong> 운항 스케줄을 등록해 주세요.
+							</div>
 						</td>
 					</tr>
-				</c:forEach>
+				</c:if>
 			</table>
 		</div>
 		<div class="card-footer">
 			<div>
-				<pagNav:pageNav listURI="airAdminScheduleDetail.do" pageObject="${pageObject }"></pagNav:pageNav>
+				<pageNavSchedule:pageNavSchedule listURI="airAdminScheduleDetail.do?routeId=${vo.routeId }" pageObject="${pageObject }"></pageNavSchedule:pageNavSchedule>
 			</div>
 		</div>
 	</div>
+</div>
+
+<!-- 스케줄 수정 모달 -->
+<div class="modal" id="updateScheduleModal">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+
+      <form>
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">스케줄 수정</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+	      <div class="modal-body">
+		      <div class="form-inline">
+		        	<span>
+			        	<strong>선택한 스케줄 : </strong>
+			        	<input id="modalScheduleId" class="form-control" name="scheduleId" readonly>
+			        	<input id="modalFlightName" class="form-control" name="flightName" readonly>
+		       		</span>
+	   			</div>
+	   			<br>
+		       <table class="table text-center">
+					<tr>
+						<th style="width:20%;background-color:#ff782b;">출발일</th>
+						<th style="width:20%;background-color:#ff782b;">출발시간</th>
+						<th style="width:20%;background-color:#db3d08;">도착일</th>
+						<th style="width:20%;background-color:#db3d08;">도착시간</th>
+						<th style="width:20%">소요시간</th>
+					</tr>
+				<tbody id="inputRow">
+					<tr>
+						<td>
+							<input type="date" class="form-control departureDate" name="list[0].departureDate" min="today">
+						</td>
+						<td>
+							<input type="time" class="form-control departureTimeStr" name="list[0].departureTimeStr">
+							<input type="hidden" class="departureTime" name="list[0].departureTime">
+						</td>
+						<td>
+							<input type="date" class="form-control arrivalDate" name="list[0].arrivalDate">
+						</td>
+						<td>
+							<input type="time" class="form-control arrivalTimeStr" name="list[0].arrivalTimeStr">
+							<input type="hidden" class="arrivalTime" name="list[0].arrivalTime">
+						</td>
+						<td>
+							<input class="form-control durationStr" name="list[0].durationStr" readonly>
+							<input type="hidden" class="duration" name="list[0].duration">
+						</td>
+					</tr>
+				</tbody>
+				</table>
+	      </div>
+	
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	      </div>
+      </form>
+
+    </div>
+  </div>
 </div>
 </body>
 </html>

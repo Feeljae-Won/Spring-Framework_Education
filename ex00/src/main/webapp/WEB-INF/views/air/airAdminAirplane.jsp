@@ -96,22 +96,21 @@ $(function() {
 		inputRow+=			'</select>';
 		inputRow+=		'</td>';
 		inputRow+=		'<td>';
-		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].flightName" id="flightName" placeholder="flightName" style="width:90%;">';
+		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].flightName" id="flightName" placeholder="flightName" required style="width:90%;">';
 		inputRow+=		'</td>';
 		inputRow+=		'<td>';
 		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].seatCapacity" id="seatCapacity" type="number" value="300" style="width:90%;">';
 		inputRow+=		'</td>';
 		inputRow+=		'<td>';
-		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].ecoCnt" id="ecoCnt" type="number" value="216" style="width:90%;">';
+		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].ecoCnt" id="ecoCnt" type="number" value="252" style="width:90%;">';
 		inputRow+=		'</td>';
 		inputRow+=		'<td>';
-		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].prEcoCnt" id="prEcoCnt" type="number" value="48"style="width:90%;">';
-		inputRow+=		'</td>';
-		inputRow+=		'<td>';
-		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].bisCnt" id="bisCnt" type="number" value="24" style="width:90%;">';
+		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].bisCnt" id="bisCnt" type="number" value="36" style="width:90%;">';
 		inputRow+=		'</td>';
 		inputRow+=		'<td>';
 		inputRow+=			'<input class="form-control" name="list[' + inputRowCnt + '].fstCnt" id="fstCnt" type="number" value="12" style="width:90%;">';
+		inputRow+=			'<input type="hidden" name="list[' + inputRowCnt + '].seatX" value="6">';
+		inputRow+=			'<input type="hidden" name="list[' + inputRowCnt + '].seatY" value="6">';
 		inputRow+=		'</td>';
 		inputRow+=		'<td>';
 		inputRow+=			'<i class="fa fa-close btn-danger btn inputDeleteBtn" style="color:white;"></i>';
@@ -143,13 +142,14 @@ $(function() {
 	// 항공편 일괄 등록 버튼
 	$("#totalAddBtn").click(function(){
 		
+		
 		$(this).html('<span class="spinner-border spinner-border-sm"></span> Loading..');
 	});
 	
 	// 항공편 상세보기
 	$(".dataRow").click(function() {
 		let flightName = $(this).data("flightname");
-		console.log(flightName);
+		// console.log(flightName);
 		
 		$(".dataRow").removeClass("selected");
 		$(this).addClass("selected");
@@ -161,6 +161,14 @@ $(function() {
 		$("#view"+flightName).toggle("collapse");
 		
 	})
+	
+	// 항공편 수정
+	$(".flightInfo").on("click", "#flightEditBtn", function() {
+		
+		let flightName = $(this).data("flightname");
+		console.log(flightName);
+		
+	});
 	
 	
 });
@@ -221,9 +229,11 @@ $(function() {
 						</span>
 					</small>
 					<div class="hiddenInput mt-3 mb-3 p-3" style="background:#e2e2e2; border-radius:10px; padding:10px;">
-						<form action="/airplaneWrite.do" method="post">
+						<form action="airplaneWrite.do" method="post">
+
+						
 							<!-- 비행기 등록 폼 -->
-							<button type="button" class="btn searchBtn float-right mb-2" id="totalAddBtn">일괄 등록</button>
+							<button type="submit" class="btn searchBtn float-right mb-2" id="totalAddBtn">일괄 등록</button>
 							<h5> 항공편 등록 </h5>
 							<table class="table text-center align-middle">
 								<tr>
@@ -232,7 +242,6 @@ $(function() {
 									<th style="width:170px;">편명</th>
 									<th style="width:80px;">총 좌석수</th>
 									<th style="width:80px;">일반석</th>
-									<th style="width:80px;">프리미엄석</th>
 									<th style="width:80px;">비즈니스</th>
 									<th style="width:80px;">일등석</th>
 									<th style="width:80px;"><i class="fa fa-plus btn-outline-light btn addBtn"></i></th>
@@ -250,7 +259,7 @@ $(function() {
 										</select>
 									</td>
 									<td>
-										<input class="form-control" name="list[0].flightName" id="flightName" placeholder="flightName"
+										<input class="form-control flightName" name="list[0].flightName" id="flightName" placeholder="flightName" required
 											style="width:90%;">
 									</td>
 									<td>
@@ -258,20 +267,19 @@ $(function() {
 											style="width:90%;">
 									</td>
 									<td>
-										<input class="form-control" name="list[0].ecoCnt" id="ecoCnt" type="number" value="216"
+										<input class="form-control" name="list[0].ecoCnt" id="ecoCnt" type="number" value="252"
 											style="width:90%;">
 									</td>
 									<td>
-										<input class="form-control" name="list[0].prEcoCnt" id="prEcoCnt" type="number" value="48"
-											style="width:90%;">
-									</td>
-									<td>
-										<input class="form-control" name="list[0].bisCnt" id="bisCnt" type="number" value="24"
+										<input class="form-control" name="list[0].bisCnt" id="bisCnt" type="number" value="36"
 											style="width:90%;">
 									</td>
 									<td>
 										<input class="form-control" name="list[0].fstCnt" id="fstCnt" type="number" value="12"
 											style="width:90%;">
+										<!-- 항공기 x, y 축 고정 -->
+										<input type="hidden" name="list[0].seatX" value="6">
+										<input type="hidden" name="list[0].seatY" value="50">
 									</td>
 									<td>
 										<i class="fa fa-close btn-light btn"></i>
@@ -297,8 +305,8 @@ $(function() {
 										<option value="flightName">편명</option>
 										<option value="airplaneId">기종</option>
 										<option value="airplanePdt">제조사</option>
-										<option value="departure">출발지</option>
-										<option value="arrival">도착지</option>
+										<option value="departure" >출발지</option>
+										<option value="arrival" >도착지</option>
 										<!-- ajax를 이용한 중분류 option 로딩하기 -->
 								</select>
 								<input class="form-control " id="searchWord" name="searchWord" placeholder="검색">
@@ -318,12 +326,11 @@ $(function() {
 							<th>제조사</th>
 							<th>총 좌석수</th>
 							<th>일반석</th>
-							<th>프리미엄석</th>
 							<th>비즈니스석</th>
 							<th>일등석</th>
 							<th>운항여부</th>
-							<th>출발지</th>
-							<th>도착지</th>
+							<th style="background-color:#ff782b;">출발지</th>
+							<th style="background-color:#db3d08">도착지</th>
 						</tr>
 					<c:forEach items="${flightList }" var="vo">
 						<tr class="dataRow" data-flightname="${vo.flightName }" data-airplaneid="${vo.airplaneId }"
@@ -334,7 +341,6 @@ $(function() {
 							<td>${vo.airplanePdt }</td>
 							<td>${vo.seatCapacity }</td>
 							<td>${vo.ecoCnt }</td>
-							<td>${vo.prEcoCnt }</td>
 							<td>${vo.bisCnt }</td>
 							<td>${vo.fstCnt }</td>
 							<td>${(vo.scheduleId > 0)? '<i class="fa fa-circle-thin"></i>' : '<i class="fa fa-close"></i>' }</td>
@@ -358,6 +364,31 @@ $(function() {
 		</div>
 	</div>
 </div>
+</div>
+
+<!-- 항공편 수정 모달 -->
+<div class="modal" id="flightEditModal">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Modal body..
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 </body>
 </html>
