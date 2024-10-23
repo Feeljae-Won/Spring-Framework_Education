@@ -167,7 +167,6 @@ $(function() {
 		
 		let flightName = $(this).data("flightname");
 		console.log(flightName);
-		
 	});
 	
 	
@@ -289,11 +288,10 @@ $(function() {
 							</table>
 						</form>
 					</div>
-					
 					<small>
 						<span class="ml-3 mt-2">
 							<br><br>* <b>[ 수정 ]</b> : 해당 항공편을 선택하면 자세한 내용을 확인할 수 있으며, <b>기종, 제조사, 좌석, 출발지, 도착지, 운항 스케줄</b>을 변경할 수 있습니다.
-							<br>* <b>[ 삭제 ]</b> : 해당 항공편과 관련된 <span style="color:red; font-weight:bold;">모든 데이터가 삭제</span> 됩니다. 
+							<br>* <b>[ 삭제 ]</b> : 해당 항공편과 관련된 <span style="color:red; font-weight:bold;">모든 데이터가 삭제</span> 됩니다. <br>
 						</span>
 					</small>
 					<!-- 검색 -->
@@ -318,6 +316,13 @@ $(function() {
 							</div>
 					  	</div>
 					</div>
+					<div class="form-check-inline ml-3 mt-3">
+						<label class="form-check-label">
+							<input type="radio" class="form-check-input" value="all" name="optradio" checked>전체 항공편
+							<input type="radio" class="form-check-input" value="noSchedule" name="optradio">미운항 항공편
+							<input type="radio" class="form-check-input" value="scheduled" name="optradio">운항중인 항공편
+						</label>
+					</div>
 					<table class="table text-center align-middle mt-3">
 						<tr>
 							<th>순번</th>
@@ -332,27 +337,29 @@ $(function() {
 							<th style="background-color:#ff782b;">출발지</th>
 							<th style="background-color:#db3d08">도착지</th>
 						</tr>
-					<c:forEach items="${flightList }" var="vo">
-						<tr class="dataRow" data-flightname="${vo.flightName }" data-airplaneid="${vo.airplaneId }"
-							data-routeid="${vo.routeId }" data-scheduleid="${vo.scheduleId }">
-							<td>${vo.rnum }</td>
-							<td>${vo.flightName }</td>
-							<td>${vo.airplaneId }</td>
-							<td>${vo.airplanePdt }</td>
-							<td>${vo.seatCapacity }</td>
-							<td>${vo.ecoCnt }</td>
-							<td>${vo.bisCnt }</td>
-							<td>${vo.fstCnt }</td>
-							<td>${(vo.scheduleId > 0)? '<i class="fa fa-circle-thin"></i>' : '<i class="fa fa-close"></i>' }</td>
-							<td>${(empty vo.departure )? '' : vo.departure }</td>
-							<td>${(empty vo.arrival )? '' : vo.arrival }</td>
-						</tr>
-						<tr class="collapse" id="view${vo.flightName }">
-							<td colspan="12">
-								${vo.flightName } 상세보기
-							</td>
-						</tr>
-					</c:forEach>
+					<tbody id="flightList">
+						<c:forEach items="${flightList }" var="vo">
+							<tr class="dataRow" data-flightname="${vo.flightName }" data-airplaneid="${vo.airplaneId }"
+								data-routeid="${vo.routeId }" data-scheduleid="${vo.scheduleId }">
+								<td>${vo.rnum }</td>
+								<td>${vo.flightName }</td>
+								<td>${vo.airplaneId }</td>
+								<td>${vo.airplanePdt }</td>
+								<td>${vo.seatCapacity }</td>
+								<td>${vo.ecoCnt }</td>
+								<td>${vo.bisCnt }</td>
+								<td>${vo.fstCnt }</td>
+								<td>${(vo.scheduleId > 0)? '<i class="fa fa-circle-thin"></i>' : '<i class="fa fa-close"></i>' }</td>
+								<td>${(empty vo.departure )? '' : vo.departure }</td>
+								<td>${(empty vo.arrival )? '' : vo.arrival }</td>
+							</tr>
+							<tr class="collapse" id="view${vo.flightName }">
+								<td colspan="12">
+									${vo.flightName } 상세보기
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
 					</table>
 				</div>
 			

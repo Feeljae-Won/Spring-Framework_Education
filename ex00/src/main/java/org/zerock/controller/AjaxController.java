@@ -1,14 +1,20 @@
 package org.zerock.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.zerock.air.service.AirService;
 import org.zerock.category.service.CategoryService;
 import org.zerock.goods.service.GoodsService;
+import org.zerock.psrefree.service.PSRefreeService;
+
+import com.webjjang.util.page.PageObject;
 
 import lombok.extern.log4j.Log4j;
 
@@ -32,6 +38,18 @@ public class AjaxController {
 	@Qualifier("airServiceImpl")
 	private AirService airService;
 	
+	@Autowired
+	@Qualifier("PSRefreeServiceImpl")
+	private PSRefreeService psRefreeService;
+	
+	@GetMapping("/getCourtList.do")
+	public String getCourt(Model model, Long court) {
+		
+		model.addAttribute("courtList", psRefreeService.getCourtList(court));
+		
+		return "psRefree/getCourt";
+	}
+	
 	//--- 공항 가져오기 ------------------------------------
 	@GetMapping("/getAirport.do")
 	public String getAirport(Model model, String countryCode) {
@@ -42,7 +60,7 @@ public class AjaxController {
 		return "air/getAirport";
 	}
 	
-	//--- 공항 가져오기 ------------------------------------
+	//--- 항공편 가져오기 ------------------------------------
 	@GetMapping("/getAirplane.do")
 	public String getAirplane(Model model, String airplanePdt) {
 		log.info("getAirplane.do");

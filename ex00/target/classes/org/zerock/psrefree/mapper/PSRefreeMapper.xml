@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.psrefree.mapper.PSRefreeMapper">
+
+	<!-- id 는 메소드 이름과 같아야 한다. -->
+	<select id="list" resultType="org.zerock.psrefree.vo.RefreeVO">
+	    select 
+	    	rownum rnum, no, name, locate, court, courtNo
+	    from (
+		    select
+		    	no, name, locate, court, courtNo
+		    from
+		    	psrefree
+		    where
+		    	1 = 1
+	    )
+	    order by court, courtNo asc
+	</select>
+	
+	
+	<!-- 카테고리 대분류 등록 -->
+	<insert id="write">
+	    insert into psrefree (no, name, locate, court, courtNo)
+	    values(#{vo.no}, #{vo.name}, #{vo.locate}, #{vo.court}, #{vo.courtNo})
+ 	</insert>
+
+	<!-- 카테고리 삭제 -->
+	<delete id="delete">
+		delete from psrefree
+		where 1 = 1
+	</delete>
+	
+	<!-- 심판 조 불러오기 -->
+	<select id="getCourtList" resultType="org.zerock.psrefree.vo.RefreeVO">
+		select 
+			no, name, locate, court, courtNo
+		from
+			psrefree
+	    where
+	    	court = #{court}
+	    order by courtNo asc
+	</select>
+</mapper>
